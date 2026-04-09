@@ -41,14 +41,28 @@ ws.on('message', (raw) => {
 
   if (msg.type === 'broadcast' && msg.message) {
     if (msg.message.type === 'done') {
-      console.log('[figma-send] Figma executou com sucesso.');
-      ws.close();
-      process.exit(0);
+      if (msg.message.data !== null && msg.message.data !== undefined) {
+        console.log('[figma-result]', JSON.stringify(msg.message.data, null, 2));
+        ws.close();
+        process.exit(0);
+      } else {
+        // aguarda 300ms por um possível 'result' enviado antes do done
+        setTimeout(() => {
+          console.log('[figma-send] Figma executou com sucesso.');
+          ws.close();
+          process.exit(0);
+        }, 300);
+      }
     }
     if (msg.message.type === 'error') {
       console.error('[figma-send] Erro no Figma:', msg.message.message);
       ws.close();
       process.exit(1);
+    }
+    if (msg.message.type === 'result') {
+      console.log('[figma-result]', JSON.stringify(msg.message.data, null, 2));
+      ws.close();
+      process.exit(0);
     }
   }
 });
@@ -58,8 +72,9 @@ ws.on('error', (err) => {
   process.exit(1);
 });
 
+const timeoutMs = parseInt(process.env.FIGMA_TIMEOUT || '60000');
 setTimeout(() => {
-  console.error('[figma-send] Timeout — sem resposta do Figma em 15s.');
+  console.error(`[figma-send] Timeout — sem resposta do Figma em ${timeoutMs/1000}s.`);
   ws.close();
   process.exit(1);
-}, 15000);
+}, timeoutMs);

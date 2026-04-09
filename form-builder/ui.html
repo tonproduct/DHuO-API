@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; background: #f5f5f5; color: #1e1e1e; }
+
+  .tabs { display: flex; background: white; border-bottom: 1px solid #e5e5e5; }
+  .tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; font-weight: 500; color: #999; cursor: pointer; border-bottom: 2px solid transparent; }
+  .tab.active { color: #8e3ccb; border-bottom-color: #8e3ccb; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .section { background: white; padding: 12px 16px; border-bottom: 1px solid #e5e5e5; }
+
+  label { display: block; font-size: 11px; color: #666; margin-bottom: 4px; font-weight: 500; }
+
+  input[type="text"], textarea {
+    width: 100%; padding: 7px 10px; border: 1px solid #ddd;
+    border-radius: 6px; font-size: 12px; color: #1e1e1e;
+    background: white; outline: none; font-family: inherit;
+  }
+  input[type="text"]:focus, textarea:focus { border-color: #8e3ccb; }
+
+  textarea {
+    resize: vertical; min-height: 80px; line-height: 1.5;
+    font-family: 'Menlo', 'Courier New', monospace; font-size: 11px;
+  }
+  textarea.import-area { min-height: 120px; }
+
+  .toggle-row {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+  }
+  .toggle-row label { margin: 0; flex: 1; font-size: 11px; color: #444; }
+  .toggle-row input[type="checkbox"] { width: 14px; height: 14px; accent-color: #8e3ccb; cursor: pointer; }
+
+  .add-btn, .import-btn {
+    width: 100%; margin-top: 10px; padding: 8px;
+    background: #8e3ccb; color: white; border: none;
+    border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .add-btn:hover, .import-btn:hover { background: #7a33b0; }
+
+  .hint {
+    font-size: 11px; color: #999; margin-top: 8px; line-height: 1.5;
+    background: #f9f9f9; border-radius: 6px; padding: 8px 10px;
+  }
+  .hint code { background: #eee; padding: 1px 4px; border-radius: 3px; font-family: monospace; }
+
+  /* Context bar */
+  .context-bar {
+    display: none; background: #f3e8ff; border-bottom: 1px solid #d8b4fe;
+    padding: 8px 16px; align-items: center; gap: 8px;
+  }
+  .context-bar.visible { display: flex; }
+  .context-bar-label { flex: 1; font-size: 11px; color: #6b21a8; font-weight: 500; }
+  .context-back {
+    font-size: 11px; color: #8e3ccb; background: none; border: none;
+    cursor: pointer; font-weight: 600; padding: 2px 6px;
+    border: 1px solid #8e3ccb; border-radius: 4px;
+  }
+
+  .fields-header {
+    padding: 10px 16px 6px;
+    font-size: 11px; font-weight: 600; color: #666;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  .field-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; background: white;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .field-item.indented { padding-left: 36px; background: #fafafa; }
+
+  .field-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: #f3e8ff; color: #8e3ccb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .field-icon.accordion-icon { background: #e0f2fe; color: #0369a1; }
+  .field-info { flex: 1; min-width: 0; }
+  .field-name { font-weight: 600; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .field-sub { font-size: 11px; color: #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .remove-btn {
+    background: none; border: none; cursor: pointer;
+    color: #ccc; font-size: 16px; padding: 2px 4px; flex-shrink: 0;
+  }
+  .remove-btn:hover { color: #e53e3e; }
+
+  /* Accordion field in list */
+  .accordion-item { border-bottom: 1px solid #f0f0f0; }
+  .accordion-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; background: #f0f9ff;
+  }
+  .accordion-children { background: #f8f8f8; }
+  .accordion-add-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 16px 7px 36px; background: #f8f8f8;
+    border-bottom: 1px solid #f0f0f0; cursor: pointer;
+    font-size: 11px; color: #8e3ccb; font-weight: 500;
+    border: none; width: 100%; text-align: left;
+  }
+  .accordion-add-btn:hover { background: #f3e8ff; }
+
+  .empty { padding: 24px 16px; text-align: center; color: #bbb; font-size: 12px; }
+
+  .generate-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 12px 16px; background: white;
+    border-top: 1px solid #e5e5e5;
+  }
+  .generate-btn {
+    width: 100%; padding: 9px; background: #8e3ccb; color: white;
+    border: none; border-radius: 6px; font-size: 13px;
+    font-weight: 600; cursor: pointer;
+  }
+  .generate-btn:hover { background: #7a33b0; }
+  .generate-btn:disabled { background: #ddd; cursor: not-allowed; }
+
+  .fields-list { padding-bottom: 64px; }
+
+  .type-icons { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .type-chip {
+    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    border: 1.5px solid #ddd; background: white; cursor: pointer; color: #555;
+  }
+  .type-chip.active { border-color: #8e3ccb; background: #f3e8ff; color: #8e3ccb; }
+  .type-chip:hover { border-color: #8e3ccb; }
+  .type-chip.accordion-chip { border-color: #7dd3fc; color: #0369a1; }
+  .type-chip.accordion-chip.active { background: #e0f2fe; border-color: #0369a1; }
+  .type-chip.accordion-chip:hover { border-color: #0369a1; }
+
+  .placeholder-row { margin-top: 8px; display: none; }
+  .placeholder-row.show { display: block; }
+  .checkbox-group-extras { margin-top: 8px; display: none; }
+  .checkbox-group-extras.show { display: block; }
+
+  .toast {
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    background: #1e1e1e; color: white; padding: 8px 16px;
+    border-radius: 20px; font-size: 12px; opacity: 0;
+    transition: opacity 0.2s; pointer-events: none; white-space: nowrap;
+    z-index: 100;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" data-tab="manual">Manual</div>
+  <div class="tab" data-tab="import">Importar tabela</div>
+</div>
+
+<!-- Context bar (shown when adding inside accordion) -->
+<div class="context-bar" id="context-bar">
+  <span class="context-bar-label" id="context-label">Adicionando dentro de: —</span>
+  <button class="context-back" id="context-back-btn">← Voltar ao formulário</button>
+</div>
+
+<!-- Manual -->
+<div class="tab-panel active" id="tab-manual">
+  <div class="section">
+    <label>Tipo de campo</label>
+    <div class="type-icons">
+      <span class="type-chip active" data-type="textField">Text Field</span>
+      <span class="type-chip" data-type="textArea">Text Area</span>
+      <span class="type-chip" data-type="select">Select</span>
+      <span class="type-chip" data-type="checkbox">Checkbox</span>
+      <span class="type-chip" data-type="radio">Radio</span>
+      <span class="type-chip" data-type="toggle">Toggle</span>
+      <span class="type-chip" data-type="checkboxGroup">Checkbox Group</span>
+      <span class="type-chip" data-type="radioGroup">Radio Group</span>
+      <span class="type-chip accordion-chip" data-type="accordion">Accordion</span>
+      <span class="type-chip" data-type="chips">Chips</span>
+    </div>
+    <div style="margin-top:10px">
+      <label>Label</label>
+      <input type="text" id="label-input" placeholder="Ex: Nome completo">
+    </div>
+    <div class="placeholder-row" id="placeholder-row">
+      <label>Placeholder</label>
+      <input type="text" id="placeholder-input" placeholder="Ex: Insira o nome completo">
+    </div>
+    <!-- CheckboxGroup extras -->
+    <div class="checkbox-group-extras" id="chk-extras">
+      <label style="margin-top:8px">Opções (uma por linha)</label>
+      <textarea id="chk-items" placeholder="Opção 1&#10;Opção 2&#10;Opção 3"></textarea>
+      <div class="toggle-row">
+        <label for="chk-required">Obrigatório</label>
+        <input type="checkbox" id="chk-required">
+      </div>
+      <div class="toggle-row">
+        <label for="chk-footer">Mostrar footer</label>
+        <input type="checkbox" id="chk-footer" checked>
+      </div>
+    </div>
+    <button class="add-btn" id="add-btn">+ Adicionar campo</button>
+  </div>
+</div>
+
+<!-- Import -->
+<div class="tab-panel" id="tab-import">
+  <div class="section">
+    <label>Cole a tabela aqui</label>
+    <textarea class="import-area" id="table-input" placeholder="| Label | Tipo | Placeholder |
+|---|---|---|
+| Nome | textField | Insira o nome |
+| Mensagem | textArea | Insira a mensagem |"></textarea>
+    <div class="hint">
+      Colunas: <code>label</code> · <code>tipo</code>/<code>type</code> · <code>placeholder</code><br>
+      Tipos: <code>textField</code> · <code>textArea</code> · <code>select</code> · <code>checkbox</code> · <code>radio</code> · <code>toggle</code> · <code>checkboxGroup</code> · <code>radioGroup</code> · <code>accordion</code> · <code>chips</code>
+    </div>
+    <button class="import-btn" id="import-btn">Importar campos</button>
+  </div>
+</div>
+
+<!-- Fields list -->
+<div class="fields-header" id="fields-header" style="display:none">Campos adicionados</div>
+<div class="fields-list" id="fields-list">
+  <div class="empty" id="empty-msg">Nenhum campo adicionado ainda.</div>
+</div>
+
+<div class="generate-bar">
+  <button class="generate-btn" id="generate-btn" disabled>Gerar formulário</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ICONS = { textField: 'TF', textArea: 'TA', select: 'SEL', checkbox: 'CHK', radio: 'RDB', toggle: 'TGL', checkboxGroup: 'CHG', radioGroup: 'RBG', accordion: 'ACC', chips: 'CHP' };
+const LABELS = { textField: 'Text Field', textArea: 'Text Area', select: 'Select', checkbox: 'Checkbox', radio: 'Radio', toggle: 'Toggle', checkboxGroup: 'Checkbox Group', radioGroup: 'Radio Group', accordion: 'Accordion', chips: 'Chips' };
+const WITH_PLACEHOLDER = ['textField', 'textArea'];
+const TYPE_ALIASES = {
+  textfield: 'textField', 'text field': 'textField', texto: 'textField', text: 'textField',
+  textarea: 'textArea', 'text area': 'textArea', area: 'textArea',
+  select: 'select', dropdown: 'select', seleção: 'select', selecao: 'select',
+  checkbox: 'checkbox', check: 'checkbox',
+  radio: 'radio', radiobutton: 'radio', 'radio button': 'radio',
+  toggle: 'toggle', switch: 'toggle',
+  checkboxgroup: 'checkboxGroup', 'checkbox group': 'checkboxGroup',
+  radiogroup: 'radioGroup', 'radio group': 'radioGroup', 'radio button group': 'radioGroup',
+  accordion: 'accordion', acordeon: 'accordion',
+  chips: 'chips', chip: 'chips', tags: 'chips',
+};
+
+let fields = [];
+let selectedType = 'textField';
+// null = root level; number = index of accordion in fields[] being edited
+let accordionCtx = null;
+
+const emptyMsg = document.getElementById('empty-msg');
+
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Type chips
+document.querySelectorAll('.type-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedType = chip.dataset.type;
+    document.getElementById('placeholder-row').classList.toggle('show', WITH_PLACEHOLDER.includes(selectedType));
+    document.getElementById('placeholder-input').value = '';
+    document.getElementById('chk-extras').classList.toggle('show', selectedType === 'checkboxGroup');
+  });
+});
+
+// Context back
+document.getElementById('context-back-btn').addEventListener('click', () => {
+  accordionCtx = null;
+  updateContextBar();
+});
+
+function updateContextBar() {
+  const bar = document.getElementById('context-bar');
+  if (accordionCtx === null) {
+    bar.classList.remove('visible');
+  } else {
+    const acc = fields[accordionCtx];
+    bar.classList.add('visible');
+    document.getElementById('context-label').textContent = 'Adicionando dentro de: ' + (acc ? acc.label : '—');
+  }
+}
+
+// Add field
+document.getElementById('add-btn').addEventListener('click', () => {
+  const label = document.getElementById('label-input').value.trim();
+  if (!label) { showToast('Preencha o label do campo'); return; }
+
+  let field;
+
+  if (selectedType === 'checkboxGroup') {
+    const rawItems = document.getElementById('chk-items').value.trim();
+    const items = rawItems ? rawItems.split('\n').map(s => s.trim()).filter(Boolean) : [];
+    field = {
+      type: 'checkboxGroup',
+      label,
+      items,
+      required: document.getElementById('chk-required').checked,
+      footer: document.getElementById('chk-footer').checked,
+    };
+  } else if (selectedType === 'accordion') {
+    // Accordion can't be nested inside another accordion
+    if (accordionCtx !== null) { showToast('Accordion não pode ser aninhado'); return; }
+    field = { type: 'accordion', label, children: [] };
+  } else {
+    const placeholder = document.getElementById('placeholder-input').value.trim();
+    field = { type: selectedType, label, placeholder };
+  }
+
+  if (accordionCtx !== null && fields[accordionCtx]) {
+    fields[accordionCtx].children.push(field);
+  } else {
+    fields.push(field);
+  }
+
+  // Reset inputs
+  document.getElementById('label-input').value = '';
+  document.getElementById('placeholder-input').value = '';
+  document.getElementById('chk-items').value = '';
+  document.getElementById('chk-required').checked = false;
+  document.getElementById('chk-footer').checked = true;
+
+  renderFields();
+});
+
+document.getElementById('label-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('add-btn').click();
+});
+
+// Import
+document.getElementById('import-btn').addEventListener('click', () => {
+  const raw = document.getElementById('table-input').value.trim();
+  if (!raw) { showToast('Cole uma tabela primeiro'); return; }
+  const parsed = parseTable(raw);
+  if (!parsed.length) { showToast('Nenhum campo reconhecido na tabela'); return; }
+  fields = fields.concat(parsed);
+  renderFields();
+  document.getElementById('table-input').value = '';
+  showToast(parsed.length + ' campo(s) importado(s)');
+  document.querySelector('.tab[data-tab="manual"]').click();
+});
+
+function parseTable(raw) {
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.startsWith('|'));
+  if (lines.length < 2) return [];
+  const headers = lines[0].split('|').map(h => h.trim().toLowerCase()).filter(Boolean);
+  const colLabel = headers.findIndex(h => ['label', 'campo', 'name', 'nome'].includes(h));
+  const colType  = headers.findIndex(h => ['tipo', 'type', 'tipo de campo'].includes(h));
+  const colPh    = headers.findIndex(h => ['placeholder', 'ph', 'exemplo'].includes(h));
+  if (colLabel === -1) { showToast('Coluna "label" ou "campo" não encontrada'); return []; }
+  const rows = lines.slice(1).filter(l => l.replace(/[\|\-\s]/g, '') !== '');
+  return rows.map(row => {
+    const cells = row.split('|').map(c => c.trim()).filter(Boolean);
+    const label = cells[colLabel] || '';
+    if (!label) return null;
+    const rawType = colType !== -1 ? (cells[colType] || '').toLowerCase().trim() : 'textField';
+    const type = TYPE_ALIASES[rawType] || 'textField';
+    const placeholder = colPh !== -1 ? (cells[colPh] || '') : '';
+    return { type, label, placeholder };
+  }).filter(Boolean);
+}
+
+function renderFields() {
+  const list = document.getElementById('fields-list');
+  const header = document.getElementById('fields-header');
+  const genBtn = document.getElementById('generate-btn');
+  list.innerHTML = '';
+
+  if (!fields.length) {
+    header.style.display = 'none';
+    genBtn.disabled = true;
+    list.appendChild(emptyMsg);
+    return;
+  }
+
+  header.style.display = '';
+  genBtn.disabled = false;
+
+  fields.forEach((f, i) => {
+    if (f.type === 'accordion') {
+      list.appendChild(renderAccordionItem(f, i));
+    } else {
+      list.appendChild(renderFieldItem(f, i, false, null));
+    }
+  });
+
+  // Re-attach remove listeners
+  list.querySelectorAll('.remove-btn[data-root]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      fields.splice(Number(btn.dataset.root), 1);
+      if (accordionCtx !== null && accordionCtx >= fields.length) accordionCtx = null;
+      updateContextBar();
+      renderFields();
+    });
+  });
+  list.querySelectorAll('.remove-btn[data-acc][data-child]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      fields[Number(btn.dataset.acc)].children.splice(Number(btn.dataset.child), 1);
+      renderFields();
+    });
+  });
+  list.querySelectorAll('.accordion-add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      accordionCtx = Number(btn.dataset.acc);
+      updateContextBar();
+      document.getElementById('label-input').focus();
+    });
+  });
+}
+
+function renderFieldItem(f, i, indented, accIdx) {
+  const item = document.createElement('div');
+  item.className = 'field-item' + (indented ? ' indented' : '');
+
+  const sub = LABELS[f.type] || f.type;
+  const detail = f.type === 'checkboxGroup'
+    ? (f.items && f.items.length ? f.items.length + ' opções' : '') + (f.required ? ' · obrigatório' : '')
+    : (f.placeholder ? ' · ' + f.placeholder : '');
+
+  const removeAttr = accIdx !== null
+    ? `data-acc="${accIdx}" data-child="${i}"`
+    : `data-root="${i}"`;
+
+  item.innerHTML = `
+    <div class="field-icon">${ICONS[f.type] || 'TF'}</div>
+    <div class="field-info">
+      <div class="field-name">${esc(f.label)}</div>
+      <div class="field-sub">${sub}${esc(detail)}</div>
+    </div>
+    <button class="remove-btn" ${removeAttr} title="Remover">×</button>
+  `;
+  return item;
+}
+
+function renderAccordionItem(f, i) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'accordion-item';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'accordion-header';
+  hdr.innerHTML = `
+    <div class="field-icon accordion-icon">ACC</div>
+    <div class="field-info">
+      <div class="field-name">${esc(f.label)}</div>
+      <div class="field-sub">Accordion · ${f.children.length} campo(s)</div>
+    </div>
+    <button class="remove-btn" data-root="${i}" title="Remover">×</button>
+  `;
+  wrapper.appendChild(hdr);
+
+  // Children
+  if (f.children.length) {
+    const childrenEl = document.createElement('div');
+    childrenEl.className = 'accordion-children';
+    f.children.forEach((child, ci) => {
+      childrenEl.appendChild(renderFieldItem(child, ci, true, i));
+    });
+    wrapper.appendChild(childrenEl);
+  }
+
+  // Add inside button
+  const addBtn = document.createElement('button');
+  addBtn.className = 'accordion-add-btn';
+  addBtn.dataset.acc = i;
+  addBtn.textContent = '+ Adicionar campo dentro';
+  wrapper.appendChild(addBtn);
+
+  return wrapper;
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Generate
+document.getElementById('generate-btn').addEventListener('click', () => {
+  if (!fields.length) return;
+  document.getElementById('generate-btn').disabled = true;
+  document.getElementById('generate-btn').textContent = 'Gerando…';
+  parent.postMessage({ pluginMessage: { type: 'build-form', fields } }, '*');
+});
+
+window.onmessage = (event) => {
+  const msg = event.data.pluginMessage;
+  if (!msg) return;
+  if (msg.type === 'done') {
+    showToast('Formulário gerado!');
+    fields = [];
+    accordionCtx = null;
+    updateContextBar();
+    renderFields();
+    document.getElementById('generate-btn').textContent = 'Gerar formulário';
+  }
+  if (msg.type === 'error') {
+    showToast('Erro: ' + msg.message);
+    document.getElementById('generate-btn').disabled = false;
+    document.getElementById('generate-btn').textContent = 'Gerar formulário';
+  }
+};
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 
-const variants = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const
+const variants = ["default", "secondary", "outline", "ghost", "destructive", "danger", "link"] as const
 const sizes    = ["sm", "default", "lg"] as const
 
 const tokens = [
@@ -51,8 +51,9 @@ export default function ButtonPage() {
                 { v: "secondary",   bg: "var(--secondary)",     fg: "var(--secondary-foreground)",   hover: "neutral-200" },
                 { v: "outline",     bg: "transparent",          fg: "var(--foreground)",             hover: "var(--accent)" },
                 { v: "ghost",       bg: "transparent",          fg: "var(--foreground)",             hover: "var(--accent)" },
-                { v: "destructive", bg: "var(--destructive)",   fg: "neutral-50",                    hover: "red-400" },
-                { v: "link",        bg: "transparent",          fg: "var(--primary)",                hover: "underline" },
+                { v: "destructive", bg: "var(--destructive)",        fg: "neutral-50", hover: "red-400" },
+                { v: "danger",     bg: "var(--prim-red-500)",      fg: "neutral-50", hover: "red-400" },
+                { v: "link",       bg: "transparent",              fg: "var(--primary)", hover: "underline" },
               ].map(({ v, bg, fg, hover }) => (
                 <tr key={v}>
                   <td className="px-4 py-3 font-mono text-xs">{v}</td>

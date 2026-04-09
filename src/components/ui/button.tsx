@@ -54,6 +54,12 @@ const buttonVariants = cva(
           "hover:bg-[var(--btn-destructive-bg-hover)]",
           "focus-visible:ring-[var(--btn-destructive-bg)]/20",
         ],
+        danger: [
+          "bg-[var(--btn-danger-bg)]",
+          "text-white",
+          "hover:bg-[var(--btn-danger-bg-hover)]",
+          "focus-visible:ring-[var(--btn-danger-bg)]/20",
+        ],
         outline: [
           "border border-[var(--btn-outline-border)]",
           "bg-[var(--btn-outline-bg)]",

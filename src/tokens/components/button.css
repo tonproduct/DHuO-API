@@ -43,6 +43,13 @@
   --btn-destructive-bg-hover:   var(--prim-red-400);
   --btn-destructive-fg-hover:   var(--prim-neutral-50);
 
+  /* ── Variant: danger ── */
+  --btn-danger-bg:              var(--prim-red-500);
+  --btn-danger-fg:              var(--prim-neutral-50);
+  --btn-danger-border:          transparent;
+  --btn-danger-bg-hover:        var(--prim-red-400);
+  --btn-danger-fg-hover:        var(--prim-neutral-50);
+
   /* ── Variant: outline ── */
   --btn-outline-bg:         transparent;
   --btn-outline-fg:         var(--foreground);
@@ -72,4 +79,8 @@
 
   /* ── Variant: destructive (dark) ── */
   --btn-destructive-bg-hover: var(--prim-red-500);
+
+  /* ── Variant: danger (dark) ── */
+  --btn-danger-bg:        var(--prim-red-400);
+  --btn-danger-bg-hover:  var(--prim-red-500);
 }

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playground — Protótipo de Estados do Botão</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 32px;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 960px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      background: #6B21A8;
+      color: white;
+      padding: 16px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-body {
+      display: flex;
+      flex: 1;
+      min-height: 480px;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e5e7eb;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+      letter-spacing: 0.08em;
+      padding: 16px 24px 8px;
+      text-transform: uppercase;
+    }
+
+    .panels {
+      display: flex;
+      flex: 1;
+      gap: 0;
+      padding: 0 24px 24px;
+      gap: 16px;
+    }
+
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .panel-label {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .editor {
+      flex: 1;
+      border: 1.5px solid #7c3aed;
+      border-radius: 6px;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #111827;
+      resize: none;
+      outline: none;
+      min-height: 360px;
+      background: #fafafa;
+    }
+
+    .editor:focus {
+      border-color: #6B21A8;
+    }
+
+    .output-panel {
+      flex: 1;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 6px;
+      min-height: 360px;
+      background: #f3f4f6;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #374151;
+      position: relative;
+      overflow: auto;
+    }
+
+    /* Output states */
+    .output-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #9ca3af;
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+    }
+
+    .output-loading {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .output-loading .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #6B21A8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .output-loading span {
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .output-result {
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    .output-interrupted {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .output-interrupted .icon {
+      font-size: 22px;
+    }
+
+    .output-interrupted span {
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 8px;
+      border-left: 1px solid #e5e7eb;
+    }
+
+    .nav-item {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #6b7280;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .nav-item:hover { background: #f3f4f6; }
+
+    .nav-item.active {
+      background: #ede9fe;
+      color: #6B21A8;
+      font-weight: 500;
+    }
+
+    /* Button */
+    .btn-testar {
+      margin-top: 8px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .btn-testar.state-default {
+      background: #6B21A8;
+      color: white;
+    }
+
+    .btn-testar.state-default:hover { background: #581c87; }
+
+    .btn-testar.state-loading {
+      background: #6B21A8;
+      color: white;
+    }
+
+    .btn-testar.state-loading:hover { background: #7c3aed; }
+
+    .btn-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Modal footer */
+    .modal-footer {
+      padding: 16px 24px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .btn-secondary {
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: 1.5px solid #d1d5db;
+      background: white;
+      color: #374151;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: none;
+      background: #6B21A8;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      opacity: 0.4;
+    }
+
+    /* State indicator */
+    .state-indicator {
+      margin: 0 24px 16px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 12px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .state-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
+      flex-shrink: 0;
+    }
+
+    .state-dot.active { background: #6B21A8; }
+    .state-dot.running { background: #f59e0b; animation: pulse 1s ease-in-out infinite; }
+    .state-dot.done { background: #10b981; }
+    .state-dot.stopped { background: #ef4444; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="modal">
+  <div class="modal-header">
+    Configurar Componente Técnico - AI Agent Builder
+    <button>✕</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="main-content">
+      <div class="section-label">Playground</div>
+
+      <div class="state-indicator">
+        <div class="state-dot active" id="stateDot"></div>
+        <span id="stateText">Pronto para executar</span>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <div class="panel-label">Input</div>
+          <textarea class="editor" id="inputEditor">{ "message": "teste" }</textarea>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label">Output</div>
+          <div class="output-panel" id="outputPanel">
+            <div class="output-empty" id="outputEmpty">
+              Execute para ver o resultado
+            </div>
+            <div class="output-loading" id="outputLoading">
+              <div class="spinner"></div>
+              <span>Aguardando resposta...</span>
+            </div>
+            <div class="output-result" id="outputResult"></div>
+            <div class="output-interrupted" id="outputInterrupted">
+              <div class="icon">⊘</div>
+              <span>Execução interrompida.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="nav-item">Configuração</div>
+      <div class="nav-item">Prompts</div>
+      <div class="nav-item active">Playground</div>
+
+      <button class="btn-testar state-default" id="btnTestar" onclick="handleTestar()">
+        <div class="btn-spinner" id="btnSpinner"></div>
+        <span id="btnLabel">Testar</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn-secondary">Cancelar</button>
+    <button class="btn-primary">Adicionar</button>
+  </div>
+</div>
+
+<script>
+  let isRunning = false;
+  let runTimeout = null;
+
+  function setOutput(state) {
+    document.getElementById('outputEmpty').style.display = 'none';
+    document.getElementById('outputLoading').style.display = 'none';
+    document.getElementById('outputResult').style.display = 'none';
+    document.getElementById('outputInterrupted').style.display = 'none';
+
+    if (state === 'empty') {
+      document.getElementById('outputEmpty').style.display = 'flex';
+    } else if (state === 'loading') {
+      document.getElementById('outputLoading').style.display = 'flex';
+    } else if (state === 'result') {
+      document.getElementById('outputResult').style.display = 'block';
+    } else if (state === 'interrupted') {
+      document.getElementById('outputInterrupted').style.display = 'flex';
+    }
+  }
+
+  function setButtonState(state) {
+    const btn = document.getElementById('btnTestar');
+    const spinner = document.getElementById('btnSpinner');
+    const label = document.getElementById('btnLabel');
+
+    btn.className = 'btn-testar';
+
+    if (state === 'default') {
+      btn.classList.add('state-default');
+      spinner.style.display = 'none';
+      label.textContent = 'Testar';
+    } else if (state === 'loading') {
+      btn.classList.add('state-loading');
+      spinner.style.display = 'block';
+      label.textContent = 'Interromper';
+    }
+  }
+
+  function setStateIndicator(state) {
+    const dot = document.getElementById('stateDot');
+    const text = document.getElementById('stateText');
+
+    dot.className = 'state-dot';
+
+    const states = {
+      ready:       { dot: 'active',  text: 'Pronto para executar' },
+      running:     { dot: 'running', text: 'Executando requisição...' },
+      done:        { dot: 'done',    text: 'Execução concluída' },
+      interrupted: { dot: 'stopped', text: 'Execução interrompida' },
+    };
+
+    const s = states[state];
+    dot.classList.add(s.dot);
+    text.textContent = s.text;
+  }
+
+  function handleTestar() {
+    if (!isRunning) {
+      // Start
+      isRunning = true;
+      setButtonState('loading');
+      setOutput('loading');
+      setStateIndicator('running');
+
+      // Simulate 4s response
+      runTimeout = setTimeout(() => {
+        isRunning = false;
+        setButtonState('default');
+        setStateIndicator('done');
+        document.getElementById('outputResult').textContent =
+`{
+  "status": 200,
+  "response": {
+    "message": "Olá! Como posso ajudar?",
+    "model": "claude-3-5-sonnet",
+    "tokens": {
+      "input": 12,
+      "output": 48
+    }
+  }
+}`;
+        setOutput('result');
+      }, 4000);
+
+    } else {
+      // Interrupt
+      clearTimeout(runTimeout);
+      isRunning = false;
+      setButtonState('default');
+      setOutput('interrupted');
+      setStateIndicator('interrupted');
+    }
+  }
+</script>
+</body>
+</html>

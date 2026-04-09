@@ -37,13 +37,18 @@
     if (msg.type === 'done') {
       setStatus('connected', 'Done ✓');
       if (activeWs && activeWs.readyState === 1) {
-        activeWs.send(JSON.stringify({ type: 'broadcast', channel: CHANNEL, message: { type: 'done' } }));
+        activeWs.send(JSON.stringify({ type: 'broadcast', channel: CHANNEL, message: { type: 'done', data: msg.data } }));
       }
     }
     if (msg.type === 'error') {
       setStatus('error', 'Error: ' + msg.message);
       if (activeWs && activeWs.readyState === 1) {
         activeWs.send(JSON.stringify({ type: 'broadcast', channel: CHANNEL, message: { type: 'error', message: msg.message } }));
+      }
+    }
+    if (msg.type === 'result') {
+      if (activeWs && activeWs.readyState === 1) {
+        activeWs.send(JSON.stringify({ type: 'broadcast', channel: CHANNEL, message: { type: 'result', data: msg.data } }));
       }
     }
   };
