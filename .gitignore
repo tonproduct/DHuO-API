@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Claude Code local settings
 .claude/
+
+# MCP config (contains secrets/tokens)
+.mcp.json

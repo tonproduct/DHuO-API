@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe v2 — MCP Server</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --brand: #6B21C8;
+  --brand-light: #ede9f8;
+  --brand-mid: #c4b5fd;
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+  --success: #16a34a;
+  --border: #e4e4e7;
+  --border-focus: #6B21C8;
+  --text-primary: #18181b;
+  --text-secondary: #71717a;
+  --text-placeholder: #a1a1aa;
+  --bg-base: #ffffff;
+  --bg-subtle: #fafafa;
+  --bg-muted: #f4f4f5;
+  --shadow-modal: 0 32px 80px rgba(0,0,0,0.35);
+  --radius: 8px;
+  --radius-sm: 4px;
+  --radius-lg: 12px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background: #13111a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 24px;
+}
+
+/* ─── MODAL ─────────────────────────────────────── */
+.modal {
+  background: var(--bg-base);
+  border-radius: var(--radius-lg);
+  width: 960px;
+  max-width: 100%;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 90vh;
+}
+
+.modal-header {
+  background: var(--brand);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-header-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.modal-title {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modal-subtitle {
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+.modal-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.25); }
+
+/* ─── LAYOUT ─────────────────────────────────────── */
+.modal-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── NAV ESQUERDA ───────────────────────────────── */
+.nav-left {
+  width: 180px;
+  background: var(--bg-subtle);
+  border-right: 1px solid var(--border);
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-placeholder);
+  padding: 4px 8px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: var(--brand-light);
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.nav-item-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--brand);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.nav-item.active .nav-badge {
+  background: var(--brand);
+}
+
+.nav-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 8px;
+}
+
+.nav-info {
+  margin-top: auto;
+  padding: 10px 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+}
+
+.nav-info strong { color: var(--brand); }
+
+/* ─── CONTEÚDO PRINCIPAL ─────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.view { display: none; flex: 1; flex-direction: column; min-height: 0; }
+.view.active { display: flex; }
+
+/* ─── VIEW: CONFIGURAÇÕES ────────────────────────── */
+.config-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.field-group-header {
+  padding: 10px 16px;
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-secondary);
+}
+
+.field-group-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--bg-base);
+}
+
+.field-row {
+  display: grid;
+  gap: 14px;
+}
+
+.field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+.field-row.cols-3 { grid-template-columns: 2fr 1fr 1fr; }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tag-required {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-placeholder);
+  background: var(--bg-muted);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--bg-base);
+  outline: none;
+  width: 100%;
+  font-family: inherit;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(107,33,200,0.1);
+}
+
+.input-with-action {
+  display: flex;
+  gap: 6px;
+}
+
+.input-with-action .input { flex: 1; }
+
+.btn-icon {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 13px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: var(--brand-light);
+}
+
+.field-hint {
+  font-size: 11px;
+  color: var(--text-placeholder);
+}
+
+/* ─── VIEW: PROMPTS (MASTER-DETAIL) ──────────────── */
+.prompts-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* MASTER */
+.master {
+  width: 224px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-subtle);
+  flex-shrink: 0;
+}
+
+.master-header {
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.master-search {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  background: var(--bg-base);
+  outline: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: border 0.15s;
+}
+
+.master-search:focus { border-color: var(--brand); }
+
+.btn-new {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--brand);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.btn-new:hover { background: #5a1aaa; }
+
+.prompt-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.prompt-item {
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.prompt-item:hover { background: #f0edf8; }
+
+.prompt-item.active {
+  background: var(--brand-light);
+  border-color: rgba(107,33,200,0.2);
+}
+
+.prompt-item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-mid);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.prompt-item.active .prompt-item-dot { background: var(--brand); }
+
+.prompt-item-text { flex: 1; min-width: 0; }
+
+.prompt-item-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prompt-item.active .prompt-item-name { color: var(--brand); font-weight: 600; }
+
+.prompt-item-meta {
+  font-size: 10px;
+  color: var(--text-placeholder);
+  margin-top: 1px;
+}
+
+.prompt-item-del {
+  opacity: 0;
+  color: var(--text-placeholder);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 3px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.prompt-item:hover .prompt-item-del { opacity: 1; }
+.prompt-item-del:hover { color: var(--danger); background: var(--danger-light); }
+
+/* EMPTY STATE na master */
+.master-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  text-align: center;
+  gap: 8px;
+}
+
+.master-empty-icon { font-size: 28px; opacity: 0.25; }
+
+.master-empty-text {
+  font-size: 12px;
+  color: var(--text-placeholder);
+  line-height: 1.5;
+}
+
+/* DETAIL */
+.detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.detail-header {
+  padding: 12px 20px 0;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.detail-breadcrumb {
+  font-size: 11px;
+  color: var(--text-placeholder);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-breadcrumb span { color: var(--text-primary); font-weight: 500; }
+
+.detail-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.dtab {
+  padding: 7px 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+.dtab:hover { color: var(--brand); }
+
+.dtab.active {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+  font-weight: 600;
+}
+
+.dtab-count {
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--brand);
+  color: #fff;
+  padding: 0 5px;
+  border-radius: 8px;
+  line-height: 16px;
+  min-width: 16px;
+  text-align: center;
+}
+
+.dtab:not(.active) .dtab-count {
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+}
+
+.detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ─── FORM FIELDS (detail) ───────────────────────── */
+.form-row {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-label .req {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-placeholder);
+}
+
+/* ─── ARGUMENTOS ─────────────────────────────────── */
+.args-table {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.args-thead {
+  display: grid;
+  grid-template-columns: 1fr 110px 90px 36px;
+  gap: 0;
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 12px;
+}
+
+.args-thead span {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-placeholder);
+}
+
+.arg-row {
+  display: grid;
+  grid-template-columns: 1fr 110px 90px 36px;
+  gap: 0;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+.arg-row:last-child { border-bottom: none; }
+.arg-row:hover { background: #fafafa; }
+
+.arg-row input,
+.arg-row select {
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  background: var(--bg-base);
+  outline: none;
+  font-family: inherit;
+  color: var(--text-primary);
+  width: 100%;
+  margin-right: 8px;
+}
+
+.arg-row input:focus,
+.arg-row select:focus { border-color: var(--brand); }
+
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.toggle {
+  width: 30px;
+  height: 17px;
+  background: #d4d4d8;
+  border-radius: 9px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle.on { background: var(--brand); }
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.toggle.on::after { left: 15px; }
+
+.btn-del-row {
+  background: none;
+  border: none;
+  color: #d4d4d8;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-del-row:hover { color: var(--danger); background: var(--danger-light); }
+
+/* ─── MENSAGENS ──────────────────────────────────── */
+.msg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.msg-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-base);
+  transition: border-color 0.15s;
+}
+
+.msg-card:focus-within { border-color: var(--brand-mid); }
+
+.msg-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+
+.msg-role {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.msg-role.user { color: #2563eb; background: #eff6ff; }
+.msg-role.assistant { color: #059669; background: #f0fdf4; }
+.msg-role.system { color: #d97706; background: #fffbeb; }
+
+.msg-card-body { padding: 10px 12px; }
+
+.msg-card-body textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: var(--text-primary);
+  resize: none;
+  min-height: 56px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  background: transparent;
+  line-height: 1.5;
+}
+
+.msg-card-body textarea::placeholder { color: var(--text-placeholder); font-family: inherit; }
+
+/* ─── ADD INLINE ─────────────────────────────────── */
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--brand);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 6px 8px;
+  background: none;
+  border: 1px dashed var(--brand-mid);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-add:hover {
+  background: var(--brand-light);
+  border-color: var(--brand);
+}
+
+/* ─── DETAIL EMPTY STATE ─────────────────────────── */
+.detail-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px;
+  text-align: center;
+  color: var(--text-placeholder);
+}
+
+.detail-empty-icon { font-size: 36px; opacity: 0.25; }
+
+.detail-empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.detail-empty-sub {
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 240px;
+}
+
+/* ─── FOOTER GLOBAL ──────────────────────────────── */
+.modal-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-subtle);
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.footer-status {
+  font-size: 11px;
+  color: var(--text-placeholder);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.footer-status .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.footer-actions { display: flex; gap: 8px; }
+
+.btn {
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-cancel:hover { background: var(--bg-muted); color: var(--text-primary); }
+
+.btn-save {
+  background: var(--brand);
+  color: #fff;
+}
+
+.btn-save:hover { background: #5a1aaa; }
+
+/* ─── POPCONFIRM ─────────────────────────────────── */
+.popconfirm {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  width: 200px;
+  margin-top: 4px;
+}
+
+.popconfirm.open { display: block; }
+
+.popconfirm p {
+  font-size: 12px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.popconfirm-actions { display: flex; gap: 6px; justify-content: flex-end; }
+
+.btn-pop-cancel {
+  padding: 4px 10px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-pop-confirm {
+  padding: 4px 10px;
+  font-size: 11px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--danger);
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ─── HINT ───────────────────────────────────────── */
+.hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-size: 11px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+/* ─── UNSAVED INDICATOR ──────────────────────────── */
+.unsaved-dot {
+  display: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  flex-shrink: 0;
+}
+
+.unsaved-dot.visible { display: inline-block; }
+
+textarea.input { resize: vertical; min-height: 80px; }
+</style>
+</head>
+<body>
+
+<div class="modal">
+
+  <!-- HEADER -->
+  <div class="modal-header">
+    <div class="modal-header-left">
+      <div class="modal-header-icon">⚙</div>
+      <div>
+        <div class="modal-title">MCPServer</div>
+        <div class="modal-subtitle">Configurar Trigger</div>
+      </div>
+    </div>
+    <div class="modal-close">✕</div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="modal-layout">
+
+    <!-- NAV ESQUERDA -->
+    <nav class="nav-left">
+      <div class="nav-section-label">Geral</div>
+
+      <div class="nav-item active" onclick="switchView(this, 'view-config')">
+        <span class="nav-item-icon">⚙</span>
+        Configurações
+      </div>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-label">Recursos</div>
+
+      <div class="nav-item" onclick="switchView(this, 'view-prompts')">
+        <span class="nav-item-icon">✦</span>
+        Prompts
+        <span class="nav-badge" id="promptsCount">3</span>
+      </div>
+
+      <div class="nav-item" style="opacity:0.4;pointer-events:none;cursor:default;">
+        <span class="nav-item-icon">🔧</span>
+        Tools
+        <span style="font-size:10px;color:#aaa;margin-left:auto;">em breve</span>
+      </div>
+
+      <div class="nav-info">
+        <strong>ⓘ</strong> Adicione tools após salvar, pelo botão ⊕ no componente.
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- ══ VIEW: CONFIGURAÇÕES ══ -->
+      <div class="view active" id="view-config">
+        <div class="config-body">
+
+          <!-- Grupo: Identificação -->
+          <div class="field-group">
+            <div class="field-group-header">
+              <span class="field-group-title">Identificação</span>
+            </div>
+            <div class="field-group-body">
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label">
+                    ID do Componente
+                    <span class="tag-required">Obrigatório</span>
+                  </div>
+                  <div class="input-with-action">
+                    <input class="input" type="text" value="mcp-server-01" oninput="markUnsaved()">
+                    <button class="btn-icon" title="Copiar ID">⧉</button>
+                  </div>
+                  <span class="field-hint">Identificador único — não pode ser alterado após salvar.</span>
+                </div>
+              </div>
+              <div class="field-row cols-2">
+                <div class="field">
+                  <div class="field-label">Nome</div>
+                  <input class="input" type="text" value="Servidor MCP Principal" oninput="markUnsaved()">
+                </div>
+                <div class="field">
+                  <div class="field-label">
+                    Nome do Servidor
+                    <span class="tag-required">Obrigatório</span>
+                  </div>
+                  <input class="input" type="text" value="mcp-main" oninput="markUnsaved()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo: Conexão -->
+          <div class="field-group">
+            <div class="field-group-header">
+              <span class="field-group-title">Conexão</span>
+            </div>
+            <div class="field-group-body">
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label">
+                    URI
+                    <span class="tag-required">Obrigatório</span>
+                  </div>
+                  <input class="input" type="text" value="https://mcp.example.com/server" oninput="markUnsaved()">
+                </div>
+              </div>
+              <div class="field-row cols-2">
+                <div class="field">
+                  <div class="field-label">
+                    Versão
+                    <span class="tag-required">Obrigatório</span>
+                  </div>
+                  <input class="input" type="text" value="1.0.0" oninput="markUnsaved()">
+                </div>
+                <div class="field">
+                  <div class="field-label">
+                    Timeout (ms)
+                    <span class="tag-required">Obrigatório</span>
+                  </div>
+                  <input class="input" type="number" value="120000" oninput="markUnsaved()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ VIEW: PROMPTS ══ -->
+      <div class="view" id="view-prompts">
+        <div class="prompts-layout">
+
+          <!-- MASTER -->
+          <div class="master">
+            <div class="master-header">
+              <input class="master-search" type="text" placeholder="Buscar prompt…">
+              <button class="btn-new" onclick="addPrompt()">+ Novo</button>
+            </div>
+            <div class="prompt-list" id="promptList">
+              <div class="prompt-item active" onclick="selectPrompt(this, 'busca-semantica', 'Busca Semântica', '2 args · 1 msg')">
+                <div class="prompt-item-dot"></div>
+                <div class="prompt-item-text">
+                  <div class="prompt-item-name">Busca Semântica</div>
+                  <div class="prompt-item-meta">2 args · 1 msg</div>
+                </div>
+                <span class="prompt-item-del" onclick="confirmDelete(event, this)">✕</span>
+              </div>
+              <div class="prompt-item" onclick="selectPrompt(this, 'resumo-doc', 'Resumo de Documentação', '1 arg · 2 msgs')">
+                <div class="prompt-item-dot"></div>
+                <div class="prompt-item-text">
+                  <div class="prompt-item-name">Resumo de Documentação</div>
+                  <div class="prompt-item-meta">1 arg · 2 msgs</div>
+                </div>
+                <span class="prompt-item-del" onclick="confirmDelete(event, this)">✕</span>
+              </div>
+              <div class="prompt-item" onclick="selectPrompt(this, 'analise-api', 'Análise de API', '3 args · 1 msg')">
+                <div class="prompt-item-dot"></div>
+                <div class="prompt-item-text">
+                  <div class="prompt-item-name">Análise de API</div>
+                  <div class="prompt-item-meta">3 args · 1 msg</div>
+                </div>
+                <span class="prompt-item-del" onclick="confirmDelete(event, this)">✕</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DETAIL -->
+          <div class="detail" id="detail">
+            <div class="detail-header">
+              <div class="detail-breadcrumb">
+                Prompts › <span id="breadcrumbName">Busca Semântica</span>
+              </div>
+              <div class="detail-tabs">
+                <div class="dtab active" onclick="switchDTab(this, 'pane-config')">Configurações</div>
+                <div class="dtab" onclick="switchDTab(this, 'pane-args')">
+                  Argumentos <span class="dtab-count" id="argCount">2</span>
+                </div>
+                <div class="dtab" onclick="switchDTab(this, 'pane-msgs')">
+                  Mensagens <span class="dtab-count" id="msgCount">1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-body">
+
+              <!-- Pane: Config do Prompt -->
+              <div class="tab-pane active" id="pane-config">
+                <div class="form-row">
+                  <div class="form-field">
+                    <div class="form-label">Nome <span class="req">Obrigatório</span></div>
+                    <input class="input" type="text" value="busca-semantica" placeholder="ex: meu-prompt" oninput="markUnsaved()">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <div class="form-label">Título <span class="req">Obrigatório</span></div>
+                    <input class="input" type="text" value="Busca Semântica" placeholder="Título legível" oninput="markUnsaved()">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <div class="form-label">Descrição <span class="req">Obrigatório</span></div>
+                    <textarea class="input" placeholder="Descreva o que esse prompt faz…" oninput="markUnsaved()">Realiza busca semântica contextual no Dev Portal usando IA generativa.</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pane: Argumentos -->
+              <div class="tab-pane" id="pane-args">
+                <div class="args-table">
+                  <div class="args-thead">
+                    <span>Nome do argumento</span>
+                    <span>Tipo</span>
+                    <span>Obrigatório</span>
+                    <span></span>
+                  </div>
+                  <div id="argsList">
+                    <div class="arg-row">
+                      <input type="text" value="query" placeholder="nome">
+                      <select><option selected>string</option><option>number</option><option>boolean</option><option>object</option></select>
+                      <div class="toggle-wrap">
+                        <div class="toggle on" onclick="toggleSwitch(this)"></div>
+                        <span>Sim</span>
+                      </div>
+                      <button class="btn-del-row" onclick="this.closest('.arg-row').remove(); updateArgCount()">✕</button>
+                    </div>
+                    <div class="arg-row">
+                      <input type="text" value="limit" placeholder="nome">
+                      <select><option>string</option><option selected>number</option><option>boolean</option><option>object</option></select>
+                      <div class="toggle-wrap">
+                        <div class="toggle" onclick="toggleSwitch(this)"></div>
+                        <span>Não</span>
+                      </div>
+                      <button class="btn-del-row" onclick="this.closest('.arg-row').remove(); updateArgCount()">✕</button>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn-add" onclick="addArg()">+ Adicionar Argumento</button>
+              </div>
+
+              <!-- Pane: Mensagens -->
+              <div class="tab-pane" id="pane-msgs">
+                <div class="msg-list" id="msgList">
+                  <div class="msg-card">
+                    <div class="msg-card-head">
+                      <select class="msg-role user" onchange="updateRoleStyle(this)">
+                        <option selected>USER</option>
+                        <option>ASSISTANT</option>
+                        <option>SYSTEM</option>
+                      </select>
+                      <button class="btn-del-row" onclick="this.closest('.msg-card').remove(); updateMsgCount()">✕</button>
+                    </div>
+                    <div class="msg-card-body">
+                      <textarea placeholder="Conteúdo da mensagem…" rows="3">Busque por {{query}} e retorne os {{limit}} resultados mais relevantes.</textarea>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn-add" onclick="addMsg()">+ Adicionar Mensagem</button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+
+  <!-- FOOTER GLOBAL -->
+  <div class="modal-footer">
+    <div class="footer-status">
+      <div class="dot"></div>
+      <span id="statusText">Sem alterações pendentes</span>
+      <span class="unsaved-dot" id="unsavedDot"></span>
+    </div>
+    <div class="footer-actions">
+      <button class="btn btn-cancel">Cancelar</button>
+      <button class="btn btn-save">Salvar</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="hint">✦ Wireframe interativo — navegue pelos itens do menu lateral</div>
+
+<script>
+  // ── NAV ESQUERDA
+  function switchView(el, viewId) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+  }
+
+  // ── TABS DO DETAIL
+  function switchDTab(el, paneId) {
+    document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+  }
+
+  // ── SELECIONAR PROMPT
+  function selectPrompt(el, id, name, meta) {
+    document.querySelectorAll('.prompt-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('breadcrumbName').textContent = name;
+    // reset to config tab
+    document.querySelectorAll('.dtab')[0].click();
+  }
+
+  // ── ADICIONAR PROMPT
+  let promptCounter = 4;
+  function addPrompt() {
+    const list = document.getElementById('promptList');
+    const name = 'Novo Prompt ' + promptCounter++;
+    const item = document.createElement('div');
+    item.className = 'prompt-item';
+    item.innerHTML = `
+      <div class="prompt-item-dot"></div>
+      <div class="prompt-item-text">
+        <div class="prompt-item-name">${name}</div>
+        <div class="prompt-item-meta">0 args · 0 msgs</div>
+      </div>
+      <span class="prompt-item-del" onclick="confirmDelete(event, this)">✕</span>
+    `;
+    item.onclick = (e) => {
+      if (e.target.classList.contains('prompt-item-del')) return;
+      selectPrompt(item, '', name, '0 args · 0 msgs');
+    };
+    list.appendChild(item);
+    selectPrompt(item, '', name, '');
+    updatePromptCount();
+  }
+
+  // ── DELETAR COM CONFIRM
+  function confirmDelete(e, el) {
+    e.stopPropagation();
+    const item = el.closest('.prompt-item');
+
+    // remove existing popconfirm
+    document.querySelectorAll('.popconfirm').forEach(p => p.remove());
+
+    const pop = document.createElement('div');
+    pop.className = 'popconfirm open';
+    pop.style.position = 'absolute';
+    pop.innerHTML = `
+      <p>Remover este prompt? Esta ação não pode ser desfeita.</p>
+      <div class="popconfirm-actions">
+        <button class="btn-pop-cancel" onclick="this.closest('.popconfirm').remove()">Cancelar</button>
+        <button class="btn-pop-confirm" onclick="doDelete(this)">Remover</button>
+      </div>
+    `;
+    pop.querySelector('.btn-pop-confirm')._item = item;
+    item.style.position = 'relative';
+    item.appendChild(pop);
+
+    setTimeout(() => document.addEventListener('click', closePop, { once: true }), 50);
+  }
+
+  function doDelete(btn) {
+    const item = btn._item;
+    item.remove();
+    updatePromptCount();
+  }
+
+  function closePop() {
+    document.querySelectorAll('.popconfirm').forEach(p => p.remove());
+  }
+
+  // ── ADICIONAR ARG
+  function addArg() {
+    const list = document.getElementById('argsList');
+    const row = document.createElement('div');
+    row.className = 'arg-row';
+    row.innerHTML = `
+      <input type="text" placeholder="nome do argumento">
+      <select><option>string</option><option>number</option><option>boolean</option><option>object</option></select>
+      <div class="toggle-wrap">
+        <div class="toggle" onclick="toggleSwitch(this)"></div>
+        <span>Não</span>
+      </div>
+      <button class="btn-del-row" onclick="this.closest('.arg-row').remove(); updateArgCount()">✕</button>
+    `;
+    list.appendChild(row);
+    row.querySelector('input').focus();
+    updateArgCount();
+  }
+
+  // ── ADICIONAR MSG
+  function addMsg() {
+    const list = document.getElementById('msgList');
+    const card = document.createElement('div');
+    card.className = 'msg-card';
+    card.innerHTML = `
+      <div class="msg-card-head">
+        <select class="msg-role user" onchange="updateRoleStyle(this)">
+          <option selected>USER</option>
+          <option>ASSISTANT</option>
+          <option>SYSTEM</option>
+        </select>
+        <button class="btn-del-row" onclick="this.closest('.msg-card').remove(); updateMsgCount()">✕</button>
+      </div>
+      <div class="msg-card-body">
+        <textarea placeholder="Conteúdo da mensagem…" rows="3"></textarea>
+      </div>
+    `;
+    list.appendChild(card);
+    card.querySelector('textarea').focus();
+    updateMsgCount();
+  }
+
+  // ── TOGGLE
+  function toggleSwitch(el) {
+    el.classList.toggle('on');
+    const label = el.nextElementSibling;
+    label.textContent = el.classList.contains('on') ? 'Sim' : 'Não';
+  }
+
+  // ── ROLE STYLE
+  function updateRoleStyle(sel) {
+    sel.className = 'msg-role';
+    const map = { USER: 'user', ASSISTANT: 'assistant', SYSTEM: 'system' };
+    sel.classList.add(map[sel.value] || 'user');
+  }
+
+  // ── COUNTS
+  function updateArgCount() {
+    const n = document.getElementById('argsList').querySelectorAll('.arg-row').length;
+    document.getElementById('argCount').textContent = n;
+  }
+
+  function updateMsgCount() {
+    const n = document.getElementById('msgList').querySelectorAll('.msg-card').length;
+    document.getElementById('msgCount').textContent = n;
+  }
+
+  function updatePromptCount() {
+    const n = document.getElementById('promptList').querySelectorAll('.prompt-item').length;
+    document.getElementById('promptsCount').textContent = n;
+  }
+
+  // ── UNSAVED
+  function markUnsaved() {
+    document.getElementById('statusText').textContent = 'Alterações não salvas';
+    document.getElementById('unsavedDot').classList.add('visible');
+  }
+
+  document.querySelector('.btn-save').addEventListener('click', () => {
+    document.getElementById('statusText').textContent = 'Salvo';
+    document.getElementById('unsavedDot').classList.remove('visible');
+    setTimeout(() => {
+      document.getElementById('statusText').textContent = 'Sem alterações pendentes';
+    }, 2000);
+  });
+</script>
+</body>
+</html>
