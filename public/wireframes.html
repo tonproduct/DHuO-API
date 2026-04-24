@@ -392,10 +392,10 @@ iframe {
     <div>
       <div class="header-label">DHuO · MCP Server</div>
       <div class="header-title">Propostas de UI — Feature Prompts</div>
-      <div class="header-sub">Exploração de três abordagens para o gerenciamento de prompts no MCP Server. Cada versão evolui a anterior — navegue e interaja.</div>
+      <div class="header-sub">Exploração de quatro abordagens para o gerenciamento de prompts no MCP Server. Cada versão evolui a anterior — navegue e interaja.</div>
     </div>
     <div class="header-meta">
-      <div class="meta-item"><div class="meta-dot"></div> 3 propostas</div>
+      <div class="meta-item"><div class="meta-dot"></div> 4 propostas</div>
       <div class="meta-item">UX/UI · Wireframe interativo</div>
     </div>
   </div>
@@ -409,6 +409,9 @@ iframe {
     </div>
     <div class="vnav-item v3" onclick="switchVersion(this, 2)">
       V3 — Proposta final <span class="vnav-badge">recomendado</span>
+    </div>
+    <div class="vnav-item v3" onclick="switchVersion(this, 3)">
+      V4 — Híbrido <span class="vnav-badge">novo</span>
     </div>
   </div>
 </div>
@@ -492,6 +495,31 @@ iframe {
       <a class="btn-open" href="/wireframe-prompts-v3.html" target="_blank">↗ Abrir em tela cheia</a>
     </div>
 
+    <!-- V4 -->
+    <div class="version-info" id="info-3">
+      <div class="vi-version">Versão híbrida</div>
+      <div class="vi-title">Side tabs + tabs no miolo</div>
+      <div class="vi-desc">Combina as tabs verticais do v3 com tabs horizontais dentro do painel de edição — Config, Argumentos e Mensagens cada uma em sua própria aba.</div>
+
+      <div class="vi-metrics">
+        <div class="metric"><div class="metric-value">2</div><div class="metric-label">Cliques p/ editar</div></div>
+        <div class="metric"><div class="metric-value">0</div><div class="metric-label">Scroll no miolo</div></div>
+      </div>
+
+      <div class="vi-section-label">O que essa versão entrega</div>
+      <div class="vi-pros">
+        <div class="vi-item pro"><div class="dot"></div>Tabs laterais — padrão já conhecido no produto</div>
+        <div class="vi-item pro"><div class="dot"></div>Miolo organizado em tabs: Config | Args | Msgs</div>
+        <div class="vi-item pro"><div class="dot"></div>Cada seção tem foco total — sem scroll junto</div>
+        <div class="vi-item pro"><div class="dot"></div>Contador de itens visível nas tabs</div>
+        <div class="vi-item pro"><div class="dot"></div>Confirmação antes de excluir</div>
+        <div class="vi-item pro"><div class="dot"></div>Indicador de alterações não salvas</div>
+      </div>
+
+      <div class="vi-divider"></div>
+      <a class="btn-open" href="/wireframe-prompts-v4.html" target="_blank">↗ Abrir em tela cheia</a>
+    </div>
+
   </div>
 
   <!-- PREVIEW -->
@@ -520,6 +548,9 @@ iframe {
         <div class="iframe-panel" id="panel-2">
           <iframe src="/wireframe-prompts-v3.html" title="V3"></iframe>
         </div>
+        <div class="iframe-panel" id="panel-3">
+          <iframe src="/wireframe-prompts-v4.html" title="V4"></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -533,6 +564,7 @@ iframe {
     <div class="cver active" onclick="switchVersionBar(this, 0)">V1</div>
     <div class="cver" onclick="switchVersionBar(this, 1)">V2</div>
     <div class="cver" onclick="switchVersionBar(this, 2)">V3</div>
+    <div class="cver" onclick="switchVersionBar(this, 3)">V4</div>
   </div>
 </div>
 
@@ -541,6 +573,7 @@ iframe {
     'd-hu-o-api.vercel.app/wireframe-prompts.html',
     'd-hu-o-api.vercel.app/wireframe-prompts-v2.html',
     'd-hu-o-api.vercel.app/wireframe-prompts-v3.html',
+    'd-hu-o-api.vercel.app/wireframe-prompts-v4.html',
   ];
 
   function switchVersion(el, idx) {
