@@ -772,8 +772,12 @@ textarea.input { resize: vertical; min-height: 72px; }
       <!-- DETAIL: tabs horizontais -->
       <div class="detail" id="detail">
 
+        <!-- HEADER DO PROMPT SELECIONADO -->
+        <div style="padding:12px 16px 0;border-bottom:1px solid var(--border);flex-shrink:0;">
+          <div style="font-size:11px;color:var(--text-mute);margin-bottom:4px;">Editando prompt</div>
+          <div id="detailTitle" style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">Busca Semântica</div>
+
         <!-- TABBAR -->
-        <div class="detail-tabbar">
           <div class="dtab active" onclick="switchDTab(this,'pane-config')">Configurações</div>
           <div class="dtab" onclick="switchDTab(this,'pane-args')">
             Argumentos <span class="dtab-count" id="argCount">2</span>
@@ -782,6 +786,7 @@ textarea.input { resize: vertical; min-height: 72px; }
             Mensagens <span class="dtab-count" id="msgCount">1</span>
           </div>
         </div>
+        </div><!-- /header -->
 
         <!-- PANE: Configurações -->
         <div class="detail-pane active" id="pane-config">
@@ -912,6 +917,7 @@ textarea.input { resize: vertical; min-height: 72px; }
   function selPrompt(el, name) {
     document.querySelectorAll('.pitem').forEach(i => i.classList.remove('active'));
     el.classList.add('active');
+    document.getElementById('detailTitle').textContent = name;
   }
 
   // NOVO PROMPT
