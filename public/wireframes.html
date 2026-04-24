@@ -392,7 +392,7 @@ iframe {
     <div>
       <div class="header-label">DHuO · MCP Server</div>
       <div class="header-title">Propostas de UI — Feature Prompts</div>
-      <div class="header-sub">Três abordagens para o gerenciamento de prompts dentro do MCP Server. Navegue pelas versões e compare as soluções.</div>
+      <div class="header-sub">Exploração de três abordagens para o gerenciamento de prompts no MCP Server. Cada versão evolui a anterior — navegue e interaja.</div>
     </div>
     <div class="header-meta">
       <div class="meta-item"><div class="meta-dot"></div> 3 propostas</div>
@@ -402,13 +402,13 @@ iframe {
 
   <div class="version-nav">
     <div class="vnav-item v1 active" onclick="switchVersion(this, 0)">
-      V1 — Accordion <span class="vnav-badge">original</span>
+      V1 — Exploração <span class="vnav-badge">inicial</span>
     </div>
     <div class="vnav-item v2" onclick="switchVersion(this, 1)">
-      V2 — Master-Detail <span class="vnav-badge">refinado</span>
+      V2 — Refinamento <span class="vnav-badge">evolução</span>
     </div>
     <div class="vnav-item v3" onclick="switchVersion(this, 2)">
-      V3 — Simplificado <span class="vnav-badge">recomendado</span>
+      V3 — Proposta final <span class="vnav-badge">recomendado</span>
     </div>
   </div>
 </div>
@@ -421,30 +421,21 @@ iframe {
 
     <!-- V1 -->
     <div class="version-info active" id="info-0">
-      <div class="vi-version">Versão 1</div>
-      <div class="vi-title">Accordion aninhado</div>
-      <div class="vi-desc">Primeira proposta nascida organicamente. Cada prompt é um accordion com configs primárias, argumentos e mensagens aninhados dentro.</div>
+      <div class="vi-version">Exploração inicial</div>
+      <div class="vi-title">Tudo em um lugar</div>
+      <div class="vi-desc">Primeira abordagem focada em visibilidade total. Cada prompt expõe suas configurações, argumentos e mensagens de forma direta, sem navegação adicional.</div>
 
       <div class="vi-metrics">
-        <div class="metric"><div class="metric-value">3</div><div class="metric-label">Níveis de nesting</div></div>
-        <div class="metric"><div class="metric-value">∞</div><div class="metric-label">Scroll necessário</div></div>
         <div class="metric"><div class="metric-value">2</div><div class="metric-label">Cliques p/ editar</div></div>
-        <div class="metric"><div class="metric-value">Alto</div><div class="metric-label">Carga cognitiva</div></div>
+        <div class="metric"><div class="metric-value">100%</div><div class="metric-label">Visibilidade</div></div>
       </div>
 
-      <div class="vi-section-label">Pontos positivos</div>
+      <div class="vi-section-label">O que essa versão entrega</div>
       <div class="vi-pros">
-        <div class="vi-item pro"><div class="dot"></div>Tudo visível de uma vez</div>
-        <div class="vi-item pro"><div class="dot"></div>Sem navegação adicional</div>
-        <div class="vi-item pro"><div class="dot"></div>Familiar para formulários simples</div>
-      </div>
-
-      <div class="vi-section-label">Problemas identificados</div>
-      <div class="vi-cons">
-        <div class="vi-item con"><div class="dot"></div>3 níveis de accordion aninhado</div>
-        <div class="vi-item con"><div class="dot"></div>Botão "Excluir" sempre visível em vermelho</div>
-        <div class="vi-item con"><div class="dot"></div>Scroll sem orientação com múltiplos prompts</div>
-        <div class="vi-item con"><div class="dot"></div>Usuário perde o contexto ao scrollar</div>
+        <div class="vi-item pro"><div class="dot"></div>Todos os campos acessíveis diretamente</div>
+        <div class="vi-item pro"><div class="dot"></div>Sem navegação adicional para editar</div>
+        <div class="vi-item pro"><div class="dot"></div>Estrutura familiar para o desenvolvedor</div>
+        <div class="vi-item pro"><div class="dot"></div>Ideal para cenários com poucos prompts</div>
       </div>
 
       <div class="vi-divider"></div>
@@ -453,31 +444,23 @@ iframe {
 
     <!-- V2 -->
     <div class="version-info" id="info-1">
-      <div class="vi-version">Versão 2</div>
-      <div class="vi-title">Master-Detail com nav lateral</div>
-      <div class="vi-desc">Padrão Master-Detail com navegação vertical à esquerda. Sub-tabs no painel de edição separam Configurações, Argumentos e Mensagens.</div>
+      <div class="vi-version">Refinamento</div>
+      <div class="vi-title">Hierarquia e controle</div>
+      <div class="vi-desc">Padrão Master-Detail com navegação lateral e painel dedicado de edição. Cada prompt tem seu espaço próprio com seções bem definidas.</div>
 
       <div class="vi-metrics">
-        <div class="metric"><div class="metric-value">2</div><div class="metric-label">Níveis de nav</div></div>
-        <div class="metric"><div class="metric-value">0</div><div class="metric-label">Scroll surpresa</div></div>
         <div class="metric"><div class="metric-value">3</div><div class="metric-label">Cliques p/ editar</div></div>
-        <div class="metric"><div class="metric-value">Médio</div><div class="metric-label">Carga cognitiva</div></div>
+        <div class="metric"><div class="metric-value">Alta</div><div class="metric-label">Clareza visual</div></div>
       </div>
 
-      <div class="vi-section-label">Pontos positivos</div>
+      <div class="vi-section-label">O que essa versão entrega</div>
       <div class="vi-pros">
-        <div class="vi-item pro"><div class="dot"></div>Hierarquia visual clara</div>
-        <div class="vi-item pro"><div class="dot"></div>Nav à esquerda segue fluxo natural</div>
-        <div class="vi-item pro"><div class="dot"></div>Painel dedicado para cada prompt</div>
-        <div class="vi-item pro"><div class="dot"></div>Popconfirm no excluir — sem acidentes</div>
-        <div class="vi-item pro"><div class="dot"></div>Status "alterações não salvas"</div>
-      </div>
-
-      <div class="vi-section-label">Pontos de atenção</div>
-      <div class="vi-cons">
-        <div class="vi-item con"><div class="dot"></div>Ainda 2 camadas de navegação</div>
-        <div class="vi-item con"><div class="dot"></div>Sub-tabs aumentam os cliques</div>
-        <div class="vi-item con"><div class="dot"></div>Mais complexo para prompts simples</div>
+        <div class="vi-item pro"><div class="dot"></div>Hierarquia visual clara entre seções</div>
+        <div class="vi-item pro"><div class="dot"></div>Painel dedicado por prompt — sem confusão</div>
+        <div class="vi-item pro"><div class="dot"></div>Navegação lateral segue padrão do produto</div>
+        <div class="vi-item pro"><div class="dot"></div>Confirmação antes de excluir</div>
+        <div class="vi-item pro"><div class="dot"></div>Indicador de alterações não salvas</div>
+        <div class="vi-item pro"><div class="dot"></div>Escala bem com muitos prompts</div>
       </div>
 
       <div class="vi-divider"></div>
@@ -486,30 +469,23 @@ iframe {
 
     <!-- V3 -->
     <div class="version-info" id="info-2">
-      <div class="vi-version">Versão 3 · Recomendada</div>
-      <div class="vi-title">Simplificado — 1 camada</div>
-      <div class="vi-desc">Tabs verticais à direita + Master-Detail com scroll único no painel de edição. Sem sub-navegação — o usuário vai de cima a baixo e pronto.</div>
+      <div class="vi-version">Versão recomendada</div>
+      <div class="vi-title">Direto ao ponto</div>
+      <div class="vi-desc">Combina o melhor das duas versões: tabs laterais do produto + Master-Detail com scroll único. Configurações, argumentos e mensagens em um fluxo contínuo.</div>
 
       <div class="vi-metrics">
-        <div class="metric"><div class="metric-value">1</div><div class="metric-label">Camada de nav</div></div>
-        <div class="metric"><div class="metric-value">0</div><div class="metric-label">Accordions</div></div>
         <div class="metric"><div class="metric-value">2</div><div class="metric-label">Cliques p/ editar</div></div>
-        <div class="metric"><div class="metric-value">Baixo</div><div class="metric-label">Carga cognitiva</div></div>
+        <div class="metric"><div class="metric-value">1</div><div class="metric-label">Camada de nav</div></div>
       </div>
 
-      <div class="vi-section-label">Pontos positivos</div>
+      <div class="vi-section-label">O que essa versão entrega</div>
       <div class="vi-pros">
-        <div class="vi-item pro"><div class="dot"></div>Menor número de camadas de navegação</div>
-        <div class="vi-item pro"><div class="dot"></div>Scroll único no detail — sem tabs internas</div>
-        <div class="vi-item pro"><div class="dot"></div>Tabs laterais preservam padrão do produto</div>
-        <div class="vi-item pro"><div class="dot"></div>Configs, args e msgs sempre visíveis</div>
-        <div class="vi-item pro"><div class="dot"></div>Mais rápido para editar</div>
-      </div>
-
-      <div class="vi-section-label">Trade-offs</div>
-      <div class="vi-cons">
-        <div class="vi-item con"><div class="dot"></div>Scroll longo em prompts com muitos args/msgs</div>
-        <div class="vi-item con"><div class="dot"></div>Sem separação visual por "seção ativa"</div>
+        <div class="vi-item pro"><div class="dot"></div>Tabs laterais — padrão já conhecido no produto</div>
+        <div class="vi-item pro"><div class="dot"></div>Fluxo de edição linear — de cima a baixo</div>
+        <div class="vi-item pro"><div class="dot"></div>Menos cliques para chegar em qualquer campo</div>
+        <div class="vi-item pro"><div class="dot"></div>Configurações, args e msgs sempre visíveis</div>
+        <div class="vi-item pro"><div class="dot"></div>Confirmação antes de excluir</div>
+        <div class="vi-item pro"><div class="dot"></div>Indicador de alterações não salvas</div>
       </div>
 
       <div class="vi-divider"></div>
