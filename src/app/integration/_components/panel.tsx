@@ -180,12 +180,6 @@ export function ComponentPanel({ onConfigure }: ComponentPanelProps) {
     >
       {/* Header */}
       <div className="shrink-0 border-b bg-gray-50" style={{ borderColor: "#e5e7eb" }}>
-        <div className="px-4 pt-4 pb-3">
-          <h2 style={{ fontSize: 14, fontWeight: 700, color: "#111827", fontFamily: "Noto Sans, sans-serif" }}>
-            Componentes
-          </h2>
-        </div>
-
         {/* Tabs */}
         <div className="flex border-t" style={{ borderColor: "#e5e7eb" }}>
           {(["components", "services"] as const).map((tab) => (

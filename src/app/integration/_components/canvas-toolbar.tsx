@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search, HelpCircle, Info, MoreVertical, Copy, Link2, Zap } from "lucide-react"
+import { Search, HelpCircle, Info, MoreVertical, Copy, Link2 } from "lucide-react"
 
 const shortcuts = [
   { key: "Scroll do Mouse",  action: "Aumentar/diminuir Zoom"               },
@@ -28,21 +28,8 @@ export function CanvasToolbar({ onAddTrigger, triggerPanelOpen }: Props) {
       className="shrink-0 flex items-center justify-between border-b"
       style={{ height: 52, backgroundColor: "#f9fafb", borderColor: "#e5e7eb", paddingInline: 16 }}
     >
-      {/* Left: trigger button + search + advanced toggle */}
+      {/* Left: search + advanced toggle */}
       <div className="flex items-center gap-3">
-        <button
-          onClick={onAddTrigger}
-          className="flex items-center gap-1.5 px-3 h-8 rounded text-xs font-semibold transition-colors shrink-0"
-          style={{
-            backgroundColor: triggerPanelOpen ? "#f3e8ff" : "#8e3ccb",
-            color: triggerPanelOpen ? "#8e3ccb" : "white",
-            border: triggerPanelOpen ? "1px solid #d8b4fe" : "1px solid transparent",
-            fontFamily: "Noto Sans, sans-serif",
-          }}
-        >
-          <Zap size={13} />
-          Trigger
-        </button>
         <div
           className="flex items-center gap-2 rounded border bg-white px-3"
           style={{ width: 280, height: 36, borderColor: "#d1d5db", borderRadius: 6 }}
