@@ -16,7 +16,7 @@ export const artifacts: Artifact[] = [
     name: "Trigger Sidebar",
     description: "Sidebar de seleção de trigger para workflows — manual, schedule, webhook, form, etc.",
     href: "/preview",
-    category: "UI",
+    category: "Integração",
     date: "2026-05-05",
   },
   {
