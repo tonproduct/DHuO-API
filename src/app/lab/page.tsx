@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
-import { X, FlaskConical } from "lucide-react"
+import { X, FlaskConical, RotateCcw } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { artifacts } from "./artifacts"
 
@@ -26,14 +26,29 @@ function LabContent() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
   }
 
+  function restoreAll() {
+    setHidden([])
+    localStorage.removeItem(STORAGE_KEY)
+  }
+
   const visible = artifacts.filter((a) => !hidden.includes(a.href))
 
   if (!mounted) return null
 
   return (
     <>
+      {canEdit && hidden.length > 0 && (
+        <button
+          onClick={restoreAll}
+          className="flex items-center gap-1.5 mb-6 text-[12px] text-white/30 hover:text-white/60 transition-colors"
+        >
+          <RotateCcw size={12} />
+          Restaurar todos ({hidden.length} oculto{hidden.length > 1 ? "s" : ""})
+        </button>
+      )}
+
       {visible.length === 0 ? (
-        <p className="text-sm text-white/30">Nenhum artefato ainda.</p>
+        <p className="text-sm text-white/30">Nenhum artefato visível.</p>
       ) : (
         <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-5">
           {visible.map((artifact) => (
