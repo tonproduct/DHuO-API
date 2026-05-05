@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { X, FlaskConical } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 import { artifacts } from "./artifacts"
 
 const STORAGE_KEY = "lab:hidden"
@@ -10,6 +11,8 @@ const STORAGE_KEY = "lab:hidden"
 export default function LabPage() {
   const [hidden, setHidden] = useState<string[]>([])
   const [mounted, setMounted] = useState(false)
+  const searchParams = useSearchParams()
+  const canEdit = searchParams.get("edit") === "true"
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -38,12 +41,7 @@ export default function LabPage() {
         </div>
 
         {visible.length === 0 ? (
-          <p className="text-sm text-white/30">
-            Nenhum artefato. Adicione em{" "}
-            <code className="text-xs bg-white/10 px-1.5 py-0.5 rounded text-white/50">
-              src/app/lab/artifacts.ts
-            </code>
-          </p>
+          <p className="text-sm text-white/30">Nenhum artefato ainda.</p>
         ) : (
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-5">
             {visible.map((artifact) => (
@@ -61,7 +59,6 @@ export default function LabPage() {
                     }}
                     tabIndex={-1}
                   />
-                  {/* Overlay to block interaction */}
                   <div className="absolute inset-0" />
                 </Link>
 
@@ -75,13 +72,15 @@ export default function LabPage() {
                       {artifact.description}
                     </p>
                   </Link>
-                  <button
-                    onClick={() => hide(artifact.href)}
-                    title="Remover do lab"
-                    className="shrink-0 mt-0.5 p-1 rounded text-white/20 hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                  >
-                    <X size={13} />
-                  </button>
+                  {canEdit && (
+                    <button
+                      onClick={() => hide(artifact.href)}
+                      title="Remover do lab"
+                      className="shrink-0 mt-0.5 p-1 rounded text-white/20 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
                 </div>
               </li>
             ))}
