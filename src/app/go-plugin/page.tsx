@@ -39,6 +39,94 @@ export default function GoPluginPage() {
 
         <Divider />
 
+        {/* Contrato de Execução */}
+        <section id="contrato">
+          <H2>Contrato de Execução</H2>
+          <P>
+            O DHuO carrega o plugin compilado como um <Strong>Go Plugin nativo</Strong> (<code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">.so</code>) via <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">plugin.Open</code> + <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">plugin.Lookup</code>.
+            Ele busca uma <Strong>variável exportada</Strong> com o nome do plugin e chama o método <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">Exec</code> a cada execução do fluxo.
+          </P>
+
+          <H3 className="mt-6">Assinatura da função principal</H3>
+          <CodeBlock>{`func (e *NomeDoPlugin) Exec(
+    msgID string,                // ID único da execução (tracing)
+    ID    string,                // ID do componente no canvas
+    name  string,                // Nome (label) do componente
+    confs map[string]string,     // Configurações do componente
+    in    map[string]interface{}, // Payload de entrada (componente anterior)
+) (map[string]interface{}, error)`}</CodeBlock>
+
+          <H3 className="mt-6">Struct e variável exportada</H3>
+          <P>O DHuO carrega o plugin buscando a variável exportada pelo nome definido em <Strong>Nome do Plugin</Strong>.</P>
+          <CodeBlock>{`type meuPlugin struct {
+    logDev   LogFunc
+    logTrace LogFunc
+    logDebug LogFunc
+    logInfo  LogFunc
+    logWarn  LogFunc
+    logError LogFunc
+    // Campos adicionais persistem entre execuções:
+    db       *sql.DB  // ex: connection pool seguro aqui
+}
+
+var MeuPlugin meuPlugin  // variável exportada — DHuO faz Lookup por este nome`}</CodeBlock>
+
+          <Note>
+            Campos da struct persistem enquanto o plugin estiver carregado. É seguro e recomendado guardar connection pools de banco de dados como campos da struct — eles são inicializados uma vez e reutilizados entre execuções.
+          </Note>
+
+          <H3 className="mt-6">Entrada de dados</H3>
+          <Table
+            headers={["Parâmetro", "Tipo", "Descrição"]}
+            rows={[
+              ["msgID", "string", "Identificador único da execução. Use nos logs para rastreabilidade end-to-end."],
+              ["ID", "string", "ID do componente no canvas."],
+              ["name", "string", "Nome (label) do componente — o mesmo exibido no canvas."],
+              ["confs", "map[string]string", "Configurações estáticas do componente. Fonte exata (canvas vs. workspace) a confirmar."],
+              ["in", "map[string]interface{}", "Payload desmarshallado do componente anterior. É o contexto principal de execução."],
+            ]}
+          />
+
+          <Note className="mt-4">
+            O template menciona também <code className="bg-purple-50 px-1 rounded">inJSON</code> como forma de acessar o payload já parseado. Como exatamente ele chega (segundo parâmetro? campo do mapa?) ainda precisa de confirmação.
+          </Note>
+
+          <H3 className="mt-6">Saída e tratamento de erro</H3>
+          <CodeBlock>{`// Retorno normal — passa dados para o próximo componente
+return map[string]interface{}{
+    "campo": valor,
+}, nil
+
+// Interrompe o fluxo com erro
+return nil, errors.New("mensagem descritiva do erro")`}</CodeBlock>
+
+          <P>
+            O <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">map[string]interface{}</code> retornado é o payload que chega no parâmetro <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">in</code> do próximo componente. Não há tipo especial de erro — <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">errors.New()</code> ou <code className="bg-gray-100 px-1.5 py-0.5 rounded text-[12px]">fmt.Errorf()</code> são suficientes.
+          </P>
+        </section>
+
+        <Divider />
+
+        {/* Gaps pendentes */}
+        <section id="gaps">
+          <H2>Pontos Pendentes de Confirmação</H2>
+          <P>As informações abaixo ainda não foram confirmadas pela documentação oficial ou pelo template. Devem ser validadas com o time DHuO antes de uso em produção.</P>
+          <Table
+            className="mt-4"
+            headers={["Ponto", "O que precisa ser confirmado"]}
+            rows={[
+              ["inJSON", "Como exatamente o payload parseado chega — segundo parâmetro, campo do mapa, ou []byte?"],
+              ["confs", "Fonte das configurações — são do canvas (campos do drawer), do workspace ou variáveis de ambiente?"],
+              ["Arquivos em runtime", "Path onde os arquivos vinculados ficam disponíveis — como fazer os.Open()?"],
+              ["Logs na UI", "Em qual tela do DHuO os logs emitidos via logInfo, logError etc. aparecem?"],
+              ["Timeout", "O timeout de execução é configurável por componente ou fixo pela plataforma?"],
+              ["Múltiplos arquivos .go", "O editor suporta múltiplos arquivos ou tudo precisa estar em um único arquivo?"],
+            ]}
+          />
+        </section>
+
+        <Divider />
+
         {/* Como adicionar */}
         <section id="adicionar">
           <H2>Como Adicionar o Go Plugin ao Canvas</H2>
