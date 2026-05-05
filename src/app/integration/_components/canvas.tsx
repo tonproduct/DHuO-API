@@ -142,7 +142,6 @@ function FlowInner({
 
         <MiniMap
           position="bottom-left"
-          offsetX={160}
           style={{
             border: "1px solid #e5e7eb",
             borderRadius: 6,
