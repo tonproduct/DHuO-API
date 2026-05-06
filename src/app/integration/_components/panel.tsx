@@ -1,24 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import { Search, ChevronRight } from "lucide-react"
-import {
-  Zap, Globe, Layers, Radio, Clock, Rss, Waves, Server,
-  Database, Table2, Settings2, Cpu, Mail, Code2, Plug, Bot,
-  GitBranch, Repeat2, List, FileCode2,
-  Building2, Cloud, CloudUpload, Activity,
-  ArrowLeftRight,
-} from "lucide-react"
+import { Search, ChevronRight, ArrowLeft, Star, Zap, Globe, Layers, Radio, Clock, Rss, Waves, Server, Database, Table2, Settings2, Cpu, Mail, Code2, Plug, Bot, GitBranch, Repeat2, FileCode2, Building2, Cloud, CloudUpload, Activity, ArrowLeftRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ALL_COMPONENTS, type ComponentDef } from "./types"
 
 const SECTIONS = [
-  { key: "trigger",  label: "Triggers"     },
-  { key: "agentes",  label: "Agentes & IA" },
-  { key: "tecnico",  label: "Técnicos"     },
-  { key: "logico",   label: "Lógicos"      },
-  { key: "business", label: "Business"     },
+  { key: "trigger",  label: "Triggers",     icon: Zap       },
+  { key: "agentes",  label: "Agentes & IA", icon: Bot       },
+  { key: "tecnico",  label: "Técnicos",     icon: Server    },
+  { key: "logico",   label: "Lógicos",      icon: GitBranch },
+  { key: "business", label: "Business",     icon: Building2 },
 ] as const
+
+type SectionKey = typeof SECTIONS[number]["key"] | "favoritos"
 
 // ─── Icon + description map ──────────────────────────────────────────────────
 
@@ -67,7 +62,17 @@ const META: Record<string, { icon: React.ReactNode; description: string }> = {
 
 // ─── Item ────────────────────────────────────────────────────────────────────
 
-function PanelItem({ comp, onConfigure }: { comp: ComponentDef; onConfigure?: (comp: ComponentDef) => void }) {
+function PanelItem({
+  comp,
+  onConfigure,
+  isFavorite,
+  onToggleFavorite,
+}: {
+  comp: ComponentDef
+  onConfigure?: (comp: ComponentDef) => void
+  isFavorite?: boolean
+  onToggleFavorite?: (id: string) => void
+}) {
   const meta = META[comp.id]
 
   return (
@@ -102,6 +107,23 @@ function PanelItem({ comp, onConfigure }: { comp: ComponentDef; onConfigure?: (c
         )}
       </div>
 
+      {/* Favorite button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onToggleFavorite?.(comp.id) }}
+        className={cn(
+          "shrink-0 self-center transition-opacity flex items-center justify-center",
+          isFavorite ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+        )}
+        style={{ width: 22, height: 22, background: "transparent", border: "none", cursor: "pointer", flexShrink: 0 }}
+        title={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+      >
+        <Star
+          size={13}
+          style={{ color: isFavorite ? "#f59e0b" : "#d1d5db" }}
+          fill={isFavorite ? "#f59e0b" : "none"}
+        />
+      </button>
+
       {/* Add button */}
       <button
         onClick={(e) => { e.stopPropagation(); onConfigure?.(comp) }}
@@ -122,39 +144,68 @@ function PanelItem({ comp, onConfigure }: { comp: ComponentDef; onConfigure?: (c
   )
 }
 
-// ─── Accordion section ───────────────────────────────────────────────────────
+// ─── Category list ───────────────────────────────────────────────────────────
 
-function AccordionSection({
-  label, items, defaultOpen = false, onConfigure,
+function CategoryList({
+  onSelect,
+  favoritesCount,
+  hasTrigger,
 }: {
-  label: string; items: ComponentDef[]; defaultOpen?: boolean; onConfigure?: (comp: ComponentDef) => void
+  onSelect: (key: SectionKey) => void
+  favoritesCount: number
+  hasTrigger: boolean
 }) {
-  const [open, setOpen] = useState(defaultOpen)
+  const visibleSections = hasTrigger ? SECTIONS.filter((s) => s.key !== "trigger") : SECTIONS
 
   return (
-    <div className="border-b border-gray-100 last:border-0">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 w-full px-3 py-3 text-left hover:bg-gray-50 transition-colors"
-      >
-        <ChevronRight
-          size={14}
-          className="shrink-0 text-gray-400 transition-transform"
-          style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
-        />
-        <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif" }}>
-          {label}
-        </span>
-        <span className="ml-auto" style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
-          {items.length}
-        </span>
-      </button>
+    <div className="flex flex-col py-1">
+      {visibleSections.map(({ key, label, icon: Icon }) => {
+        const count = ALL_COMPONENTS.filter((c) => c.category === key).length
+        return (
+          <button
+            key={key}
+            onClick={() => onSelect(key)}
+            className="flex items-center gap-3 w-full px-3 py-3 text-left hover:bg-gray-50 transition-colors group"
+          >
+            <div
+              className="shrink-0 flex items-center justify-center rounded-lg"
+              style={{ width: 34, height: 34, backgroundColor: "#f3f4f6" }}
+            >
+              <Icon size={16} style={{ color: "#6b7280" }} />
+            </div>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
+              {label}
+            </span>
+            <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
+              {count}
+            </span>
+            <ChevronRight size={14} style={{ color: "#d1d5db" }} className="group-hover:text-gray-400 transition-colors" />
+          </button>
+        )
+      })}
 
-      {open && (
-        <div className="pb-1">
-          {items.map((comp) => <PanelItem key={comp.id} comp={comp} onConfigure={onConfigure} />)}
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: "#f3f4f6", margin: "4px 12px" }} />
+
+      {/* Favoritos */}
+      <button
+        onClick={() => onSelect("favoritos")}
+        className="flex items-center gap-3 w-full px-3 py-3 text-left hover:bg-gray-50 transition-colors group"
+      >
+        <div
+          className="shrink-0 flex items-center justify-center rounded-lg"
+          style={{ width: 34, height: 34, backgroundColor: favoritesCount > 0 ? "#fffbeb" : "#f3f4f6" }}
+        >
+          <Star size={16} style={{ color: favoritesCount > 0 ? "#f59e0b" : "#6b7280" }} fill={favoritesCount > 0 ? "#f59e0b" : "none"} />
         </div>
-      )}
+        <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
+          Favoritos
+        </span>
+        <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
+          {favoritesCount}
+        </span>
+        <ChevronRight size={14} style={{ color: "#d1d5db" }} className="group-hover:text-gray-400 transition-colors" />
+      </button>
     </div>
   )
 }
@@ -163,15 +214,50 @@ function AccordionSection({
 
 type ComponentPanelProps = {
   onConfigure?: (comp: ComponentDef) => void
+  hasTrigger?: boolean
+  onAddTrigger?: () => void
 }
 
-export function ComponentPanel({ onConfigure }: ComponentPanelProps) {
-  const [activeTab, setActiveTab] = useState<"components" | "services">("components")
+export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger }: ComponentPanelProps) {
   const [search, setSearch] = useState("")
+  const [activeCategory, setActiveCategory] = useState<SectionKey | null>(null)
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
 
-  const filtered = ALL_COMPONENTS.filter(
-    (c) => c.label.toLowerCase().includes(search.toLowerCase())
-  )
+  const activeSection = SECTIONS.find((s) => s.key === activeCategory)
+  const activeSectionLabel = activeCategory === "favoritos" ? "Favoritos" : activeSection?.label
+
+  const filtered = ALL_COMPONENTS.filter((c) => {
+    if (activeCategory === "favoritos") {
+      const matchesSearch = search === "" || c.label.toLowerCase().includes(search.toLowerCase())
+      return favorites.has(c.id) && matchesSearch
+    }
+    const matchesSearch = c.label.toLowerCase().includes(search.toLowerCase())
+    if (search !== "") return matchesSearch
+    return activeCategory ? c.category === activeCategory : false
+  })
+
+  function handleCategorySelect(key: SectionKey) {
+    setActiveCategory(key)
+    setSearch("")
+  }
+
+  function handleBack() {
+    setActiveCategory(null)
+    setSearch("")
+  }
+
+  function toggleFavorite(id: string) {
+    setFavorites((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const showSearch = activeCategory !== null
+  const showCategories = !activeCategory && search === ""
+  const showResults = search !== "" || activeCategory !== null
 
   return (
     <aside
@@ -179,65 +265,93 @@ export function ComponentPanel({ onConfigure }: ComponentPanelProps) {
       style={{ width: 280, borderColor: "#e5e7eb" }}
     >
       {/* Header */}
-      <div className="shrink-0 border-b bg-gray-50" style={{ borderColor: "#e5e7eb" }}>
-        {/* Tabs */}
-        <div className="flex border-t" style={{ borderColor: "#e5e7eb" }}>
-          {(["components", "services"] as const).map((tab) => (
+      <div className="shrink-0 border-b bg-gray-50 flex items-center gap-2 px-3 overflow-hidden" style={{ borderColor: "#e5e7eb", height: 44 }}>
+        <div className="flex items-center gap-2 w-full">
+          {activeCategory && (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={cn(
-                "flex-1 py-2.5 text-xs font-semibold transition-colors relative",
-                activeTab === tab ? "text-purple-700" : "text-gray-400 hover:text-gray-600"
-              )}
-              style={{ fontFamily: "Noto Sans, sans-serif" }}
+              onClick={handleBack}
+              className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0"
+              style={{ width: 26, height: 26 }}
             >
-              {tab === "components" ? "Componentes" : "Serviços"}
-              {activeTab === tab && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-purple-600" />
-              )}
+              <ArrowLeft size={14} style={{ color: "#6b7280" }} />
             </button>
-          ))}
+          )}
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
+            {activeSectionLabel ?? "Componentes"}
+          </span>
+          {activeCategory && (
+            <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
+              {activeCategory === "favoritos"
+                ? favorites.size
+                : ALL_COMPONENTS.filter((c) => c.category === activeCategory).length}
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Search */}
-      <div className="px-3 py-2.5 border-b" style={{ borderColor: "#f3f4f6" }}>
-        <div className="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-100">
-          <Search size={13} className="text-gray-400 shrink-0" />
-          <input
-            type="text"
-            placeholder="Buscar componente"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 text-[13px] outline-none bg-transparent text-gray-700 placeholder:text-gray-400"
-            style={{ fontFamily: "Noto Sans, sans-serif" }}
-          />
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto px-1 py-1">
-        {search !== "" ? (
-          filtered.length === 0 ? (
-            <p className="text-center pt-6" style={{ fontSize: 12, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
-              Nenhum componente encontrado
-            </p>
-          ) : (
-            filtered.map((comp) => <PanelItem key={comp.id} comp={comp} onConfigure={onConfigure} />)
-          )
-        ) : (
-          SECTIONS.map(({ key, label }) => (
-            <AccordionSection
-              key={key}
-              label={label}
-              items={ALL_COMPONENTS.filter((c) => c.category === key)}
-              defaultOpen={key === "trigger"}
-              onConfigure={onConfigure}
-            />
-          ))
+      {/* Search + Content — remount together on every navigation */}
+      <div key={activeCategory ?? "root"} className="flex flex-col flex-1 overflow-hidden animate-in slide-in-from-right-4 fade-in duration-200">
+        {showSearch && (
+          <div className="px-3 py-2.5 border-b shrink-0" style={{ borderColor: "#f3f4f6" }}>
+            <div className="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-100">
+              <Search size={13} className="text-gray-400 shrink-0" />
+              <input
+                type="text"
+                placeholder="Buscar componente"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-1 text-[13px] outline-none bg-transparent text-gray-700 placeholder:text-gray-400"
+                style={{ fontFamily: "Noto Sans, sans-serif" }}
+              />
+            </div>
+          </div>
         )}
+
+        <div className="flex-1 overflow-y-auto">
+          {showCategories ? (
+            <CategoryList onSelect={handleCategorySelect} favoritesCount={favorites.size} hasTrigger={hasTrigger} />
+          ) : showResults ? (
+            filtered.length === 0 ? (
+              <p className="text-center pt-6" style={{ fontSize: 12, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
+                {activeCategory === "favoritos" ? "Nenhum favorito ainda" : "Nenhum componente encontrado"}
+              </p>
+            ) : (
+              <div className="px-1 py-1">
+                {filtered.map((comp) => (
+                  <PanelItem
+                    key={comp.id}
+                    comp={comp}
+                    onConfigure={onConfigure}
+                    isFavorite={favorites.has(comp.id)}
+                    onToggleFavorite={toggleFavorite}
+                  />
+                ))}
+              </div>
+            )
+          ) : null}
+        </div>
       </div>
+      {/* Add trigger footer — shown only when canvas already has a trigger */}
+      {hasTrigger && !activeCategory && (
+        <div className="shrink-0 border-t px-3 py-3 animate-in slide-in-from-right-4 fade-in duration-200" style={{ borderColor: "#f3f4f6" }}>
+          <button
+            onClick={() => handleCategorySelect("trigger")}
+            className="w-full flex items-center gap-2.5 rounded-lg py-2.5 px-3 border transition-colors hover:bg-gray-50 group"
+            style={{ borderColor: "#e5e7eb", backgroundColor: "#fafafa" }}
+          >
+            <Zap size={12} style={{ color: "#9ca3af", flexShrink: 0 }} />
+            <div className="flex-1 min-w-0 text-left">
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif", display: "block" }}>
+                Adicionar Trigger
+              </span>
+              <span style={{ fontSize: 10, color: "#c4c9d4", fontFamily: "Noto Sans, sans-serif", lineHeight: 1.4, display: "block" }}>
+                Atenção: apenas um trigger por fluxo
+              </span>
+            </div>
+            <ChevronRight size={12} style={{ color: "#d1d5db", flexShrink: 0 }} />
+          </button>
+        </div>
+      )}
     </aside>
   )
 }

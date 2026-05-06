@@ -18,6 +18,7 @@ import type { Section, ComponentDef } from "./types"
 export function IntegrationShell() {
   const [section, setSection] = useState<Section>("canvas")
   const [triggerPanelOpen, setTriggerPanelOpen] = useState(false)
+  const [hasTrigger, setHasTrigger] = useState(false)
 
   // add mode
   const [configComp, setConfigComp] = useState<ComponentDef | null>(null)
@@ -68,8 +69,13 @@ export function IntegrationShell() {
                   onPendingConsumed={() => setPendingNode(null)}
                   pendingUpdate={pendingUpdate}
                   onPendingUpdateConsumed={() => setPendingUpdate(null)}
+                  onTriggerChange={setHasTrigger}
                 />
-                <ComponentPanel onConfigure={(comp) => setConfigComp(comp)} />
+                <ComponentPanel
+                  hasTrigger={hasTrigger}
+                  onAddTrigger={() => setTriggerPanelOpen(true)}
+                  onConfigure={(comp) => setConfigComp(comp)}
+                />
                 <ConfigureDrawer
                   open={drawerOpen}
                   comp={drawerComp}

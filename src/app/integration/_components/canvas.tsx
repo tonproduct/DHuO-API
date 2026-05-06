@@ -20,8 +20,11 @@ import {
 import { Save } from "lucide-react"
 import { circleNodeTypes } from "./circle-node"
 import { edgeTypes } from "./labeled-edge"
+import { ALL_COMPONENTS } from "./types"
 import type { CircleNodeData } from "./circle-node"
 import type { LabeledEdgeData } from "./labeled-edge"
+
+const TRIGGER_IDS = new Set(ALL_COMPONENTS.filter((c) => c.category === "trigger").map((c) => c.id))
 
 const initialNodes: Node<CircleNodeData>[] = []
 
@@ -33,9 +36,11 @@ type PendingUpdate = { nodeId: string; label: string } | null
 function FlowInner({
   pendingNode, onPendingConsumed,
   pendingUpdate, onPendingUpdateConsumed,
+  onTriggerChange,
 }: {
   pendingNode: PendingNode; onPendingConsumed: () => void
   pendingUpdate: PendingUpdate; onPendingUpdateConsumed: () => void
+  onTriggerChange: (hasTrigger: boolean) => void
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
@@ -51,6 +56,11 @@ function FlowInner({
     (params) => setEdges((eds) => addEdge({ ...params, type: "labeled", data: { edgeType: "WHEN" } }, eds)),
     [setEdges]
   )
+
+  useEffect(() => {
+    const hasTrigger = nodes.some((n) => TRIGGER_IDS.has((n.data as CircleNodeData).compId))
+    onTriggerChange(hasTrigger)
+  }, [nodes]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!pendingNode) return
@@ -169,9 +179,11 @@ function FlowInner({
 export function IntegrationCanvas({
   pendingNode, onPendingConsumed,
   pendingUpdate, onPendingUpdateConsumed,
+  onTriggerChange,
 }: {
   pendingNode: PendingNode; onPendingConsumed: () => void
   pendingUpdate: PendingUpdate; onPendingUpdateConsumed: () => void
+  onTriggerChange: (hasTrigger: boolean) => void
 }) {
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
@@ -179,6 +191,7 @@ export function IntegrationCanvas({
         <FlowInner
           pendingNode={pendingNode} onPendingConsumed={onPendingConsumed}
           pendingUpdate={pendingUpdate} onPendingUpdateConsumed={onPendingUpdateConsumed}
+          onTriggerChange={onTriggerChange}
         />
       </ReactFlowProvider>
     </div>
