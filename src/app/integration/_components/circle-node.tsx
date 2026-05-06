@@ -1,7 +1,9 @@
-import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react"
+import { Handle, Position, type NodeProps, useReactFlow, useNodes } from "@xyflow/react"
 import { Settings2, Trash2, ArrowLeftRight } from "lucide-react"
 import { ALL_COMPONENTS } from "./types"
 import { useIntegrationContext } from "./integration-context"
+
+const TRIGGER_IDS = new Set(ALL_COMPONENTS.filter((c) => c.category === "trigger").map((c) => c.id))
 
 export type CircleNodeData = {
   compId: string
@@ -13,9 +15,13 @@ const NODE_SIZE = 72
 export function CircleNode({ id, data, selected }: NodeProps) {
   const { setNodes } = useReactFlow()
   const { openEdit } = useIntegrationContext()
+  const nodes = useNodes()
   const d = data as CircleNodeData
   const comp = ALL_COMPONENTS.find((c) => c.id === d.compId) ?? ALL_COMPONENTS[0]
   const isChoice = d.compId === "choice"
+  const isTrigger = TRIGGER_IDS.has(d.compId)
+  const triggerCount = nodes.filter((n) => TRIGGER_IDS.has((n.data as CircleNodeData).compId)).length
+  const showWarning = isTrigger && triggerCount >= 2
 
   function deleteNode() {
     setNodes((nds) => nds.filter((n) => n.id !== id))
@@ -23,6 +29,44 @@ export function CircleNode({ id, data, selected }: NodeProps) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, position: "relative" }}>
+      {/* Warning badge */}
+      {showWarning && (
+        <div style={{ position: "relative" }} className="group">
+          <div style={{
+            width: 18, height: 18,
+            borderRadius: "50%",
+            backgroundColor: "#ef4444",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 1px 4px rgba(239,68,68,0.35)",
+            cursor: "default",
+          }}>
+            <span style={{ color: "white", fontSize: 11, fontWeight: 700, lineHeight: 1, fontFamily: "Noto Sans, sans-serif" }}>!</span>
+          </div>
+          <div style={{
+            position: "absolute",
+            bottom: "calc(100% + 6px)",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "#1f2937",
+            color: "white",
+            fontSize: 11,
+            fontFamily: "Noto Sans, sans-serif",
+            fontWeight: 500,
+            lineHeight: 1.4,
+            padding: "6px 10px",
+            borderRadius: 6,
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            zIndex: 50,
+          }}
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+          >
+            Apenas um Trigger é permitido.<br />Remova os demais para continuar.
+          </div>
+        </div>
+      )}
+
       {/* Circle */}
       <div
         style={{
