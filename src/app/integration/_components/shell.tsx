@@ -76,6 +76,12 @@ export function IntegrationShell() {
                   onAddTrigger={() => setTriggerPanelOpen(true)}
                   onConfigure={(comp) => setConfigComp(comp)}
                 />
+                <ComponentPanel
+                  fixedTabs
+                  hasTrigger={hasTrigger}
+                  onAddTrigger={() => setTriggerPanelOpen(true)}
+                  onConfigure={(comp) => setConfigComp(comp)}
+                />
                 <ConfigureDrawer
                   open={drawerOpen}
                   comp={drawerComp}

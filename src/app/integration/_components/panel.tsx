@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Search, ChevronRight, ArrowLeft, Star, Zap, Globe, Layers, Radio, Clock, Rss, Waves, Server, Database, Table2, Settings2, Cpu, Mail, Code2, Plug, Bot, GitBranch, Repeat2, FileCode2, Building2, Cloud, CloudUpload, Activity, ArrowLeftRight } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Search, ChevronRight, ArrowLeft, Star, Zap, Globe, Layers, Radio, Clock, Rss, Waves, Server, Database, Table2, Settings2, Cpu, Mail, Code2, Plug, Bot, GitBranch, Repeat2, FileCode2, Building2, Cloud, CloudUpload, Activity, ArrowLeftRight, Network } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ALL_COMPONENTS, type ComponentDef } from "./types"
 
@@ -59,6 +59,16 @@ const META: Record<string, { icon: React.ReactNode; description: string }> = {
   gcloud:     { icon: <Cloud size={18} />,          description: "Integra com serviços do Google Cloud Platform"           },
   pisystem:   { icon: <Activity size={18} />,       description: "Coleta dados de séries temporais do OSIsoft PI"          },
 }
+
+// ─── Mock services ───────────────────────────────────────────────────────────
+
+const MOCK_SERVICES = [
+  { id: "svc-crm-sync",       name: "CRM Sync",            description: undefined, tags: ["CRM", "Vendas"]         },
+  { id: "svc-order-proc",     name: "Order Processing",    description: undefined, tags: ["ERP", "Pedidos"]        },
+  { id: "svc-email-dispatch", name: "Email Dispatch",      description: undefined, tags: ["Email"]                 },
+  { id: "svc-invoice-gen",    name: "Invoice Generator",   description: undefined, tags: ["Financeiro", "ERP"]     },
+  { id: "svc-data-backup",    name: "Data Backup",         description: undefined, tags: ["Storage", "Arquivos"]   },
+]
 
 // ─── Item ────────────────────────────────────────────────────────────────────
 
@@ -165,7 +175,7 @@ function CategoryList({
           <button
             key={key}
             onClick={() => onSelect(key)}
-            className="flex items-center gap-3 w-full px-3 py-3 text-left hover:bg-gray-50 transition-colors group"
+            className="flex items-center gap-3 w-full px-3 py-3 text-left hover:bg-gray-50 transition-colors group cursor-pointer"
           >
             <div
               className="shrink-0 flex items-center justify-center rounded-lg"
@@ -212,16 +222,27 @@ function CategoryList({
 
 // ─── Panel ───────────────────────────────────────────────────────────────────
 
+type PanelTab = "componentes" | "servicos"
+
 type ComponentPanelProps = {
   onConfigure?: (comp: ComponentDef) => void
   hasTrigger?: boolean
   onAddTrigger?: () => void
+  fixedTabs?: boolean
 }
 
-export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger }: ComponentPanelProps) {
+export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, fixedTabs = false }: ComponentPanelProps) {
+  const [tab, setTab] = useState<PanelTab>("componentes")
   const [search, setSearch] = useState("")
   const [activeCategory, setActiveCategory] = useState<SectionKey | null>(null)
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    if (hasTrigger) {
+      setActiveCategory(null)
+      setSearch("")
+    }
+  }, [hasTrigger])
 
   const activeSection = SECTIONS.find((s) => s.key === activeCategory)
   const activeSectionLabel = activeCategory === "favoritos" ? "Favoritos" : activeSection?.label
@@ -255,7 +276,12 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger }
     })
   }
 
-  const showSearch = activeCategory !== null
+  function handleTabChange(next: PanelTab) {
+    setTab(next)
+    setActiveCategory(null)
+    setSearch("")
+  }
+
   const showCategories = !activeCategory && search === ""
   const showResults = search !== "" || activeCategory !== null
 
@@ -264,51 +290,116 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger }
       className="shrink-0 flex flex-col bg-white border-l overflow-hidden"
       style={{ width: 280, borderColor: "#e5e7eb" }}
     >
-      {/* Header */}
-      <div className="shrink-0 border-b bg-gray-50 flex items-center gap-2 px-3 overflow-hidden" style={{ borderColor: "#e5e7eb", height: 44 }}>
-        <div className="flex items-center gap-2 w-full">
-          {activeCategory && (
+      {/* Header: tabs fixas ou back substituindo */}
+      <div className="shrink-0 px-3 pt-3 pb-2">
+        {!fixedTabs && activeCategory ? (
+          <div className="flex items-center gap-2">
             <button
               onClick={handleBack}
-              className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0"
+              className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0 cursor-pointer"
               style={{ width: 26, height: 26 }}
             >
               <ArrowLeft size={14} style={{ color: "#6b7280" }} />
             </button>
-          )}
-          <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
-            {activeSectionLabel ?? "Componentes"}
-          </span>
-          {activeCategory && (
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
+              {activeSectionLabel}
+            </span>
             <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
               {activeCategory === "favoritos"
                 ? favorites.size
                 : ALL_COMPONENTS.filter((c) => c.category === activeCategory).length}
             </span>
-          )}
+          </div>
+        ) : (
+          <div className="flex p-1" style={{ backgroundColor: "#f3f4f6", borderRadius: 8, gap: 4 }}>
+            {(["componentes", "servicos"] as PanelTab[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => handleTabChange(t)}
+                className="flex-1 cursor-pointer transition-colors"
+                style={{
+                  fontFamily: "Noto Sans, sans-serif",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  height: 32,
+                  padding: 0,
+                  border: "none",
+                  borderRadius: 4,
+                  backgroundColor: tab === t ? "#7c22c0" : "#fff",
+                  color: tab === t ? "#fff" : "#374151",
+                }}
+              >
+                {t === "componentes" ? "Componentes" : "Serviços"}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Busca */}
+      <div className="shrink-0 px-3 pb-2.5">
+        <div className="flex items-center gap-2 rounded-md px-3 py-2 bg-white border" style={{ borderColor: "#e5e7eb" }}>
+          <input
+            type="text"
+            placeholder={tab === "componentes" ? "Buscar componente" : "Buscar serviço"}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 text-[13px] outline-none bg-transparent text-gray-700 placeholder:text-gray-400"
+            style={{ fontFamily: "Noto Sans, sans-serif" }}
+          />
+          <Search size={13} className="text-gray-400 shrink-0" />
         </div>
       </div>
 
-      {/* Search + Content — remount together on every navigation */}
-      <div key={activeCategory ?? "root"} className="flex flex-col flex-1 overflow-hidden animate-in slide-in-from-right-4 fade-in duration-200">
-        {showSearch && (
-          <div className="px-3 py-2.5 border-b shrink-0" style={{ borderColor: "#f3f4f6" }}>
-            <div className="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-100">
-              <Search size={13} className="text-gray-400 shrink-0" />
-              <input
-                type="text"
-                placeholder="Buscar componente"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 text-[13px] outline-none bg-transparent text-gray-700 placeholder:text-gray-400"
-                style={{ fontFamily: "Noto Sans, sans-serif" }}
-              />
-            </div>
+      {/* Conteúdo */}
+      <div key={`${tab}-${activeCategory ?? "root"}`} className="flex flex-col flex-1 overflow-hidden animate-in slide-in-from-right-4 fade-in duration-200">
+        {fixedTabs && activeCategory && (
+          <div className="shrink-0 flex items-center gap-2 px-3 pb-2">
+            <button
+              onClick={handleBack}
+              className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0 cursor-pointer"
+              style={{ width: 26, height: 26 }}
+            >
+              <ArrowLeft size={14} style={{ color: "#6b7280" }} />
+            </button>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
+              {activeSectionLabel}
+            </span>
+            <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
+              {activeCategory === "favoritos"
+                ? favorites.size
+                : ALL_COMPONENTS.filter((c) => c.category === activeCategory).length}
+            </span>
           </div>
         )}
 
         <div className="flex-1 overflow-y-auto">
-          {showCategories ? (
+          {tab === "servicos" ? (
+            <div className="px-1 py-1">
+              {MOCK_SERVICES.map((svc) => (
+                <div
+                  key={svc.id}
+                  draggable
+                  onDragStart={(e) => { e.dataTransfer.setData("text/plain", svc.id); e.dataTransfer.effectAllowed = "move" }}
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors hover:bg-gray-50 cursor-grab active:cursor-grabbing select-none group"
+                >
+                  <div className="shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors">
+                    <Network size={18} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif" }}>
+                      {svc.name}
+                    </p>
+                    {svc.description && (
+                      <p style={{ fontSize: 11.5, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
+                        {svc.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : showCategories ? (
             <CategoryList onSelect={handleCategorySelect} favoritesCount={favorites.size} hasTrigger={hasTrigger} />
           ) : showResults ? (
             filtered.length === 0 ? (
@@ -336,13 +427,13 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger }
         <div className="shrink-0 border-t px-3 py-3 animate-in slide-in-from-right-4 fade-in duration-200" style={{ borderColor: "#f3f4f6" }}>
           <button
             onClick={() => handleCategorySelect("trigger")}
-            className="w-full flex items-center gap-2.5 rounded-lg py-2.5 px-3 border transition-colors hover:bg-gray-50 group"
+            className="w-full flex items-center gap-2.5 rounded-lg py-2.5 px-3 border transition-colors hover:bg-gray-50 group cursor-pointer"
             style={{ borderColor: "#e5e7eb", backgroundColor: "#fafafa" }}
           >
             <Zap size={12} style={{ color: "#9ca3af", flexShrink: 0 }} />
             <div className="flex-1 min-w-0 text-left">
               <span style={{ fontSize: 12, fontWeight: 600, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif", display: "block" }}>
-                Adicionar Trigger
+                Trigger
               </span>
               <span style={{ fontSize: 10, color: "#c4c9d4", fontFamily: "Noto Sans, sans-serif", lineHeight: 1.4, display: "block" }}>
                 Atenção: apenas um trigger por fluxo

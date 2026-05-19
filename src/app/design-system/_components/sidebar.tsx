@@ -20,6 +20,7 @@ const nav = [
   { label: "Dialog",        href: "/design-system/components/dialog",        group: "Components" },
   { label: "Table",         href: "/design-system/components/table",         group: "Components" },
   { label: "Feedback",      href: "/design-system/components/feedback",      group: "Components" },
+  { label: "Canvas Nodes", href: "/design-system/canvas-nodes",             group: "Canvas" },
 ]
 
 export function Sidebar() {
