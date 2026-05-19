@@ -23,7 +23,7 @@ export const artifacts: Artifact[] = [
     date: "2026-05-05",
   },
   {
-    name: "Integration Editor",
+    name: "Novo menu Integra",
     description: "Editor de workflow com canvas React Flow, painel de trigger e abas de config/docs/deploy.",
     href: "/integration",
     category: "Integração",

@@ -224,14 +224,16 @@ function CategoryList({
 
 type PanelTab = "componentes" | "servicos"
 
+type PanelVariant = "classic" | "fixed" | "back-title" | "chip" | "separator"
+
 type ComponentPanelProps = {
   onConfigure?: (comp: ComponentDef) => void
   hasTrigger?: boolean
   onAddTrigger?: () => void
-  fixedTabs?: boolean
+  variant?: PanelVariant
 }
 
-export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, fixedTabs = false }: ComponentPanelProps) {
+export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, variant = "classic" }: ComponentPanelProps) {
   const [tab, setTab] = useState<PanelTab>("componentes")
   const [search, setSearch] = useState("")
   const [activeCategory, setActiveCategory] = useState<SectionKey | null>(null)
@@ -290,9 +292,9 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, 
       className="shrink-0 flex flex-col bg-white border-l overflow-hidden"
       style={{ width: 280, borderColor: "#e5e7eb" }}
     >
-      {/* Header: tabs fixas ou back substituindo */}
+      {/* Tabs */}
       <div className="shrink-0 px-3 pt-3 pb-2">
-        {!fixedTabs && activeCategory ? (
+        {variant === "classic" && activeCategory ? (
           <div className="flex items-center gap-2">
             <button
               onClick={handleBack}
@@ -353,23 +355,46 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, 
 
       {/* Conteúdo */}
       <div key={`${tab}-${activeCategory ?? "root"}`} className="flex flex-col flex-1 overflow-hidden animate-in slide-in-from-right-4 fade-in duration-200">
-        {fixedTabs && activeCategory && (
+        {/* Variante: fixed — back + título abaixo da busca */}
+        {variant === "fixed" && activeCategory && (
           <div className="shrink-0 flex items-center gap-2 px-3 pb-2">
-            <button
-              onClick={handleBack}
-              className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0 cursor-pointer"
-              style={{ width: 26, height: 26 }}
-            >
+            <button onClick={handleBack} className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0 cursor-pointer" style={{ width: 26, height: 26 }}>
               <ArrowLeft size={14} style={{ color: "#6b7280" }} />
             </button>
-            <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>
-              {activeSectionLabel}
-            </span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#111827", fontFamily: "Noto Sans, sans-serif", flex: 1 }}>{activeSectionLabel}</span>
             <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>
-              {activeCategory === "favoritos"
-                ? favorites.size
-                : ALL_COMPONENTS.filter((c) => c.category === activeCategory).length}
+              {activeCategory === "favoritos" ? favorites.size : ALL_COMPONENTS.filter((c) => c.category === activeCategory).length}
             </span>
+          </div>
+        )}
+
+        {/* Variante: back-title — linha clara com ← Nome */}
+        {variant === "back-title" && activeCategory && (
+          <div className="shrink-0 px-3 pb-2">
+            <button onClick={handleBack} className="flex items-center gap-2 w-full cursor-pointer group rounded-md px-2 py-1.5 hover:bg-gray-100 transition-colors">
+              <ArrowLeft size={13} style={{ color: "#6b7280" }} />
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#374151", fontFamily: "Noto Sans, sans-serif" }}>{activeSectionLabel}</span>
+            </button>
+          </div>
+        )}
+
+        {/* Variante: chip — badge clicável de filtro ativo */}
+        {variant === "chip" && activeCategory && (
+          <div className="shrink-0 px-3 pb-2.5">
+            <button onClick={handleBack} className="flex items-center gap-1.5 cursor-pointer rounded-full px-3 py-1 transition-colors hover:bg-gray-200" style={{ backgroundColor: "#f3f4f6", border: "1px solid #e5e7eb" }}>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#374151", fontFamily: "Noto Sans, sans-serif" }}>{activeSectionLabel}</span>
+              <span style={{ fontSize: 14, color: "#9ca3af", lineHeight: 1 }}>×</span>
+            </button>
+          </div>
+        )}
+
+        {/* Variante: separator — header de seção com back */}
+        {variant === "separator" && activeCategory && (
+          <div className="shrink-0 flex items-center gap-2 px-3 py-2 border-b" style={{ borderColor: "#f3f4f6" }}>
+            <button onClick={handleBack} className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0 cursor-pointer" style={{ width: 22, height: 22 }}>
+              <ArrowLeft size={13} style={{ color: "#9ca3af" }} />
+            </button>
+            <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif", textTransform: "uppercase", letterSpacing: "0.06em" }}>{activeSectionLabel}</span>
           </div>
         )}
 
