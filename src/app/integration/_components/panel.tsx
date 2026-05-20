@@ -372,8 +372,8 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, 
         {variant === "back-title" && activeCategory && (
           <div className="shrink-0 px-3 pb-2">
             <button onClick={handleBack} className="flex items-center gap-2 w-full cursor-pointer group rounded-md px-2 py-1.5 hover:bg-gray-100 transition-colors">
-              <ArrowLeft size={13} style={{ color: "#6b7280" }} />
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#374151", fontFamily: "Noto Sans, sans-serif" }}>{activeSectionLabel}</span>
+              <ArrowLeft size={13} style={{ color: "#9ca3af" }} />
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif" }}>{activeSectionLabel}</span>
             </button>
           </div>
         )}
@@ -390,12 +390,10 @@ export function ComponentPanel({ onConfigure, hasTrigger = false, onAddTrigger, 
 
         {/* Variante: separator — header de seção com back */}
         {variant === "separator" && activeCategory && (
-          <div className="shrink-0 flex items-center gap-2 px-3 py-2 border-b" style={{ borderColor: "#f3f4f6" }}>
-            <button onClick={handleBack} className="flex items-center justify-center rounded hover:bg-gray-200 transition-colors shrink-0 cursor-pointer" style={{ width: 22, height: 22 }}>
-              <ArrowLeft size={13} style={{ color: "#9ca3af" }} />
-            </button>
+          <button onClick={handleBack} className="shrink-0 flex items-center gap-2 w-full px-3 py-2 border-b cursor-pointer hover:bg-gray-50 transition-colors" style={{ borderColor: "#f3f4f6" }}>
+            <ArrowLeft size={13} style={{ color: "#9ca3af" }} />
             <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", fontFamily: "Noto Sans, sans-serif", textTransform: "uppercase", letterSpacing: "0.06em" }}>{activeSectionLabel}</span>
-          </div>
+          </button>
         )}
 
         <div className="flex-1 overflow-y-auto">

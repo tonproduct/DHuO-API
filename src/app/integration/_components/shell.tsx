@@ -21,7 +21,7 @@ const PANEL_VARIANTS = [
     value: "classic",
     label: "A — Classic",
     pros: ["Hierarquia clara de navegação", "Mais espaço p/ o conteúdo"],
-    cons: ["Tabs somem — usuário perde referência", "2 cliques pra trocar de aba"],
+    cons: ["Tabs somem — usuário perde referência"],
   },
   {
     value: "back-title",
