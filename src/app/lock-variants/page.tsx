@@ -207,9 +207,11 @@ function ListSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; ic
                 <LockIcon lib={iconLib} size={16} iconStyle={iconStyle} style={{ color: "#bcbcbc", flexShrink: 0 }} />
               </div>
               {hover === item.id && (
-                <div className="absolute left-3 bottom-full mb-1 px-2 py-1 rounded pointer-events-none z-40 whitespace-nowrap"
-                  style={{ background: "#111827", color: "#fff", fontSize: 10.5, fontFamily: "Noto Sans, sans-serif" }}>
-                  Disponível apenas no módulo <strong>{locked.plan}</strong>
+                <div className="absolute left-3 bottom-full mb-1 pointer-events-none z-40 whitespace-nowrap"
+                  style={{ filter: "drop-shadow(0px 3px 3px rgba(0,0,0,0.09))" }}>
+                  <div style={{ background: "#6e6e6e", color: "#f9f9f9", fontSize: 12, fontFamily: "Noto Sans, sans-serif", fontWeight: 400, padding: "8px", borderRadius: 4 }}>
+                    Disponível apenas no módulo <strong>{locked.plan}</strong>
+                  </div>
                 </div>
               )}
             </div>
@@ -297,9 +299,11 @@ function ButtonSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; 
                   <LockIcon lib={iconLib} size={16} iconStyle={iconStyle} style={{ color: "#bcbcbc" }} />
                 </button>
                 {hover === btn.id && (
-                  <div className="absolute left-0 bottom-full mb-1 px-2 py-1 rounded z-40 whitespace-nowrap pointer-events-none"
-                    style={{ background: "#111827", color: "#fff", fontSize: 10.5, fontFamily: "Noto Sans, sans-serif" }}>
-                    Disponível apenas no módulo <strong>{locked.plan}</strong>
+                  <div className="absolute left-0 bottom-full mb-1 z-40 whitespace-nowrap pointer-events-none"
+                    style={{ filter: "drop-shadow(0px 3px 3px rgba(0,0,0,0.09))" }}>
+                    <div style={{ background: "#6e6e6e", color: "#f9f9f9", fontSize: 12, fontFamily: "Noto Sans, sans-serif", fontWeight: 400, padding: "8px", borderRadius: 4 }}>
+                      Disponível apenas no módulo <strong>{locked.plan}</strong>
+                    </div>
                   </div>
                 )}
               </div>
@@ -404,9 +408,11 @@ function NavSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; ico
               onMouseEnter={() => setHoverTip(item.id)} onMouseLeave={() => setHoverTip(null)}>
               <NavItemRow icon={item.icon} label={item.label} color="#bcbcbc" lockEl={lockEl} />
               {hoverTip === item.id && (
-                <div className="absolute left-8 bottom-full mb-1 px-2 py-1 rounded z-40 whitespace-nowrap pointer-events-none"
-                  style={{ background: "#111827", color: "#fff", fontSize: 10.5, fontFamily: "Noto Sans, sans-serif" }}>
-                  Disponível apenas no módulo <strong>{locked.plan}</strong>
+                <div className="absolute left-8 bottom-full mb-1 z-40 whitespace-nowrap pointer-events-none"
+                  style={{ filter: "drop-shadow(0px 3px 3px rgba(0,0,0,0.09))" }}>
+                  <div style={{ background: "#6e6e6e", color: "#f9f9f9", fontSize: 12, fontFamily: "Noto Sans, sans-serif", fontWeight: 400, padding: "8px", borderRadius: 4 }}>
+                    Disponível apenas no módulo <strong>{locked.plan}</strong>
+                  </div>
                 </div>
               )}
             </div>
