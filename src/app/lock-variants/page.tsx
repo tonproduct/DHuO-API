@@ -505,17 +505,17 @@ export default function LockVariantsPage() {
                 {
                   step: "04",
                   title: "Variante A — Atual",
-                  text: "Item disabled (#bcbcbc), ícone de cadeado à direita, tooltip no hover. Problema: tooltip invisível em touch, disabled é cognitivamente ignorado.",
+                  text: "Item disabled (#bcbcbc), ícone de cadeado à direita, tooltip no hover. Padrão já implementado — serve como baseline de comparação.",
                 },
                 {
                   step: "05",
                   title: "Variante B — Popover",
-                  text: "Item com aparência normal + cadeado discreto. No hover, abre popover contextual com nome do plano e texto informativo. Sem CTA de upgrade (produto B2B).",
+                  text: "Item com aparência normal + cadeado discreto. No hover, abre popover contextual com nome do plano e texto informativo. Contexto no momento exato de intenção, sem redirecionar o usuário.",
                 },
                 {
                   step: "06",
                   title: "Variante C — Badge",
-                  text: "Chip colorido com nome do plano (IA roxo, Integra azul) sem desabilitar o item. Frame positivo: 'existe no plano IA'. Referência: Notion, Linear.",
+                  text: "Chip colorido com nome do plano (IA roxo, Integra azul) visível sem interação. Frame positivo: 'existe no plano IA'. Familiar para usuários de Notion e Linear.",
                 },
               ].map(item => (
                 <div key={item.step} style={{ paddingLeft: 12, borderLeft: "2px solid #f3f4f6" }}>
@@ -530,7 +530,7 @@ export default function LockVariantsPage() {
 
         {/* Variant tabs */}
         <div className="flex items-center gap-3 mb-4 flex-wrap">
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em" }}>SOLUÇÕES</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em", minWidth: 72, flexShrink: 0 }}>SOLUÇÕES</span>
           {VARIANTS.map(v => (
             <button
               key={v.id}
@@ -553,32 +553,30 @@ export default function LockVariantsPage() {
         {showIconPicker && (
           <div className="flex flex-col gap-2 mb-7">
             {/* Row 1: icon lib picker */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em" }}>ÍCONE</span>
-              <div className="flex gap-2 flex-wrap">
-                {ICON_LIBS.map(lib => (
-                  <button
-                    key={lib.id}
-                    onClick={() => setIconLib(lib.id)}
-                    className="flex items-center gap-2 transition-all"
-                    style={{
-                      fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 6,
-                      border: "1.5px solid", cursor: "pointer", fontFamily: "Noto Sans, sans-serif",
-                      borderColor: iconLib === lib.id ? "#7c22c0" : "#e5e7eb",
-                      background:  iconLib === lib.id ? "#f5eefb" : "#fff",
-                      color:       iconLib === lib.id ? "#7c22c0" : "#374151",
-                    }}
-                  >
-                    <LockIcon lib={lib.id} size={12} iconStyle={iconStyle} style={{ color: iconLib === lib.id ? "#7c22c0" : "#9ca3af" }} />
-                    {lib.label}
-                  </button>
-                ))}
-              </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em", minWidth: 72, flexShrink: 0 }}>ÍCONE</span>
+              {ICON_LIBS.map(lib => (
+                <button
+                  key={lib.id}
+                  onClick={() => setIconLib(lib.id)}
+                  className="flex items-center gap-2 transition-all"
+                  style={{
+                    fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 6,
+                    border: "1.5px solid", cursor: "pointer", fontFamily: "Noto Sans, sans-serif",
+                    borderColor: iconLib === lib.id ? "#7c22c0" : "#e5e7eb",
+                    background:  iconLib === lib.id ? "#f5eefb" : "#fff",
+                    color:       iconLib === lib.id ? "#7c22c0" : "#374151",
+                  }}
+                >
+                  <LockIcon lib={lib.id} size={12} iconStyle={iconStyle} style={{ color: iconLib === lib.id ? "#7c22c0" : "#9ca3af" }} />
+                  {lib.label}
+                </button>
+              ))}
             </div>
 
             {/* Row 2: filled / outline toggle */}
-            <div className="flex items-center gap-3">
-              <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em" }}>VARIAÇÃO</span>
+            <div className="flex items-center gap-2">
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em", minWidth: 72, flexShrink: 0 }}>VARIAÇÃO</span>
               <div className="flex items-center gap-1 rounded-md overflow-hidden"
                 style={{ border: "1.5px solid #e5e7eb", background: "#fff" }}>
                 {(["outline", "filled"] as IconStyle[]).map(s => (
