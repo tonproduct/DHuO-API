@@ -125,11 +125,11 @@ function UpgradePopover({ plan }: { plan: LockPlan }) {
         <div className="flex items-center gap-1.5 mb-1.5">
           <Lock size={12} style={{ color: accent }} />
           <span style={{ fontSize: 11, fontWeight: 700, color: accent, letterSpacing: "0.04em" }}>
-            PLANO {plan.toUpperCase()}
+            Disponível no Módulo {plan}
           </span>
         </div>
         <p style={{ fontSize: 11.5, color: "#6b7280", lineHeight: 1.45 }}>
-          Este recurso está disponível no plano {plan}. Entre em contato para habilitar.
+          Este recurso não está incluído no seu plano atual. Fale com o time comercial para habilitar.
         </p>
       </div>
     </div>
@@ -177,7 +177,7 @@ function ListSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; ic
     <div className="flex flex-col overflow-hidden" style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10 }}>
       <div className="px-3 py-2 border-b" style={{ borderColor: "#f3f4f6" }}>
         <span style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em", fontFamily: "Noto Sans, sans-serif" }}>
-          LISTA DE COMPONENTES
+          SIDEBAR — CANVAS
         </span>
       </div>
       <div className="flex-1 overflow-y-auto py-1">
@@ -209,7 +209,7 @@ function ListSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; ic
               {hover === item.id && (
                 <div className="absolute left-3 bottom-full mb-1 px-2 py-1 rounded pointer-events-none z-40 whitespace-nowrap"
                   style={{ background: "#111827", color: "#fff", fontSize: 10.5, fontFamily: "Noto Sans, sans-serif" }}>
-                  Disponível no plano <strong>{locked.plan}</strong>
+                  Disponível apenas no módulo <strong>{locked.plan}</strong>
                 </div>
               )}
             </div>
@@ -268,7 +268,7 @@ function ButtonSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; 
     <div className="flex flex-col overflow-hidden" style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10 }}>
       <div className="px-3 py-2 border-b" style={{ borderColor: "#f3f4f6" }}>
         <span style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em", fontFamily: "Noto Sans, sans-serif" }}>
-          BOTÕES DE AÇÃO
+          BOTÕES DE AÇÃO — ESTÚDIO API
         </span>
       </div>
       <div className="flex-1 flex flex-col justify-center px-4 py-6 gap-3">
@@ -299,7 +299,7 @@ function ButtonSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; 
                 {hover === btn.id && (
                   <div className="absolute left-0 bottom-full mb-1 px-2 py-1 rounded z-40 whitespace-nowrap pointer-events-none"
                     style={{ background: "#111827", color: "#fff", fontSize: 10.5, fontFamily: "Noto Sans, sans-serif" }}>
-                    Plano <strong>{locked.plan}</strong>
+                    Disponível apenas no módulo <strong>{locked.plan}</strong>
                   </div>
                 )}
               </div>
@@ -383,7 +383,7 @@ function NavSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; ico
     <div className="flex flex-col overflow-hidden" style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10 }}>
       <div className="px-3 py-2 border-b" style={{ borderColor: "#f3f4f6" }}>
         <span style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.07em", fontFamily: "Noto Sans, sans-serif" }}>
-          NAVEGAÇÃO LATERAL
+          SIDEBAR — HOME
         </span>
       </div>
       <div style={{ flex: 1, paddingTop: 4, paddingBottom: 4 }}>
@@ -406,7 +406,7 @@ function NavSurface({ variant, iconLib, iconStyle }: { variant: LockVariant; ico
               {hoverTip === item.id && (
                 <div className="absolute left-8 bottom-full mb-1 px-2 py-1 rounded z-40 whitespace-nowrap pointer-events-none"
                   style={{ background: "#111827", color: "#fff", fontSize: 10.5, fontFamily: "Noto Sans, sans-serif" }}>
-                  Plano <strong>{locked.plan}</strong>
+                  Disponível apenas no módulo <strong>{locked.plan}</strong>
                 </div>
               )}
             </div>
