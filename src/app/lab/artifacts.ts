@@ -39,6 +39,14 @@ export const artifacts: Artifact[] = [
     date: "2026-05-05",
   },
   {
+    name: "Lock Variants",
+    description: "3 variantes de como comunicar módulos bloqueados por assinatura — atual (disabled + tooltip), badge de plano e popover informativo.",
+    href: "/lock-variants",
+    category: "UI",
+    section: "Últimos estudos",
+    date: "2026-05-21",
+  },
+  {
     name: "Teste de menu",
     description: "Sessão de teste com usuários sobre o menu de componentes no editor de integração.",
     href: "/teste-menu",
