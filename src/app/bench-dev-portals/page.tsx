@@ -249,6 +249,57 @@ export default function BenchDevPortalsPage() {
 
         <Divider />
 
+        {/* Sugestões de ação */}
+        <section>
+          <H2>Sugestões de Ação</H2>
+          <P>Encaminhamentos definidos na reunião de alinhamento com base nos gaps identificados.</P>
+          <div className="flex flex-col gap-3 mt-5">
+            {[
+              {
+                title: "Defesa da solução ao cliente",
+                description: "Elaborar justificativa clara explicando por que as funcionalidades do TIM Mine não serão replicadas no Dev Portal, apresentando alternativas viáveis e embasamento de mercado.",
+                owners: ["Eder", "Thiago"],
+              },
+              {
+                title: "Validação de perfil restrito no Manager",
+                description: "Avaliar a viabilidade de criar uma permissão específica de 'admin Dev Portal' no Manager, permitindo que usuários da TIM gerenciem apenas o Dev Portal sem acesso irrestrito ao sistema.",
+                owners: ["Fernanda", "Thiago"],
+              },
+              {
+                title: "Esclarecimento sobre processo de alteração de docs",
+                description: "Confirmar com Jeremias quem realiza as alterações nas documentações, como é feito o controle de versões e por que não se utiliza o PEF para atualizações.",
+                owners: ["Thiago"],
+              },
+              {
+                title: "Confirmação do canal de notificações",
+                description: "Verificar se as notificações de alteração de documentação são enviadas apenas por e-mail ou se há outros canais no sistema atual do TIM Mine.",
+                owners: ["Thiago"],
+              },
+              {
+                title: "Análise de implementação de favoritos",
+                description: "Avaliar a viabilidade de implementar a funcionalidade de favoritar/acompanhar documentações no Dev Portal, incluindo disparo de e-mails quando houver alterações.",
+                owners: ["Luiz", "Thiago"],
+              },
+            ].map((item, i) => (
+              <div key={i} className="rounded-xl border border-gray-200 px-5 py-4">
+                <div className="flex items-start justify-between gap-4">
+                  <p className="text-[14px] font-semibold text-gray-900">{item.title}</p>
+                  <div className="flex gap-1.5 shrink-0">
+                    {item.owners.map((owner) => (
+                      <span key={owner} className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-200">
+                        {owner}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-[13px] text-gray-500 mt-2 leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <Divider />
+
         {/* Conclusão */}
         <section>
           <H2>Conclusão</H2>
