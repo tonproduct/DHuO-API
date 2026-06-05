@@ -237,7 +237,145 @@ function renderMarkdown(content: string) {
   return elements
 }
 
+function SolutionToggle({ view, setView }: { view: "consumer" | "manager"; setView: (v: "consumer" | "manager") => void }) {
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-white border border-gray-200 rounded-full px-1.5 py-1.5 shadow-lg">
+      <button
+        onClick={() => setView("consumer")}
+        className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-colors ${view === "consumer" ? "text-white" : "text-gray-400 hover:text-gray-600"}`}
+        style={view === "consumer" ? { backgroundColor: "#7c22c0" } : {}}
+      >
+        Solução 1 — Dev Portal
+      </button>
+      <button
+        onClick={() => setView("manager")}
+        className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-colors ${view === "manager" ? "text-white" : "text-gray-400 hover:text-gray-600"}`}
+        style={view === "manager" ? { backgroundColor: "#7c22c0" } : {}}
+      >
+        Solução 2 — Manager
+      </button>
+    </div>
+  )
+}
+
+function ManagerView() {
+  const [digit1, setDigit1] = useState("5")
+  const [digit2, setDigit2] = useState("3")
+  const [digit3, setDigit3] = useState("1")
+  const [digit4, setDigit4] = useState("0")
+  const [folder, setFolder] = useState("catalogo")
+  const [subfolder, setSubfolder] = useState("proxies")
+  const [published, setPublished] = useState(false)
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col" style={{ fontFamily: "Noto Sans, sans-serif" }}>
+
+      {/* Manager top bar */}
+      <div className="h-12 bg-white border-b border-gray-200 flex items-center px-6 gap-4 shrink-0">
+        <span className="font-bold text-[15px]" style={{ color: "#7c22c0" }}>DHuO.</span>
+        <span className="text-[12px] text-gray-400 ml-2">Manager</span>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-purple-600 flex items-center justify-center text-white text-[11px] font-bold">JF</div>
+          <span className="text-[12px] text-gray-600">Ian Felix · Eng TIM</span>
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto w-full px-8 py-10 flex flex-col gap-6">
+
+        {/* Header */}
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Publicar documentação</p>
+          <h1 className="text-[22px] font-bold text-gray-900 mt-1">Proxies</h1>
+        </div>
+
+        {/* Versionamento */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <p className="text-[13px] font-semibold text-gray-800 mb-1">Versão</p>
+          <p className="text-[12px] text-gray-400 mb-4">Cada dígito representa um tipo de alteração. Incremente apenas o dígito correspondente ao que foi alterado.</p>
+          <div className="flex items-center gap-2">
+            {[
+              { label: "Major", value: digit1, set: setDigit1, desc: "Mudança estrutural" },
+              { label: "Minor", value: digit2, set: setDigit2, desc: "Nova funcionalidade" },
+              { label: "Doc", value: digit3, set: setDigit3, desc: "Alteração de documentação" },
+              { label: "Fix", value: digit4, set: setDigit4, desc: "Correção de bug" },
+            ].map((d, i) => (
+              <div key={i} className="flex flex-col items-center gap-1">
+                <div className="flex items-center gap-1 border border-gray-200 rounded-lg overflow-hidden">
+                  <button onClick={() => d.set(String(Math.max(0, Number(d.value) - 1)))} className="px-2 py-1.5 text-gray-400 hover:bg-gray-50 text-[13px]">−</button>
+                  <span className="w-8 text-center text-[14px] font-semibold text-gray-800">{d.value}</span>
+                  <button onClick={() => d.set(String(Number(d.value) + 1))} className="px-2 py-1.5 text-gray-400 hover:bg-gray-50 text-[13px]">+</button>
+                </div>
+                <p className="text-[10px] text-gray-400 font-medium">{d.label}</p>
+                <p className="text-[10px] text-gray-300 text-center w-20 leading-tight">{d.desc}</p>
+              </div>
+            ))}
+            <div className="ml-3 px-4 py-2 rounded-lg bg-gray-50 border border-gray-200">
+              <p className="text-[11px] text-gray-400 mb-0.5">Versão resultante</p>
+              <p className="text-[16px] font-bold text-gray-800">v{digit1}.{digit2}.{digit3}.{digit4}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Localização na árvore */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <p className="text-[13px] font-semibold text-gray-800 mb-1">Localização na árvore</p>
+          <p className="text-[12px] text-gray-400 mb-4">Defina onde esta documentação aparece na navegação do Dev Portal.</p>
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5 block">Pasta</label>
+              <select value={folder} onChange={e => setFolder(e.target.value)} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-[13px] text-gray-700 bg-white">
+                <option value="catalogo">Catálogo de Serviços</option>
+                <option value="especificacoes">Especificações Técnicas</option>
+              </select>
+            </div>
+            <ChevronRight size={16} className="text-gray-300 mt-5 shrink-0" />
+            <div className="flex-1">
+              <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5 block">Subpasta</label>
+              <select value={subfolder} onChange={e => setSubfolder(e.target.value)} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-[13px] text-gray-700 bg-white">
+                <option value="proxies">Proxies</option>
+                <option value="mediators">Mediators</option>
+                <option value="kafka">Tópicos e Producers Kafka</option>
+              </select>
+            </div>
+          </div>
+          <div className="mt-4 rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-[12px] text-gray-500 flex items-center gap-2">
+            <span className="text-gray-300">📁</span>
+            {folder === "catalogo" ? "Catálogo de Serviços" : "Especificações Técnicas"}
+            <ChevronRight size={12} className="text-gray-300" />
+            <span className="font-medium text-gray-700">{subfolder === "proxies" ? "Proxies" : subfolder === "mediators" ? "Mediators" : "Tópicos e Producers Kafka"}</span>
+          </div>
+        </div>
+
+        {/* Resumo da alteração */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <p className="text-[13px] font-semibold text-gray-800 mb-1">Resumo da alteração <span className="text-red-400">*</span></p>
+          <p className="text-[12px] text-gray-400 mb-3">Será enviado por e-mail para quem acompanha esta documentação.</p>
+          <textarea
+            placeholder="Ex: Corrigido o método do endpoint /auth/token de POST para PUT."
+            className="w-full border border-gray-200 rounded-lg px-4 py-3 text-[13px] text-gray-700 resize-none outline-none focus:border-purple-400 transition-colors"
+            rows={3}
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between">
+          <button className="text-[13px] text-gray-400 hover:text-gray-600 transition-colors">Cancelar</button>
+          <button
+            onClick={() => setPublished(true)}
+            className="px-6 py-2.5 rounded-lg text-[13px] font-semibold text-white transition-colors"
+            style={{ backgroundColor: published ? "#16a34a" : "#7c22c0" }}
+          >
+            {published ? "✓ Publicado" : "Publicar no Dev Portal"}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
 export default function DevPortalTreePage() {
+  const [view, setView] = useState<"consumer" | "manager">("consumer")
   const [selected, setSelected] = useState("proxies")
   const [expanded, setExpanded] = useState<Record<string, boolean>>({ catalogo: true, especificacoes: false })
   const [watching, setWatching] = useState(false)
@@ -248,8 +386,17 @@ export default function DevPortalTreePage() {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
+  if (view === "manager") {
+    return (
+      <div className="relative">
+        <SolutionToggle view={view} setView={setView} />
+        <ManagerView />
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-white flex flex-col" style={{ fontFamily: "Noto Sans, sans-serif" }}>
+    <div className="min-h-screen bg-white flex flex-col relative" style={{ fontFamily: "Noto Sans, sans-serif" }}>
 
       {/* Top bar */}
       <div className="h-12 border-b border-gray-200 flex items-center px-6 gap-6 shrink-0">
@@ -331,6 +478,7 @@ export default function DevPortalTreePage() {
         </div>
 
       </div>
+      <SolutionToggle view={view} setView={setView} />
     </div>
   )
 }
