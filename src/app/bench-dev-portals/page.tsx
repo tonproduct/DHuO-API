@@ -75,23 +75,27 @@ export default function BenchDevPortalsPage() {
               </thead>
               <tbody>
                 {[
-                  { name: "Kong (Konnect v3)", manager: "Híbrido", folders: true, history: false, historyNote: "Audit log por portal" },
-                  { name: "Apigee (Google)", manager: "Admin central", folders: false, history: false, historyNote: "Não documentado" },
-                  { name: "AWS API Gateway", manager: "Admin central", folders: false, history: "partial", historyNote: "Parcial (por stage)" },
-                  { name: "Stoplight", manager: "Híbrido (Git)", folders: true, history: "partial", historyNote: "Diffs de specs" },
-                  { name: "ReadMe", manager: "Self-service", folders: true, history: false, historyNote: "Não por página" },
-                  { name: "SwaggerHub", manager: "Híbrido", folders: true, history: "partial", historyNote: "Parcial, não auditável" },
-                  { name: "Backstage", manager: "Self-service (Git)", folders: true, history: false, historyNote: "Só via Git" },
-                  { name: "Tyk Enterprise", manager: "Híbrido", folders: true, history: false, historyNote: "Não documentado" },
+                  { name: "Kong (Konnect v3)", manager: "Híbrido", managerDesc: "Admin controla permissões, mas o produtor publica dentro do que foi liberado.", folders: true, historyNote: "Audit log por portal", historyDesc: "Registra quem fez o quê, mas não compara conteúdo." },
+                  { name: "Apigee (Google)", manager: "Admin central", managerDesc: "Só a equipe técnica interna publica. O cliente não tem acesso.", folders: false, historyNote: "Não documentado", historyDesc: "Sem evidência na documentação oficial da plataforma." },
+                  { name: "AWS API Gateway", manager: "Admin central", managerDesc: "Só a equipe técnica interna publica. O cliente não tem acesso.", folders: false, historyNote: "Parcial (por stage)", historyDesc: "Só rastreia quando muda de versão, não dentro da mesma versão." },
+                  { name: "Stoplight", manager: "Híbrido (Git)", managerDesc: "Admin controla permissões; times publicam via repositório Git.", folders: true, historyNote: "Diffs de specs", historyDesc: "Compara mudanças técnicas no OpenAPI, não no texto editorial." },
+                  { name: "ReadMe", manager: "Self-service", managerDesc: "O próprio cliente publica e edita sem depender de ninguém.", folders: true, historyNote: "Não por página", historyDesc: "Tem changelog geral, mas não por página individual." },
+                  { name: "SwaggerHub", manager: "Híbrido", managerDesc: "Admin controla permissões, mas o produtor publica dentro do que foi liberado.", folders: true, historyNote: "Parcial, não auditável", historyDesc: "Registra no editor mas não salva como histórico permanente." },
+                  { name: "Backstage", manager: "Self-service (Git)", managerDesc: "Cada time publica via repositório Git sem depender de admin central.", folders: true, historyNote: "Só via Git", historyDesc: "O histórico existe, mas só quem acessa o repositório consegue ver." },
+                  { name: "Tyk Enterprise", manager: "Híbrido", managerDesc: "Papel de Content Manager separado do Admin — gerencia via CMS interno.", folders: true, historyNote: "Não documentado", historyDesc: "Sem evidência na documentação oficial da plataforma." },
                 ].map((row, i) => (
                   <tr key={i} className="border-b border-gray-100 last:border-0">
                     <td className="px-4 py-3 font-semibold text-gray-800">{row.name}</td>
-                    <td className="px-4 py-3 text-gray-500">{row.manager}</td>
+                    <td className="px-4 py-3">
+                      <p className="text-gray-600">{row.manager}</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{row.managerDesc}</p>
+                    </td>
                     <td className="px-4 py-3">
                       <Badge value={row.folders} />
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-gray-400 text-[11px]">{row.historyNote}</span>
+                      <p className="text-gray-600">{row.historyNote}</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{row.historyDesc}</p>
                     </td>
                   </tr>
                 ))}
@@ -99,42 +103,6 @@ export default function BenchDevPortalsPage() {
             </table>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2 px-1">Quem gerencia</p>
-              <div className="flex flex-col gap-2">
-                {[
-                  { label: "Admin central", description: "Só a equipe técnica interna publica. O cliente não tem acesso." },
-                  { label: "Híbrido", description: "Admin controla permissões, mas o produtor publica dentro do que foi liberado." },
-                  { label: "Self-service", description: "O próprio cliente publica e edita sem depender de ninguém." },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-lg border border-gray-200 px-3 py-2.5">
-                    <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
-                    <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{item.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2 px-1">Histórico interno</p>
-              <div className="flex flex-col gap-2">
-                {[
-                  { label: "Audit log por portal", description: "Registra quem fez o quê, mas não compara conteúdo." },
-                  { label: "Parcial (por stage)", description: "Só rastreia quando muda de versão, não dentro da mesma versão." },
-                  { label: "Diffs de specs", description: "Compara mudanças técnicas no OpenAPI, não no texto editorial." },
-                  { label: "Não por página", description: "Tem changelog geral, mas não por página individual." },
-                  { label: "Parcial, não auditável", description: "Registra no editor mas não salva como histórico permanente." },
-                  { label: "Só via Git", description: "O histórico existe, mas só quem acessa o repositório consegue ver." },
-                  { label: "Não documentado", description: "Sem evidência na documentação oficial da plataforma." },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-lg border border-gray-200 px-3 py-2.5">
-                    <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
-                    <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{item.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </section>
 
         <Divider />
