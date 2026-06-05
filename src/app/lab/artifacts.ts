@@ -55,6 +55,14 @@ export const artifacts: Artifact[] = [
     date: "2026-05-27",
   },
   {
+    name: "Dev Portal + Tree",
+    description: "Protótipo do Dev Portal com árvore de navegação lateral e botão de acompanhar — proposta de solução para o gap de navegação em relação ao TIM Mine.",
+    href: "/dev-portal-tree",
+    category: "API",
+    section: "Últimos estudos",
+    date: "2026-06-05",
+  },
+  {
     name: "Bench Dev Portals",
     description: "Comparativo de como Kong, Apigee, AWS, Stoplight, ReadMe, SwaggerHub, Backstage e Tyk implementam gestão de documentação — para embasar defesa técnica ao cliente.",
     href: "/bench-dev-portals",
