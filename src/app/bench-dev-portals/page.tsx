@@ -63,20 +63,7 @@ export default function BenchDevPortalsPage() {
         {/* Tabela resumo */}
         <section>
           <H2>Visão Geral</H2>
-          <div className="mt-5 flex gap-4">
-            {[
-              { label: "Admin central", description: "Só a equipe técnica interna publica. O cliente não tem acesso." },
-              { label: "Híbrido", description: "Admin controla permissões, mas o produtor de conteúdo publica dentro do que foi liberado." },
-              { label: "Self-service", description: "O próprio cliente publica e edita sem depender de ninguém." },
-            ].map((item) => (
-              <div key={item.label} className="flex-1 rounded-lg border border-gray-200 px-4 py-3">
-                <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
-                <p className="text-[11px] text-gray-400 mt-1 leading-snug">{item.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4 rounded-xl border border-gray-200 overflow-hidden">
+          <div className="mt-5 rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
@@ -110,6 +97,19 @@ export default function BenchDevPortalsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div className="mt-4 flex gap-4">
+            {[
+              { label: "Admin central", description: "Só a equipe técnica interna publica. O cliente não tem acesso." },
+              { label: "Híbrido", description: "Admin controla permissões, mas o produtor de conteúdo publica dentro do que foi liberado." },
+              { label: "Self-service", description: "O próprio cliente publica e edita sem depender de ninguém." },
+            ].map((item) => (
+              <div key={item.label} className="flex-1 rounded-lg border border-gray-200 px-4 py-3">
+                <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
+                <p className="text-[11px] text-gray-400 mt-1 leading-snug">{item.description}</p>
+              </div>
+            ))}
           </div>
         </section>
 
