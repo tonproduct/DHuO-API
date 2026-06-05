@@ -11,7 +11,7 @@ export default function BenchDevPortalsPage() {
           <h1 className="text-3xl font-bold text-white mt-2 mb-3">Gestão de Documentação em Dev Portals</h1>
           <p className="text-[15px] text-white/70 max-w-2xl leading-relaxed">
             Análise comparativa de como os principais Dev Portals do mercado implementam fluxos de publicação,
-            estrutura de pastas e histórico de versões — para embasar a defesa técnica junto ao cliente.
+            árvore de navegação e histórico de versões — para embasar a defesa técnica junto ao cliente.
           </p>
         </div>
       </div>
@@ -23,7 +23,7 @@ export default function BenchDevPortalsPage() {
           <H2>Contexto</H2>
           <P>
             O cliente utiliza o <Strong>TIM Mine</Strong> — uma ferramenta interna com funcionalidades avançadas
-            de wiki: árvore de pastas, histórico de alterações dentro da mesma versão e acompanhamento com notificações.
+            de wiki: árvore de navegação, histórico de alterações dentro da mesma versão e acompanhamento com notificações.
             Com a migração para o <Strong>Dev Portal (DHuO)</Strong>, o cliente percebeu que não possui essas funcionalidades
             e questiona por que não estão disponíveis.
           </P>
@@ -47,8 +47,8 @@ export default function BenchDevPortalsPage() {
             />
             <Criterion
               number="2"
-              title="Existe estrutura de pastas/árvore?"
-              description="Há hierarquia de categorias, subpastas e tópicos para organização do conteúdo editorial?"
+              title="Existe árvore de navegação?"
+              description="Há hierarquia de categorias e tópicos formando uma árvore de navegação para organização do conteúdo?"
             />
             <Criterion
               number="3"
@@ -69,7 +69,7 @@ export default function BenchDevPortalsPage() {
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="text-left px-4 py-3 font-semibold text-gray-600">Plataforma</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-600">Quem gerencia</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-600">Estrutura de pastas</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-600">Árvore de navegação</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-600">Histórico interno</th>
                 </tr>
               </thead>
@@ -404,7 +404,7 @@ function PlatformCard({
         </div>
         <div className="flex flex-col items-end gap-1.5 shrink-0">
           <div className="flex items-center gap-2 text-[11px] text-gray-500">
-            <span>Pastas</span><Badge value={folders} />
+            <span>Árvore</span><Badge value={folders} />
           </div>
           <div className="flex items-center gap-2 text-[11px] text-gray-500">
             <span>Histórico</span><Badge value={history} />
