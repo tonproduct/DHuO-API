@@ -61,9 +61,9 @@ export default function BenchDevPortalsPage() {
         <Divider />
 
         {/* Tabela resumo */}
-        <section>
-          <H2>Visão Geral</H2>
-          <div className="mt-5 rounded-xl border border-gray-200 overflow-hidden">
+        <section className="-mx-20">
+          <H2 className="mx-20">Visão Geral</H2>
+          <div className="mt-5 mx-20 rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
@@ -337,8 +337,8 @@ export default function BenchDevPortalsPage() {
 
 // ─── Design components ────────────────────────────────────────────────────────
 
-function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-[20px] font-bold text-gray-900">{children}</h2>
+function H2({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <h2 className={`text-[20px] font-bold text-gray-900 ${className}`}>{children}</h2>
 }
 
 function P({ children }: { children: React.ReactNode }) {
