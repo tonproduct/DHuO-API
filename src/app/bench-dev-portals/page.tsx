@@ -1,6 +1,6 @@
 export default function BenchDevPortalsPage() {
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: "Noto Sans, sans-serif" }}>
+    <div className="min-h-screen bg-white overflow-x-hidden" style={{ fontFamily: "Noto Sans, sans-serif" }}>
 
       {/* Hero */}
       <div style={{ backgroundColor: "#7c22c0" }} className="px-10 py-12">
