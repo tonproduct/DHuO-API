@@ -16,7 +16,7 @@ export default function BenchDevPortalsPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-10 py-12 flex flex-col gap-14">
+      <div className="max-w-4xl mx-auto px-10 pt-12 flex flex-col gap-14">
 
         {/* Contexto */}
         <section>
@@ -60,10 +60,13 @@ export default function BenchDevPortalsPage() {
 
         <Divider />
 
-        {/* Tabela resumo */}
-        <section className="-mx-40">
-          <H2 className="mx-40">Visão Geral</H2>
-          <div className="mt-5 mx-40 rounded-xl border border-gray-200 overflow-hidden">
+      </div>
+
+      {/* Tabela resumo — container próprio mais largo */}
+      <div className="max-w-6xl mx-auto px-10 pb-14">
+        <section>
+          <H2>Visão Geral</H2>
+          <div className="mt-5 rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
@@ -104,6 +107,9 @@ export default function BenchDevPortalsPage() {
           </div>
 
         </section>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-10 pb-12 flex flex-col gap-14">
 
         <Divider />
 
