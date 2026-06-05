@@ -99,17 +99,41 @@ export default function BenchDevPortalsPage() {
             </table>
           </div>
 
-          <div className="mt-4 flex gap-4">
-            {[
-              { label: "Admin central", description: "Só a equipe técnica interna publica. O cliente não tem acesso." },
-              { label: "Híbrido", description: "Admin controla permissões, mas o produtor de conteúdo publica dentro do que foi liberado." },
-              { label: "Self-service", description: "O próprio cliente publica e edita sem depender de ninguém." },
-            ].map((item) => (
-              <div key={item.label} className="flex-1 rounded-lg border border-gray-200 px-4 py-3">
-                <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
-                <p className="text-[11px] text-gray-400 mt-1 leading-snug">{item.description}</p>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2 px-1">Quem gerencia</p>
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: "Admin central", description: "Só a equipe técnica interna publica. O cliente não tem acesso." },
+                  { label: "Híbrido", description: "Admin controla permissões, mas o produtor publica dentro do que foi liberado." },
+                  { label: "Self-service", description: "O próprio cliente publica e edita sem depender de ninguém." },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg border border-gray-200 px-3 py-2.5">
+                    <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
+                    <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{item.description}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2 px-1">Histórico interno</p>
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: "Audit log por portal", description: "Registra quem fez o quê, mas não compara conteúdo." },
+                  { label: "Parcial (por stage)", description: "Só rastreia quando muda de versão, não dentro da mesma versão." },
+                  { label: "Diffs de specs", description: "Compara mudanças técnicas no OpenAPI, não no texto editorial." },
+                  { label: "Não por página", description: "Tem changelog geral, mas não por página individual." },
+                  { label: "Parcial, não auditável", description: "Registra no editor mas não salva como histórico permanente." },
+                  { label: "Só via Git", description: "O histórico existe, mas só quem acessa o repositório consegue ver." },
+                  { label: "Não documentado", description: "Sem evidência na documentação oficial da plataforma." },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg border border-gray-200 px-3 py-2.5">
+                    <p className="text-[12px] font-semibold text-gray-700">{item.label}</p>
+                    <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
