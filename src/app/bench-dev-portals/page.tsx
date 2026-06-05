@@ -61,9 +61,9 @@ export default function BenchDevPortalsPage() {
         <Divider />
 
         {/* Tabela resumo */}
-        <section className="-mx-20">
-          <H2 className="mx-20">Visão Geral</H2>
-          <div className="mt-5 mx-20 rounded-xl border border-gray-200 overflow-hidden">
+        <section className="-mx-6">
+          <H2 className="mx-6">Visão Geral</H2>
+          <div className="mt-5 mx-6 rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
