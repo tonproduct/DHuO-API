@@ -57,7 +57,7 @@ export const artifacts: Artifact[] = [
     name: "Go Plugin Docs",
     description: "Levantamento da documentação do Go Plugin para reforçar a documentação do componente e auxiliar o chat IA a responder dúvidas.",
     href: "/go-plugin",
-    modulo: "Integra",
+    modulo: "API",
     category: "IA",
     date: "2026-05-05",
   },
