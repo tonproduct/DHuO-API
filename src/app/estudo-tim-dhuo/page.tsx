@@ -80,64 +80,66 @@ export default function EstudoTimDhuoPage() {
           {/* O cenário */}
           <section id="cenario" className="flex flex-col gap-3">
             <H2>O cenário</H2>
-            <P>
-              A TIM usa o Redmine (que eles chamam de TIM Mine) para gestão de documentação de APIs. Com a migração para o DHuO Dev Portal, perceberam que perderam funcionalidades que usavam no dia a dia.
-            </P>
+            <Card>
+              <P>A TIM usa o Redmine (que eles chamam de TIM Mine) para gestão de documentação de APIs. Com a migração para o DHuO Dev Portal, perceberam que perderam funcionalidades que usavam no dia a dia.</P>
+            </Card>
           </section>
 
           <Divider />
 
           {/* O que descobrimos */}
-          <section id="descobrimos" className="flex flex-col gap-5">
+          <section id="descobrimos" className="flex flex-col gap-4">
             <H2>O que descobrimos</H2>
 
-            <div className="flex flex-col gap-2">
+            <Card>
               <H3>Quem faz o quê</H3>
               <Ul items={[
                 "A Eng da TIM publica, edita e mantém as docs — no Redmine e precisaria fazer o mesmo no DHuO",
                 "A TIM Tim (consumidores / CCC) só lê — igual ao Dev Portal hoje",
                 "O modelo de acesso não muda — o problema é outro",
               ]} />
-            </div>
+            </Card>
 
-            <div className="flex flex-col gap-2">
+            <Card>
               <H3>Os 3 gaps reais entre Redmine e DHuO</H3>
               <Ul items={[
                 "Versionamento — a TIM usa 4 dígitos (Major.Minor.Doc.Fix), o Manager não suporta esse controle hoje",
                 "Histórico — no Redmine dá pra comparar duas versões de uma mesma doc (diff). O DHuO não tem isso",
                 "Navegação — no Redmine as docs ficam numa wiki com árvore de pastas. O Dev Portal exibe uma doc por versão, sem hierarquia",
               ]} />
-            </div>
+            </Card>
 
-            <div className="flex flex-col gap-2">
+            <Card>
               <H3>O bloqueio de acesso</H3>
-              <P>
-                A Eng (X Digital) não libera o Manager para a Eng da TIM porque o Manager foi feito como ferramenta interna. A solução seria um perfil com escopo limitado — a Eng da TIM só veria a parte de documentação, nada mais.
-              </P>
-            </div>
+              <P>A Eng (X Digital) não libera o Manager para a Eng da TIM porque o Manager foi feito como ferramenta interna. A solução seria um perfil com escopo limitado — a Eng da TIM só veria a parte de documentação, nada mais.</P>
+            </Card>
           </section>
 
           <Divider />
 
           {/* O que foi produzido */}
-          <section id="produzido" className="flex flex-col gap-3">
+          <section id="produzido" className="flex flex-col gap-4">
             <H2>O que foi produzido</H2>
-            <Ul items={[
-              "Bench de concorrentes → /bench-dev-portals — nenhum Dev Portal do mercado tem wiki com histórico editorial. Embasamento para a defesa ao cliente",
-              "Protótipo → /dev-portal-tree — mostra como seria o Dev Portal com árvore lateral (Solução 1) e como seria o Manager com os 4 dígitos e seletor de pasta (Solução 2)",
-            ]} />
+            <Card>
+              <Ul items={[
+                "Bench de concorrentes → /bench-dev-portals — nenhum Dev Portal do mercado tem wiki com histórico editorial. Embasamento para a defesa ao cliente",
+                "Protótipo → /dev-portal-tree — mostra como seria o Dev Portal com árvore lateral (Solução 1) e como seria o Manager com os 4 dígitos e seletor de pasta (Solução 2)",
+              ]} />
+            </Card>
           </section>
 
           <Divider />
 
           {/* Próximos passos */}
-          <section id="proximos" className="flex flex-col gap-3">
+          <section id="proximos" className="flex flex-col gap-4">
             <H2>Próximos passos pendentes</H2>
-            <Ul items={[
-              "Sessão com o Jere — mapear o processo completo da Eng da TIM no Redmine",
-              "Decisão interna — perfis de usuário no Manager precisam sair do backlog para viabilizar o acesso da Eng da TIM",
-              "Defesa ao cliente — com o bench + protótipo + mapeamento do Jere, montar a resposta para o Lupareri",
-            ]} />
+            <Card>
+              <Ul items={[
+                "Sessão com o Jere — mapear o processo completo da Eng da TIM no Redmine",
+                "Decisão interna — perfis de usuário no Manager precisam sair do backlog para viabilizar o acesso da Eng da TIM",
+                "Defesa ao cliente — com o bench + protótipo + mapeamento do Jere, montar a resposta para o Lupareri",
+              ]} />
+            </Card>
           </section>
 
         </div>
@@ -147,6 +149,14 @@ export default function EstudoTimDhuoPage() {
 }
 
 // ─── Components ───────────────────────────────────────────────────────────────
+
+function Card({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-xl border border-gray-200 px-6 py-5 flex flex-col gap-3">
+      {children}
+    </div>
+  )
+}
 
 function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="text-[18px] font-bold text-gray-900">{children}</h2>
