@@ -55,6 +55,14 @@ export const artifacts: Artifact[] = [
     date: "2026-05-27",
   },
   {
+    name: "TIM Mine → DHuO",
+    description: "Consolidado completo do mapeamento de gaps entre o Redmine (TIM Mine) e o DHuO Dev Portal — atores, 3 gaps, benchmark, propostas e próximos passos.",
+    href: "/estudo-tim-dhuo",
+    category: "API",
+    section: "Últimos estudos",
+    date: "2026-06-05",
+  },
+  {
     name: "Dev Portal + Tree",
     description: "Protótipo do Dev Portal com árvore de navegação lateral e botão de acompanhar — proposta de solução para o gap de navegação em relação ao TIM Mine.",
     href: "/dev-portal-tree",
