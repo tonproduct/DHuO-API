@@ -174,12 +174,11 @@ function LabContent() {
     setSearch("")
   }
 
-  if (!mounted) return null
-
   const visible = artifacts.filter((a) => !hidden.includes(a.href))
   const tree = buildTree(visible)
-
   const isSearching = search.trim().length > 0
+  const { folders, items } = getLevelContent(tree, path)
+  const filteredItems = activeFilter ? items.filter((a) => a.category === activeFilter) : items
 
   const searchResults = useMemo(() => {
     if (!isSearching) return null
@@ -189,15 +188,14 @@ function LabContent() {
     )
     if (activeFilter) results = results.filter((a) => a.category === activeFilter)
     return results
-  }, [search, visible, activeFilter])
-
-  const { folders, items } = getLevelContent(tree, path)
-  const filteredItems = activeFilter ? items.filter((a) => a.category === activeFilter) : items
+  }, [search, visible, activeFilter, isSearching])
 
   const usedCategories = useMemo(() => {
     const all = isSearching ? visible : items
     return CATEGORIES.filter((c) => all.some((a) => a.category === c))
   }, [items, visible, isSearching])
+
+  if (!mounted) return null
 
   return (
     <>
