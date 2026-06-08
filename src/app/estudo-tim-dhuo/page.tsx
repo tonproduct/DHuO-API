@@ -109,10 +109,6 @@ export default function EstudoTimDhuoPage() {
               ]} />
             </Card>
 
-            <Card>
-              <H3>O bloqueio de acesso</H3>
-              <P>A Eng (X Digital) não libera o Manager para a Eng da TIM porque o Manager foi feito como ferramenta interna. A solução seria um perfil com escopo limitado — a Eng da TIM só veria a parte de documentação, nada mais.</P>
-            </Card>
           </section>
 
           <Divider />
