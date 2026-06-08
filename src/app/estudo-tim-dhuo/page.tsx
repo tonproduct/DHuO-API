@@ -74,7 +74,7 @@ export default function EstudoTimDhuoPage() {
 
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">DHuO · Dev Portal</span>
-            <h1 className="text-[26px] font-bold text-gray-900 mt-2">Resumo da conversa</h1>
+            <h1 className="text-[26px] font-bold text-gray-900 mt-2">Contexto resumido</h1>
           </div>
 
           {/* O cenário */}
@@ -120,6 +120,7 @@ export default function EstudoTimDhuoPage() {
               <Ul items={[
                 "Bench de concorrentes → /bench-dev-portals — nenhum Dev Portal do mercado tem wiki com histórico editorial. Embasamento para a defesa ao cliente",
                 "Protótipo → /dev-portal-tree — mostra como seria o Dev Portal com árvore lateral (Solução 1) e como seria o Manager com os 4 dígitos e seletor de pasta (Solução 2)",
+                "Contexto resumido → /estudo-tim-dhuo — consolidado do cenário, descobertas e próximos passos",
               ]} />
             </Card>
           </section>
