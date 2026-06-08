@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense, useMemo } from "react"
 import Link from "next/link"
-import { X, FlaskConical, RotateCcw, Folder, Search, ArrowLeft } from "lucide-react"
+import { X, FlaskConical, RotateCcw, Folder, Search, ArrowLeft, ChevronRight } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { artifacts } from "./artifacts"
 import type { Artifact, ArtifactCategory } from "./artifacts"
@@ -80,13 +80,14 @@ function FolderCard({ name, count, onClick }: { name: string; count: number; onC
   return (
     <button
       onClick={onClick}
-      className="group flex flex-col justify-between p-4 rounded-lg border border-white/10 bg-[#2a2a2a] hover:border-purple-500/50 hover:bg-[#2f2f2f] transition-all text-left aspect-[4/3]"
+      className="group flex items-center gap-3 w-full px-4 py-3 rounded-lg border border-white/8 bg-[#252525] hover:border-purple-500/40 hover:bg-[#2a2a2a] transition-all text-left"
     >
-      <Folder size={26} className="text-white/25 group-hover:text-purple-400 transition-colors" />
-      <div>
-        <p className="text-[13px] font-medium text-white/80 group-hover:text-white transition-colors leading-tight">{name}</p>
+      <Folder size={16} className="shrink-0 text-white/25 group-hover:text-purple-400 transition-colors" />
+      <div className="flex-1 min-w-0">
+        <p className="text-[13px] font-medium text-white/70 group-hover:text-white/90 transition-colors truncate leading-tight">{name}</p>
         <p className="text-[11px] text-white/25 mt-0.5">{count} {count === 1 ? "artefato" : "artefatos"}</p>
       </div>
+      <ChevronRight size={13} className="shrink-0 text-white/15 group-hover:text-purple-400/60 transition-colors" />
     </button>
   )
 }
@@ -269,10 +270,10 @@ function LabContent() {
       {/* Search results */}
       {isSearching && searchResults !== null && (
         <div>
-          <p className="text-[11px] text-white/25 mb-4">
+          <p className="text-[11px] text-white/25 mb-5">
             {searchResults.length === 0 ? "Nenhum resultado" : `${searchResults.length} resultado${searchResults.length > 1 ? "s" : ""}`}
           </p>
-          <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5">
+          <ul className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
             {searchResults.map((a) => (
               <ArtifactCard key={a.href} a={a} canEdit={canEdit} onHide={() => hide(a.href)} />
             ))}
@@ -282,23 +283,31 @@ function LabContent() {
 
       {/* Folder view */}
       {!isSearching && (
-        <div className="space-y-8">
+        <div className="space-y-10">
           {folders.length > 0 && (
-            <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5">
-              {folders.map((f) => (
-                <li key={f.name}>
-                  <FolderCard name={f.name} count={f.count} onClick={() => navigate(f.name)} />
-                </li>
-              ))}
-            </ul>
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-white/20 mb-3">Pastas</p>
+              <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-2">
+                {folders.map((f) => (
+                  <li key={f.name}>
+                    <FolderCard name={f.name} count={f.count} onClick={() => navigate(f.name)} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
 
           {filteredItems.length > 0 && (
-            <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5">
-              {filteredItems.map((a) => (
-                <ArtifactCard key={a.href} a={a} canEdit={canEdit} onHide={() => hide(a.href)} />
-              ))}
-            </ul>
+            <div>
+              {folders.length > 0 && (
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/20 mb-3">Artefatos</p>
+              )}
+              <ul className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
+                {filteredItems.map((a) => (
+                  <ArtifactCard key={a.href} a={a} canEdit={canEdit} onHide={() => hide(a.href)} />
+                ))}
+              </ul>
+            </div>
           )}
 
           {folders.length === 0 && filteredItems.length === 0 && (
