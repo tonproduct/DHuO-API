@@ -5,6 +5,7 @@ import { ChevronRight, ChevronLeft, X, ChevronDown, Eye, Copy, Info } from "luci
 
 const sections = [
   { id: "conceito", label: "O padrão" },
+  { id: "defesa", label: "Por que esse padrão?" },
   { id: "drawer1", label: "Drawer — Novo Plugin" },
   { id: "drawer2", label: "Drawer — AI Agent" },
 ]
@@ -97,6 +98,33 @@ export default function RecursosDrawerPage() {
                 "O header e o footer recebem flex-shrink: 0 para não ceder espaço",
                 "O body recebe flex: 1 + overflow-y: auto para ocupar o espaço restante e rolar",
               ]} />
+            </Card>
+          </section>
+
+          <Divider />
+
+          {/* Por que esse padrão? */}
+          <section id="defesa" className="flex flex-col gap-3">
+            <H2>Por que esse padrão?</H2>
+            <Card>
+              <P>Com tudo scrollável, o usuário rola para baixo para preencher os campos e em algum momento perde o título — não sabe mais com certeza em qual drawer está. Quando termina, precisa rolar de volta para fechar ou até o fim para salvar. Em formulários técnicos com muitos campos, isso acontece repetidamente.</P>
+              <P>Com header e footer fixos, o contexto e as ações ficam sempre visíveis, independente do scroll. O corpo cresce o quanto precisar sem penalizar a navegação.</P>
+            </Card>
+            <Card>
+              <H3>Visibilidade do contexto</H3>
+              <P>O header fixo mantém o título do drawer sempre visível. No DHuO, onde o usuário configura múltiplos componentes em sequência, perder o título é perder o contexto — e isso gera erro: salvar a configuração errada achando que está no drawer certo.</P>
+            </Card>
+            <Card>
+              <H3>Acesso imediato às ações</H3>
+              <P>Cancelar e Salvar precisam estar sempre disponíveis, sem custo de scroll. Se o footer some, o usuário que quer abortar precisa primeiro rolar para encontrar o botão — atrito que aumenta a chance de ele fechar a janela acidentalmente ou desistir da ação.</P>
+            </Card>
+            <Card>
+              <H3>Memória muscular (Lei de Fitts)</H3>
+              <P>Com footer fixo, Cancelar e Salvar estão sempre na mesma posição. O usuário desenvolve memória muscular: não precisa procurar. Com scroll livre, a posição dos botões muda a cada interação — o sistema exige atenção onde não deveria.</P>
+            </Card>
+            <Card>
+              <H3>Padrão de mercado (Lei de Jakob)</H3>
+              <P>Figma, Linear, Salesforce, ServiceNow — todos usam drawer com header e footer fixos em painéis de configuração. O usuário já aprendeu esse comportamento em outros produtos. Quebrar o padrão exige reaprendizado sem nenhum ganho perceptível.</P>
             </Card>
           </section>
 
