@@ -94,7 +94,6 @@ export const artifacts: Artifact[] = [
     name: "Recursos do drawer",
     description: "Estudo do padrão de drawer com header fixo, body scrollável e footer fixo — dois exemplos reais do Integra: Novo Plugin e AI Agent.",
     href: "/recursos-drawer",
-    modulo: "Integra",
     category: "UI",
     date: "2026-06-19",
   },
