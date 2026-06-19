@@ -134,8 +134,8 @@ function DrawerNovoPlugin() {
   return (
     <div className="flex justify-center">
       <div
-        className="flex flex-col rounded-xl overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.15)] border border-gray-200"
-        style={{ width: 550, height: 640 }}
+        className="flex flex-col overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.15)] border border-gray-200"
+        style={{ width: 550, height: 640, borderRadius: 0 }}
       >
         {/* Header — fixo */}
         <div
@@ -280,8 +280,8 @@ function DrawerAIAgent() {
   return (
     <div className="flex justify-center">
       <div
-        className="flex flex-col rounded-xl overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.15)] border border-gray-200 w-full"
-        style={{ height: 680 }}
+        className="flex flex-col overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.15)] border border-gray-200 w-full"
+        style={{ height: 680, borderRadius: 0 }}
       >
         {/* Header — fixo */}
         <div
