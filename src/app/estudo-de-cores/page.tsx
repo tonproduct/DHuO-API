@@ -448,11 +448,11 @@ function NodeSwatch({ node, showDefense }: { node: NodeEntry; showDefense: boole
 // ── Palette panel ─────────────────────────────────────────────────────────────
 
 function PalettePanel({
-  title, subtitle, badge, badgeColor, nodes, pros, cons, showDefense,
+  title, subtitle, badge, badgeColor, nodes, showDefense,
 }: {
   title: string; subtitle: string
   badge?: string; badgeColor?: string
-  nodes: NodeEntry[]; pros: string[]; cons: string[]
+  nodes: NodeEntry[]
   showDefense: boolean
 }) {
   return (
@@ -483,30 +483,6 @@ function PalettePanel({
         {nodes.map((n) => (
           <NodeSwatch key={n.label} node={n} showDefense={true} />
         ))}
-      </div>
-
-      {/* pros/cons */}
-      <div className="grid grid-cols-2 border-t border-white/8">
-        <div className="px-5 py-3 border-r border-white/8">
-          <p className="text-[10px] font-bold text-emerald-400/50 uppercase tracking-wider mb-2">Pros</p>
-          <ul className="space-y-1">
-            {pros.map((p, i) => (
-              <li key={i} className="text-[11px] text-white/40 flex gap-1.5 items-start">
-                <CheckCircle2 size={10} className="shrink-0 mt-0.5 text-emerald-500/40" />{p}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="px-5 py-3">
-          <p className="text-[10px] font-bold text-red-400/50 uppercase tracking-wider mb-2">Contras</p>
-          <ul className="space-y-1">
-            {cons.map((c, i) => (
-              <li key={i} className="text-[11px] text-white/40 flex gap-1.5 items-start">
-                <XCircle size={10} className="shrink-0 mt-0.5 text-red-500/40" />{c}
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </div>
   )
@@ -590,8 +566,6 @@ export default function EstudoCoresPage() {
               title="Paleta atual" subtitle="Diagnostico — cores em producao"
               badge="atual" badgeColor="#6e6e6e"
               nodes={current} showDefense={true}
-              pros={["IA violet reconhecivel", "Logical blue semanticamente correto"]}
-              cons={[]}
             />
           )}
           {(view === "all" || view === "a") && (
@@ -599,14 +573,6 @@ export default function EstudoCoresPage() {
               title="Opcao A — Híbrida" subtitle="Ajuste cirúrgico + Tech migra para ciano"
               badge="híbrida" badgeColor="#22c55e"
               nodes={optionA} showDefense={true}
-              pros={[
-                "Trigger verde (go/start) — defesa sólida",
-                "Tech ciano sai do espectro quente — sem colisão com Business",
-                "Business sobe para hue 21 — longe da zona de erro",
-                "IA ajustada para dual-mode (#8b5cf6)",
-                "Service slate com identidade própria",
-              ]}
-              cons={[]}
             />
           )}
           {(view === "all" || view === "b") && (
@@ -614,14 +580,6 @@ export default function EstudoCoresPage() {
               title="Opcao B — Redistribuicao" subtitle="Maxima distincao, dual-mode nativo"
               badge="recomendada" badgeColor="#a78bfa"
               nodes={optionB} showDefense={true}
-              pros={[
-                "Esmeralda Trigger (160) — 32° do Tech ciano, colisão eliminada",
-                "Ciano Tech (192) — linguagem de infraestrutura digital",
-                "Fúcsia Service (296) — 38° do IA, 85° do Business, hue livre",
-                "Máxima distinção entre nós: menor gap = 32° (Trigger → Tech)",
-                "Todas as cores viáveis dual-mode (3:1 em ambos os fundos)",
-              ]}
-              cons={[]}
             />
           )}
         </div>
