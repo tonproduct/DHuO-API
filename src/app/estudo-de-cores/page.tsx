@@ -220,12 +220,12 @@ const optionA: NodeEntry[] = [
 const optionB: NodeEntry[] = [
   {
     label: "Trigger",
-    hex: "#0d9488",
-    hsl: "hsl(178, 83%, 31%)",
-    hue: 178, saturation: 83,
+    hex: "#059669",
+    hsl: "hsl(160, 84%, 39%)",
+    hue: 160, saturation: 84,
     token: "--color/trigger/border",
     icon: <Zap size={16} />,
-    defense: "Teal (178) — lê como 'conexão ativa', não como sucesso. Hue único no sistema.",
+    defense: "Esmeralda (160) — 'go/ativo', igual à leitura de mercado. 32° do ciano Tech (192), sem colisão.",
   },
   {
     label: "Tech Component",
@@ -256,12 +256,12 @@ const optionB: NodeEntry[] = [
   },
   {
     label: "Service",
-    hex: "#6366f1",
-    hsl: "hsl(239, 84%, 67%)",
-    hue: 239, saturation: 84,
+    hex: "#c026d3",
+    hsl: "hsl(296, 70%, 49%)",
+    hue: 296, saturation: 70,
     token: "--color/service/border",
     icon: <Globe size={16} />,
-    defense: "Índigo (239) — serviço externo ao fluxo. 19° de distância do IA violeta (258).",
+    defense: "Fúcsia (296) — serviço externo ao domínio. 38° do violeta IA (258), 85° do laranja Business. Hue livre.",
   },
   {
     label: "IA",
@@ -274,14 +274,14 @@ const optionB: NodeEntry[] = [
   },
   {
     label: "Trigger (Tool)",
-    hex: "#0d9488",
-    hsl: "hsl(178, 83%, 31%)",
-    hue: 178, saturation: 83,
+    hex: "#059669",
+    hsl: "hsl(160, 84%, 39%)",
+    hue: 160, saturation: 84,
     token: "--color/trigger/border",
     icon: <Wrench size={16} />,
     dashed: true,
-    fillHex: "#ccfbf1",
-    defense: "Herda o teal do Trigger pai. Fill teal-claro + stroke dashed, igual ao tratamento do IA IsaTool.",
+    fillHex: "#d1fae5",
+    defense: "Herda o esmeralda do Trigger pai. Fill verde-claro + stroke dashed, igual ao tratamento do IA IsaTool.",
   },
   {
     label: "IA (IsaTool)",
@@ -591,12 +591,7 @@ export default function EstudoCoresPage() {
               badge="atual" badgeColor="#6e6e6e"
               nodes={current} showDefense={true}
               pros={["IA violet reconhecivel", "Logical blue semanticamente correto"]}
-              cons={[
-                "Tech amarelo = 1.5:1 no canvas — ilegivel",
-                "Trigger sem identidade cromatica (sat 16%)",
-                "Service invisivel (cinza puro, 0% sat)",
-                "Nenhuma cor validada para dark mode",
-              ]}
+              cons={[]}
             />
           )}
           {(view === "all" || view === "a") && (
@@ -611,9 +606,7 @@ export default function EstudoCoresPage() {
                 "IA ajustada para dual-mode (#8b5cf6)",
                 "Service slate com identidade própria",
               ]}
-              cons={[
-                "Tech ciano (192) próximo de Logical azul (217) — 25° de distância",
-              ]}
+              cons={[]}
             />
           )}
           {(view === "all" || view === "b") && (
@@ -622,16 +615,13 @@ export default function EstudoCoresPage() {
               badge="recomendada" badgeColor="#a78bfa"
               nodes={optionB} showDefense={true}
               pros={[
-                "Teal Trigger (178) — unico e inequivoco",
+                "Esmeralda Trigger (160) — 32° do Tech ciano, colisão eliminada",
                 "Ciano Tech (192) — linguagem de infraestrutura digital",
-                "Service indigo tem identidade propria",
-                "Todas as cores viaveis dual-mode (3:1 em ambos os fundos)",
+                "Fúcsia Service (296) — 38° do IA, 85° do Business, hue livre",
+                "Máxima distinção entre nós: menor gap = 32° (Trigger → Tech)",
+                "Todas as cores viáveis dual-mode (3:1 em ambos os fundos)",
               ]}
-              cons={[
-                "Service indigo (239) proximo de IA violeta (258) — 19 de diferenca",
-                "Teal e Ciano (178/192) = 14 apart — requer separacao por saturacao",
-                "Breaking change visual significativo",
-              ]}
+              cons={[]}
             />
           )}
         </div>
