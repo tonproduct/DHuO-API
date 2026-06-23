@@ -148,12 +148,12 @@ const optionA: NodeEntry[] = [
   },
   {
     label: "Tech Component",
-    hex: "#d97706",
-    hsl: "hsl(38, 92%, 45%)",
-    hue: 38, saturation: 92,
+    hex: "#0891b2",
+    hsl: "hsl(192, 91%, 36%)",
+    hue: 192, saturation: 91,
     token: "--color/tech/border",
     icon: <Cpu size={16} />,
-    defense: "Âmbar (38) — fora da zona de warning (46+) e longe do Business (13). Contraste aprovado.",
+    defense: "Ciano (192) — sai do espectro quente, libera Business. Kubernetes, Terraform, monitoramento usam esse espectro.",
   },
   {
     label: "Logical",
@@ -166,13 +166,12 @@ const optionA: NodeEntry[] = [
   },
   {
     label: "Business",
-    hex: "#c14726",
-    hsl: "hsl(13, 67%, 45%)",
-    hue: 13, saturation: 67,
+    hex: "#ea580c",
+    hsl: "hsl(21, 90%, 48%)",
+    hue: 21, saturation: 90,
     token: "--color/business/border",
     icon: <Briefcase size={16} />,
-    defense: "Mantida por ora. Hue 13 ainda perto da zona de erro — monitorar em dark mode.",
-    issues: ["Borderline: monitorar em dark mode"],
+    defense: "Com Tech fora do espectro quente, Business sobe para hue 21 — longe da zona de erro (0), sem colisão.",
   },
   {
     label: "Service",
@@ -596,18 +595,18 @@ export default function EstudoCoresPage() {
           )}
           {(view === "all" || view === "a") && (
             <PalettePanel
-              title="Opcao A — Cirurgica" subtitle="Menor impacto de migracao"
-              badge="conservadora" badgeColor="#22c55e"
+              title="Opcao A — Híbrida" subtitle="Ajuste cirúrgico + Tech migra para ciano"
+              badge="híbrida" badgeColor="#22c55e"
               nodes={optionA} showDefense={true}
               pros={[
-                "Trigger vira verde (go/start) — defesa solida",
-                "Tech ambar separa do warning amarelo",
-                "IA ajustada para dual-mode (8b5cf6)",
-                "Service herda slate com identidade propria",
+                "Trigger verde (go/start) — defesa sólida",
+                "Tech ciano sai do espectro quente — sem colisão com Business",
+                "Business sobe para hue 21 — longe da zona de erro",
+                "IA ajustada para dual-mode (#8b5cf6)",
+                "Service slate com identidade própria",
               ]}
               cons={[
-                "Tech ambar (38) e Business (13) = 25 de distancia — marginal",
-                "Business mantida proxima da zona de erro",
+                "Tech ciano (192) próximo de Logical azul (217) — 25° de distância",
               ]}
             />
           )}
