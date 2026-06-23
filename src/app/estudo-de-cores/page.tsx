@@ -521,30 +521,47 @@ export default function EstudoCoresPage() {
           <p className="text-[11px] font-bold uppercase tracking-widest text-purple-400/60 mb-1">
             Lab / Estudo de cores
           </p>
-          <h1 className="text-[22px] font-bold text-white mb-2">Canvas Nodes — Auditoria de Cor</h1>
+          <h1 className="text-[22px] font-bold text-white mb-2">Canvas Nodes — Identidade de Cor</h1>
           <p className="text-[13px] text-white/40 max-w-2xl leading-relaxed">
-            A paleta atual tem 3 problemas críticos. Duas propostas de correção — uma cirúrgica, uma de redistribuição completa.
+            Cada tipo de nó precisa de uma cor com defesa — que comunique o que ele faz e que funcione nos dois modos. A paleta atual não tem isso.
           </p>
         </div>
 
-        {/* diagnóstico rápido */}
-        <div className="mb-8 rounded-xl border border-orange-500/20 bg-orange-500/5 px-5 py-4 flex flex-col gap-2">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-orange-400/60 mb-1">O que está errado hoje</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { title: "Tech ilegível", desc: "Contraste 1.5:1 no canvas — abaixo do mínimo WCAG. A cor não passa nem em componentes de UI." },
-              { title: "Trigger sem identidade", desc: "16% de saturação. Parece estado desativado. Colide com Logical no hue." },
-              { title: "Service invisível", desc: "Cinza puro, 0% de saturação. Indistinguível de um nó vazio ou desabilitado." },
-            ].map((item) => (
-              <div key={item.title} className="flex gap-2.5 items-start">
-                <AlertTriangle size={13} className="shrink-0 mt-0.5 text-orange-400/60" />
-                <div>
-                  <p className="text-[12px] font-semibold text-white/70">{item.title}</p>
-                  <p className="text-[11px] text-white/35 leading-relaxed mt-0.5">{item.desc}</p>
-                </div>
+        {/* o problema real */}
+        <div className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            {
+              label: "Sem identidade",
+              desc: "Trigger, Service e Tech Component são visualmente intercambiáveis. Nenhum comunica o que faz pela cor.",
+              color: "orange",
+            },
+            {
+              label: "Sem defesa semântica",
+              desc: "As cores atuais foram escolhidas sem critério declarado. Não há resposta para 'por que essa cor nesse nó'.",
+              color: "orange",
+            },
+            {
+              label: "Sem dark mode",
+              desc: "Nenhuma cor da paleta atual foi validada para dark mode. Logical e IA já falham no fundo escuro.",
+              color: "orange",
+            },
+          ].map((item) => (
+            <div key={item.label} className="rounded-xl border border-orange-500/15 bg-orange-500/5 px-4 py-4 flex gap-2.5 items-start">
+              <AlertTriangle size={13} className="shrink-0 mt-0.5 text-orange-400/50" />
+              <div>
+                <p className="text-[12px] font-semibold text-white/70 mb-1">{item.label}</p>
+                <p className="text-[11px] text-white/35 leading-relaxed">{item.desc}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+
+        {/* o objetivo */}
+        <div className="mb-8 rounded-xl border border-purple-500/20 bg-purple-500/5 px-5 py-4">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-purple-400/50 mb-2">Objetivo deste estudo</p>
+          <p className="text-[13px] text-white/50 leading-relaxed max-w-2xl">
+            Propor uma paleta onde cada nó tem uma cor com defesa semântica — uma razão para ser aquela cor, não outra — e que funcione tanto no canvas claro <code className="font-mono text-white/30">{LIGHT_BG}</code> quanto em dark mode <code className="font-mono text-white/30">{DARK_BG}</code>. Duas abordagens: <strong className="text-white/60">Opção A</strong> (ajuste cirúrgico, menor impacto) e <strong className="text-white/60">Opção B</strong> (redistribuição completa, máxima distinção).
+          </p>
         </div>
 
         {/* controls */}
