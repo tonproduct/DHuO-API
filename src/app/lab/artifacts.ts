@@ -80,6 +80,7 @@ export const artifacts: Artifact[] = [
     name: "Estudo de cores",
     description: "Auditoria da paleta dos canvas nodes + 2 propostas de revisão — Opção A (cirúrgica) e Opção B (redistribuição completa).",
     href: "/estudo-de-cores",
+    modulo: "Integra",
     category: "UI",
     date: "2026-05-27",
   },
