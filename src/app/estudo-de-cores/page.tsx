@@ -316,6 +316,15 @@ const sugestaoEder: NodeEntry[] = [
     defense: "Rosa-quente (320°) — 62° do IA violeta, 61° do Business laranja. Dual-mode: 5.0:1 light, 3.3:1 dark.",
   },
   {
+    label: "Tech (mostarda)",
+    hex: "#978b0c",
+    hsl: "hsl(55, 85%, 32%)",
+    hue: 55, saturation: 85,
+    token: "--color/tech/border",
+    icon: <Cpu size={16} />,
+    defense: "Mostarda (55°) — único amarelo que passa dual-mode. 3.2:1 light, 5.3:1 dark. 34° do laranja Business.",
+  },
+  {
     label: "Logical",
     hex: "#008ac1",
     hsl: "hsl(197, 100%, 38%)",
