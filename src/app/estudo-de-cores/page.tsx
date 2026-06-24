@@ -296,6 +296,85 @@ const optionB: NodeEntry[] = [
   },
 ]
 
+const sugestaoEder: NodeEntry[] = [
+  {
+    label: "Trigger",
+    hex: "#64748b",
+    hsl: "hsl(215, 16%, 47%)",
+    hue: 215, saturation: 16,
+    token: "--color/trigger/border",
+    icon: <Zap size={16} />,
+    defense: "Slate neutro — Trigger é ponto de entrada, não domínio. Baixa saturação intencional: não compete com os nós funcionais.",
+  },
+  {
+    label: "Tech Component",
+    hex: "#0891b2",
+    hsl: "hsl(192, 91%, 36%)",
+    hue: 192, saturation: 91,
+    token: "--color/tech/border",
+    icon: <Cpu size={16} />,
+    defense: "Ciano (192) — linguagem de infraestrutura. Distinto do Logical por luminosidade: 36% vs 60%.",
+  },
+  {
+    label: "Logical",
+    hex: "#3b82f6",
+    hsl: "hsl(217, 91%, 60%)",
+    hue: 217, saturation: 91,
+    token: "--color/logical/border",
+    icon: <GitBranch size={16} />,
+    defense: "Azul médio (60% L) — claramente mais claro que o ciano Tech (36% L). Distinção por luminosidade.",
+  },
+  {
+    label: "Business",
+    hex: "#ea580c",
+    hsl: "hsl(21, 90%, 48%)",
+    hue: 21, saturation: 90,
+    token: "--color/business/border",
+    icon: <Briefcase size={16} />,
+    defense: "Laranja (21) — longe da zona de erro (0). Mantido da Opção A.",
+  },
+  {
+    label: "Service",
+    hex: "#e2e8f0",
+    hsl: "hsl(215, 32%, 88%)",
+    hue: 215, saturation: 0,
+    token: "--color/service/border",
+    icon: <Globe size={16} />,
+    defense: "Branco/neutro — serviço externo não pertence a nenhum domínio do canvas. Sem saturação intencional.",
+  },
+  {
+    label: "IA",
+    hex: "#8b5cf6",
+    hsl: "hsl(258, 87%, 65%)",
+    hue: 258, saturation: 87,
+    token: "--color/ia/shape/default",
+    icon: <Bot size={16} />,
+    defense: "Violeta — Claude, Copilot, Gemini, Cursor. Consenso do mercado para IA.",
+  },
+  {
+    label: "Trigger (Tool)",
+    hex: "#64748b",
+    hsl: "hsl(215, 16%, 47%)",
+    hue: 215, saturation: 16,
+    token: "--color/trigger/border",
+    icon: <Wrench size={16} />,
+    dashed: true,
+    fillHex: "#f1f5f9",
+    defense: "Herda o slate do Trigger pai. Fill cinza-claro + stroke dashed.",
+  },
+  {
+    label: "IA (IsaTool)",
+    hex: "#8b5cf6",
+    hsl: "hsl(258, 87%, 65%)",
+    hue: 258, saturation: 87,
+    token: "--color/ia/tool/border",
+    icon: <Bot size={16} />,
+    dashed: true,
+    fillHex: "#ede9fe",
+    defense: "Borda alinhada ao IA sólido. Token próprio.",
+  },
+]
+
 // ── Hue Wheel ─────────────────────────────────────────────────────────────────
 
 function HueWheel({ nodes }: { nodes: NodeEntry[] }) {
@@ -491,7 +570,7 @@ function PalettePanel({
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function EstudoCoresPage() {
-  const [view, setView] = useState<"all" | "a" | "b">("all")
+  const [view, setView] = useState<"all" | "a" | "b" | "eder">("all")
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] px-8 py-12">
@@ -548,12 +627,12 @@ export default function EstudoCoresPage() {
         {/* controls */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
           <div className="flex gap-1 bg-white/5 rounded-lg p-1">
-            {(["all", "a", "b"] as const).map((v) => (
+            {(["all", "a", "b", "eder"] as const).map((v) => (
               <button key={v} onClick={() => setView(v)}
                 className={`px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${
                   view === v ? "bg-white/10 text-white" : "text-white/30 hover:text-white/55"
                 }`}>
-                {v === "all" ? "Comparar todas" : v === "a" ? "Opcao A" : "Opcao B"}
+                {v === "all" ? "Comparar todas" : v === "a" ? "Opcao A" : v === "b" ? "Opcao B" : "Sugestão Eder"}
               </button>
             ))}
           </div>
@@ -580,6 +659,13 @@ export default function EstudoCoresPage() {
               title="Opcao B — Redistribuicao" subtitle="Maxima distincao, dual-mode nativo"
               badge="recomendada" badgeColor="#a78bfa"
               nodes={optionB} showDefense={true}
+            />
+          )}
+          {(view === "all" || view === "eder") && (
+            <PalettePanel
+              title="Sugestão Eder" subtitle="Trigger e Service neutros, Tech ciano, máxima leitura dos 3 grupos principais"
+              badge="sugestão" badgeColor="#f59e0b"
+              nodes={sugestaoEder} showDefense={true}
             />
           )}
         </div>
