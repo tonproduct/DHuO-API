@@ -308,12 +308,12 @@ const sugestaoEder: NodeEntry[] = [
   },
   {
     label: "Tech Component",
-    hex: "#4d7c0f",
-    hsl: "hsl(86, 78%, 27%)",
-    hue: 86, saturation: 78,
+    hex: "#0d9488",
+    hsl: "hsl(178, 83%, 31%)",
+    hue: 178, saturation: 83,
     token: "--color/tech/border",
     icon: <Cpu size={16} />,
-    defense: "Lima-escuro (86°) — fora do espectro azul. 56° do Trigger verde, 131° do Logical azul. Sem uso anterior.",
+    defense: "Teal (178°) — azul-verde, temperatura distinta do verde Trigger (142) e do azul Logical (217). Infra, monitoramento.",
   },
   {
     label: "Logical",
@@ -322,7 +322,7 @@ const sugestaoEder: NodeEntry[] = [
     hue: 217, saturation: 91,
     token: "--color/logical/border",
     icon: <GitBranch size={16} />,
-    defense: "Azul médio — lógica e fluxo. 131° do Tech lima, temperatura completamente diferente.",
+    defense: "Azul médio — lógica e fluxo. 39° do teal Tech, temperatura fria pura vs azul-verde.",
   },
   {
     label: "Business",
@@ -663,7 +663,7 @@ export default function EstudoCoresPage() {
           )}
           {(view === "all" || view === "eder") && (
             <PalettePanel
-              title="Sugestão Eder" subtitle="Trigger verde, Tech lima (hue livre), Service cinza dual-mode"
+              title="Sugestão Eder" subtitle="Trigger verde, Tech teal, Logical azul — três temperaturas distintas"
               badge="sugestão" badgeColor="#f59e0b"
               nodes={sugestaoEder} showDefense={true}
             />
