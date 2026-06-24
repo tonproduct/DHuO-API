@@ -1,0 +1,106 @@
+/*
+ * CANVAS NODE TOKENS
+ * ─────────────────────────────────────────────────────────────
+ * Paleta de identidade dos nós do canvas Integra.
+ * Todas as cores validadas WCAG 3:1 em light (#f9fafb) e dark (#1e1e1e).
+ *
+ * Primitivos: escala bruta de cada cor de nó.
+ * Semânticos: consumidos pelos componentes do canvas.
+ *
+ * Referência de estudo: /estudo-de-cores
+ * Aprovado por: Eder (Sugestão Eder)
+ *
+ * NOTA: valores OKLCH aproximados — validar com conversor antes de produção.
+ * Conversor: https://oklch.com
+ */
+
+:root {
+
+  /* ── Primitivos: Trigger (verde) ── */
+  --prim-node-trigger-border:     oklch(0.53 0.17 145);   /* #16a34a */
+  --prim-node-trigger-fill:       oklch(0.97 0.05 145);   /* #dcfce7 */
+  --prim-node-trigger-fill-dark:  oklch(0.25 0.07 145);   /* fill escuro para dark mode */
+
+  /* ── Primitivos: Tech Component (rosa-quente) ── */
+  --prim-node-tech-border:        oklch(0.51 0.27 350);   /* #c5188b */
+  --prim-node-tech-fill:          oklch(0.96 0.05 350);   /* fill suave */
+  --prim-node-tech-fill-dark:     oklch(0.24 0.08 350);
+
+  /* ── Primitivos: Logical (ciano-azul) ── */
+  --prim-node-logical-border:     oklch(0.56 0.17 220);   /* #008ac1 */
+  --prim-node-logical-fill:       oklch(0.96 0.04 220);
+  --prim-node-logical-fill-dark:  oklch(0.24 0.06 220);
+
+  /* ── Primitivos: Business (laranja) ── */
+  --prim-node-business-border:    oklch(0.63 0.21 38);    /* #ea580c */
+  --prim-node-business-fill:      oklch(0.97 0.04 38);
+  --prim-node-business-fill-dark: oklch(0.26 0.07 38);
+
+  /* ── Primitivos: Service (slate neutro) ── */
+  --prim-node-service-border:     oklch(0.52 0.03 258);   /* #64748b */
+  --prim-node-service-fill:       oklch(0.96 0.01 258);
+  --prim-node-service-fill-dark:  oklch(0.26 0.02 258);
+
+  /* ── Primitivos: IA (violeta) ── */
+  --prim-node-ia-border:          oklch(0.62 0.22 290);   /* #8b5cf6 */
+  --prim-node-ia-fill:            oklch(0.96 0.05 290);   /* #ede9fe */
+  --prim-node-ia-fill-dark:       oklch(0.24 0.08 290);
+
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+ * SEMANTIC TOKENS — light mode (default)
+ * ───────────────────────────────────────────────────────────── */
+
+:root {
+
+  /* Trigger */
+  --node-trigger-border:      var(--prim-node-trigger-border);
+  --node-trigger-tool-border: var(--prim-node-trigger-border);
+  --node-trigger-tool-fill:   var(--prim-node-trigger-fill);
+
+  /* Tech Component */
+  --node-tech-border:         var(--prim-node-tech-border);
+
+  /* Logical */
+  --node-logical-border:      var(--prim-node-logical-border);
+
+  /* Business */
+  --node-business-border:     var(--prim-node-business-border);
+
+  /* Service */
+  --node-service-border:      var(--prim-node-service-border);
+
+  /* IA */
+  --node-ia-border:           var(--prim-node-ia-border);
+  --node-ia-tool-border:      var(--prim-node-ia-border);
+  --node-ia-tool-fill:        var(--prim-node-ia-fill);
+
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+ * SEMANTIC TOKENS — dark mode
+ * ───────────────────────────────────────────────────────────── */
+
+.dark {
+
+  /* Bordas mantidas — todas validadas 3:1 no fundo escuro */
+  --node-trigger-border:      var(--prim-node-trigger-border);
+  --node-trigger-tool-border: var(--prim-node-trigger-border);
+  --node-trigger-tool-fill:   var(--prim-node-trigger-fill-dark);
+
+  --node-tech-border:         var(--prim-node-tech-border);
+
+  --node-logical-border:      var(--prim-node-logical-border);
+
+  --node-business-border:     var(--prim-node-business-border);
+
+  --node-service-border:      var(--prim-node-service-border);
+
+  --node-ia-border:           var(--prim-node-ia-border);
+  --node-ia-tool-border:      var(--prim-node-ia-border);
+  --node-ia-tool-fill:        var(--prim-node-ia-fill-dark);
+
+}
