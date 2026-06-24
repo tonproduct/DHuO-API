@@ -317,12 +317,12 @@ const sugestaoEder: NodeEntry[] = [
   },
   {
     label: "Logical",
-    hex: "#3b82f6",
-    hsl: "hsl(217, 91%, 60%)",
-    hue: 217, saturation: 91,
+    hex: "#008ac1",
+    hsl: "hsl(197, 100%, 38%)",
+    hue: 197, saturation: 100,
     token: "--color/logical/border",
     icon: <GitBranch size={16} />,
-    defense: "Azul médio — lógica e fluxo. 39° do teal Tech, temperatura fria pura vs azul-verde.",
+    defense: "Ciano-azul (197°) — lógica e fluxo. Dual-mode: 3.7:1 light, 4.5:1 dark.",
   },
   {
     label: "Business",
