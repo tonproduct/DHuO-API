@@ -299,21 +299,21 @@ const optionB: NodeEntry[] = [
 const sugestaoEder: NodeEntry[] = [
   {
     label: "Trigger",
-    hex: "#64748b",
-    hsl: "hsl(215, 16%, 47%)",
-    hue: 215, saturation: 16,
+    hex: "#16a34a",
+    hsl: "hsl(142, 73%, 37%)",
+    hue: 142, saturation: 73,
     token: "--color/trigger/border",
     icon: <Zap size={16} />,
-    defense: "Slate neutro — Trigger é ponto de entrada, não domínio. Baixa saturação intencional: não compete com os nós funcionais.",
+    defense: "Verde (142) — go/start. Zapier, Make, n8n usam verde para eventos de entrada. Hue único no sistema.",
   },
   {
     label: "Tech Component",
-    hex: "#0891b2",
-    hsl: "hsl(192, 91%, 36%)",
-    hue: 192, saturation: 91,
+    hex: "#4d7c0f",
+    hsl: "hsl(86, 78%, 27%)",
+    hue: 86, saturation: 78,
     token: "--color/tech/border",
     icon: <Cpu size={16} />,
-    defense: "Ciano (192) — linguagem de infraestrutura. Distinto do Logical por luminosidade: 36% vs 60%.",
+    defense: "Lima-escuro (86°) — fora do espectro azul. 56° do Trigger verde, 131° do Logical azul. Sem uso anterior.",
   },
   {
     label: "Logical",
@@ -322,7 +322,7 @@ const sugestaoEder: NodeEntry[] = [
     hue: 217, saturation: 91,
     token: "--color/logical/border",
     icon: <GitBranch size={16} />,
-    defense: "Azul médio (60% L) — claramente mais claro que o ciano Tech (36% L). Distinção por luminosidade.",
+    defense: "Azul médio — lógica e fluxo. 131° do Tech lima, temperatura completamente diferente.",
   },
   {
     label: "Business",
@@ -335,12 +335,12 @@ const sugestaoEder: NodeEntry[] = [
   },
   {
     label: "Service",
-    hex: "#e2e8f0",
-    hsl: "hsl(215, 32%, 88%)",
-    hue: 215, saturation: 0,
+    hex: "#64748b",
+    hsl: "hsl(215, 16%, 47%)",
+    hue: 215, saturation: 16,
     token: "--color/service/border",
     icon: <Globe size={16} />,
-    defense: "Branco/neutro — serviço externo não pertence a nenhum domínio do canvas. Sem saturação intencional.",
+    defense: "Cinza slate — serviço externo não pertence a nenhum domínio. Validado dual-mode: 4.2:1 light, 3.9:1 dark.",
   },
   {
     label: "IA",
@@ -353,14 +353,14 @@ const sugestaoEder: NodeEntry[] = [
   },
   {
     label: "Trigger (Tool)",
-    hex: "#64748b",
-    hsl: "hsl(215, 16%, 47%)",
-    hue: 215, saturation: 16,
+    hex: "#16a34a",
+    hsl: "hsl(142, 73%, 37%)",
+    hue: 142, saturation: 73,
     token: "--color/trigger/border",
     icon: <Wrench size={16} />,
     dashed: true,
-    fillHex: "#f1f5f9",
-    defense: "Herda o slate do Trigger pai. Fill cinza-claro + stroke dashed.",
+    fillHex: "#dcfce7",
+    defense: "Herda o verde do Trigger pai. Fill verde-claro + stroke dashed.",
   },
   {
     label: "IA (IsaTool)",
@@ -663,7 +663,7 @@ export default function EstudoCoresPage() {
           )}
           {(view === "all" || view === "eder") && (
             <PalettePanel
-              title="Sugestão Eder" subtitle="Trigger e Service neutros, Tech ciano, máxima leitura dos 3 grupos principais"
+              title="Sugestão Eder" subtitle="Trigger verde, Tech lima (hue livre), Service cinza dual-mode"
               badge="sugestão" badgeColor="#f59e0b"
               nodes={sugestaoEder} showDefense={true}
             />
