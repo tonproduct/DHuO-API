@@ -308,12 +308,12 @@ const sugestaoEder: NodeEntry[] = [
   },
   {
     label: "Tech Component",
-    hex: "#c026d3",
-    hsl: "hsl(296, 70%, 49%)",
-    hue: 296, saturation: 70,
+    hex: "#c5188b",
+    hsl: "hsl(320, 78%, 43%)",
+    hue: 320, saturation: 78,
     token: "--color/tech/border",
     icon: <Cpu size={16} />,
-    defense: "Magenta (296°) — território único. 38° do violeta IA, 85° do laranja Business. Sem uso anterior no sistema.",
+    defense: "Rosa-quente (320°) — 62° do IA violeta, 61° do Business laranja. Dual-mode: 5.0:1 light, 3.3:1 dark.",
   },
   {
     label: "Logical",
