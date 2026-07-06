@@ -130,7 +130,7 @@ export default function HeadersPage() {
                     onChange={(e) => setAdvancedSearch(e.target.checked)}
                   />
                   <span className="int-toggle__track" />
-                  Busca Avançada <HelpCircle size={10} title="Ajuda" />
+                  Busca Avançada <span title="Ajuda"><HelpCircle size={10} /></span>
                 </label>
               </div>
 
