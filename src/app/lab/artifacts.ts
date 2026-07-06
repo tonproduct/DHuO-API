@@ -98,4 +98,18 @@ export const artifacts: Artifact[] = [
     category: "UI",
     date: "2026-06-19",
   },
+  {
+    name: "Headers",
+    description: "Header compacto do Integra — nome, versões (principal/secundária), categoria, busca de componentes, busca avançada e ações (duplicar, dependências).",
+    href: "/headers",
+    category: "UI",
+    date: "2026-07-03",
+  },
+  {
+    name: "Paginação para números altos",
+    description: "Estudo de paginação para listas de migração de APIs/integrações com dezenas de milhares de itens — por que a faixa numérica atual fica extensa e proposta de numeração truncada + jump-to-page.",
+    href: "/paginacao-numeros-altos",
+    category: "UI",
+    date: "2026-07-06",
+  },
 ]
