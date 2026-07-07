@@ -9,7 +9,7 @@ const sections = [
   { id: "mercado", label: "Padrões de mercado" },
   { id: "proposta", label: "Proposta pro DHuO" },
   { id: "bench", label: "Benchmark real" },
-  { id: "prototipo", label: "Protótipo" },
+  { id: "prototipo", label: "Soluções propostas" },
 ]
 
 function formatBR(n: number) {
@@ -414,6 +414,84 @@ function LegacyCrampedPagination({ pages, current }: { pages: number[]; current:
   )
 }
 
+// ─── Correção mínima do padrão atual (espaçamento, sem redesenho) ──────────
+
+function FixedSpacingPagination({ pages, current }: { pages: number[]; current: number }) {
+  return (
+    <div className="fx">
+      <button className="fx-arrow">«</button>
+      <button className="fx-arrow">‹</button>
+      <div className="fx-numbers">
+        {pages.map((p) => (
+          <button key={p} className={`fx-number ${p === current ? "fx-number--current" : ""}`}>
+            {p}
+          </button>
+        ))}
+      </div>
+      <button className="fx-arrow">›</button>
+      <button className="fx-arrow">»</button>
+
+      <style jsx>{`
+        .fx {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .fx-arrow {
+          width: 26px;
+          height: 26px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: none;
+          background: none;
+          font-size: 13px;
+          color: #6b7280;
+          border-radius: 999px;
+          cursor: pointer;
+        }
+
+        .fx-arrow:hover {
+          background: #f4f4f5;
+        }
+
+        .fx-numbers {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+        }
+
+        .fx-number {
+          min-width: 28px;
+          height: 28px;
+          padding-inline: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: none;
+          background: none;
+          border-radius: 999px;
+          font-size: 13px;
+          font-weight: 600;
+          color: #111827;
+          font-variant-numeric: tabular-nums;
+          cursor: pointer;
+        }
+
+        .fx-number:hover {
+          background: #f4f4f5;
+        }
+
+        .fx-number--current {
+          background: #6b1d5c;
+          color: #ffffff;
+        }
+      `}</style>
+    </div>
+  )
+}
+
 // ─── Mockups visuais de cada fonte do benchmark ────────────────────────────
 
 function MuiMock() {
@@ -752,39 +830,49 @@ export default function PaginacaoNumerosAltosPage() {
               "2005 2006 2007 2008 2009" fica ilegível, e o indicador circular da página atual (2009) sobrepõe os dígitos
               vizinhos em vez de destacar com espaço próprio.
             </p>
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 flex items-center justify-between flex-wrap gap-3">
-              <span className="text-[12px] font-semibold uppercase tracking-widest text-gray-400">Padrão atual</span>
-              <LegacyCrampedPagination pages={[2005, 2006, 2007, 2008, 2009]} current={2009} />
+            <div className="rounded-lg border border-gray-200 p-4 flex flex-col gap-4">
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Antes</span>
+                <LegacyCrampedPagination pages={[2005, 2006, 2007, 2008, 2009]} current={2009} />
+              </div>
+              <div className="h-px bg-gray-100" />
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-emerald-700">Depois</span>
+                <FixedSpacingPagination pages={[2005, 2006, 2007, 2008, 2009]} current={2009} />
+              </div>
             </div>
             <p className="text-[13px] text-gray-500">
               Job do usuário aqui: <em>"quero saber quantos itens ainda preciso revisar/migrar e chegar rápido em qualquer ponto
-              da lista"</em> — não "decifrar uma sequência de números colados".
+              da lista"</em> — não "decifrar uma sequência de números colados". Só com espaçamento — cada número com sua
+              própria área de toque e o indicador da página atual cabendo dentro do próprio espaço, sem vazar pros vizinhos —
+              a leitura já fica clara, sem trocar o componente inteiro.
             </p>
           </section>
 
           {/* Por que dói */}
           <section id="problema" className="flex flex-col gap-4">
             <h2 className="text-[18px] font-bold text-gray-900">Por que dói (heurísticas)</h2>
+            <p className="text-[13px] text-gray-500">
+              O print mostra dois problemas empilhados: um de <strong className="text-gray-900">layout</strong> (falta de
+              espaçamento — corrigível hoje, sem redesenho) e um de <strong className="text-gray-900">arquitetura de
+              informação</strong> (listar toda página sem truncar — só se resolve com a proposta da próxima seção). Separei
+              as heurísticas por qual dos dois problemas cada uma explica:
+            </p>
             <ul className="flex flex-col gap-3">
               <li className="text-[14px] text-gray-600 leading-relaxed">
-                <strong className="text-gray-900">Lei de Miller</strong> — uma paginação numerada tradicional com milhares de
-                páginas força o usuário a processar números de 4-5 dígitos a cada troca de página. Isso excede o que a memória
-                de trabalho processa com conforto.
+                <strong className="text-gray-900">Lei de Miller</strong> <span className="text-[11px] text-red-600 font-semibold uppercase">layout</span> — números de 4 dígitos colados
+                exigem que o usuário separe os caracteres de cabeça antes de conseguir "ler" cada página — carga de memória de
+                trabalho que nem deveria existir; é resolvida só com espaçamento, sem precisar truncar nada.
               </li>
               <li className="text-[14px] text-gray-600 leading-relaxed">
-                <strong className="text-gray-900">Lei de Hick</strong> — a UI atual literalmente lista todas as páginas (1 a
-                2412) sem truncar. O tempo de decisão dispara e, pior, sem espaçamento entre os números o usuário nem consegue
-                separar visualmente onde termina uma opção e começa a próxima.
+                <strong className="text-gray-900">Lei de Hick</strong> <span className="text-[11px] text-amber-600 font-semibold uppercase">arquitetura</span> — a UI lista todas as páginas (1 a
+                2412) sem truncar. Mesmo com espaçamento correto, o tempo de decisão dispara porque as opções visíveis não têm
+                limite — isso só se resolve truncando com "…", não com CSS.
               </li>
               <li className="text-[14px] text-gray-600 leading-relaxed">
-                <strong className="text-gray-900">Reconhecimento vs. memorização</strong> — números colados como
-                "2005200620072008" não dizem nada sobre progresso relativo (58%? 5%?). O usuário precisa separar os dígitos de
-                cabeça antes de sequer conseguir ler, e só depois fazer conta pra saber onde está.
-              </li>
-              <li className="text-[14px] text-gray-600 leading-relaxed">
-                <strong className="text-gray-900">Estética e minimalismo</strong> — o indicador circular da página atual
-                sobrepõe os números vizinhos em vez de ganhar espaço próprio, um sintoma clássico de componente que não foi
-                desenhado pensando em números de 4+ dígitos.
+                <strong className="text-gray-900">Reconhecimento vs. memorização</strong> <span className="text-[11px] text-amber-600 font-semibold uppercase">arquitetura</span> — mesmo espaçados, números
+                brutos como "2009 de 2412" não dizem nada sobre progresso relativo (58%? 82%?). O usuário ainda precisa fazer
+                conta de cabeça pra saber onde está — precisa de contexto (ex. contagem total formatada), não só de espaço.
               </li>
             </ul>
           </section>
@@ -964,7 +1052,7 @@ export default function PaginacaoNumerosAltosPage() {
 
           {/* Protótipo */}
           <section id="prototipo" className="flex flex-col gap-8 pb-20">
-            <h2 className="text-[18px] font-bold text-gray-900">Protótipo interativo</h2>
+            <h2 className="text-[18px] font-bold text-gray-900">Soluções propostas</h2>
 
             <div className="flex flex-col gap-3">
               <span className="text-[12px] font-semibold uppercase tracking-widest text-gray-400">
